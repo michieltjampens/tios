@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<configuration name="MCIMX6Y2xxx05" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_11 http://mcuxpresso.nxp.com/XSD/mex_configuration_11.xsd" uuid="48c7ecba-7d8a-47dd-9f51-2a766c066ea8" version="11" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_11" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <common>
+      <processor>MCIMX6Y2xxx05</processor>
+      <package>MCIMX6Y2DVM05</package>
+      <mcu_data>i_mx_2_0</mcu_data>
+      <cores selected="ca7">
+         <core name="Cortex-A7" id="ca7" description="A7 core"/>
+      </cores>
+      <description></description>
+   </common>
+   <preferences>
+      <validate_boot_init_only>true</validate_boot_init_only>
+      <generate_extended_information>false</generate_extended_information>
+      <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
+      <update_include_paths>true</update_include_paths>
+      <generate_registers_defines>false</generate_registers_defines>
+   </preferences>
+   <tools>
+      <pins name="Pins" version="11.0" enabled="true" update_project_code="true">
+         <generated_project_files>
+            <file path="board/imx6ull-board.dtsi" update_enabled="true"/>
+            <file path="board/iomux_config.c" update_enabled="true"/>
+            <file path="board/iomux_config.h" update_enabled="true"/>
+            <file path="board/pin_mux.c" update_enabled="true"/>
+            <file path="board/pin_mux.h" update_enabled="true"/>
+         </generated_project_files>
+         <pins_profile>
+            <processor_version>11.0.0</processor_version>
+            <power_domains/>
+         </pins_profile>
+         <functions_list>
+            <function name="BOARD_InitPins">
+               <description>Configures pin routing and optionally pin electrical features.</description>
+               <options>
+                  <callFromInitBoot>false</callFromInitBoot>
+                  <coreID>ca7</coreID>
+               </options>
+               <dependencies/>
+               <pins>
+                  <pin peripheral="uSDHC1" signal="usdhc_data, 0" pin_num="B3" pin_signal="SD1_DATA0"/>
+                  <pin peripheral="uSDHC1" signal="usdhc_data, 1" pin_num="B2" pin_signal="SD1_DATA1"/>
+                  <pin peripheral="uSDHC1" signal="usdhc_data, 3" pin_num="A2" pin_signal="SD1_DATA3"/>
+                  <pin peripheral="uSDHC1" signal="usdhc_data, 2" pin_num="B1" pin_signal="SD1_DATA2"/>
+                  <pin peripheral="uSDHC1" signal="usdhc_cmd" pin_num="C2" pin_signal="SD1_CMD"/>
+                  <pin peripheral="uSDHC1" signal="usdhc_clk" pin_num="C1" pin_signal="SD1_CLK"/>
+                  <pin peripheral="I2C1" signal="i2c_scl" pin_num="L14" pin_signal="GPIO1_IO02"/>
+                  <pin peripheral="I2C1" signal="i2c_sda" pin_num="L17" pin_signal="GPIO1_IO03"/>
+                  <pin peripheral="I2C2" signal="i2c_scl" pin_num="K13" pin_signal="GPIO1_IO00"/>
+                  <pin peripheral="I2C2" signal="i2c_sda" pin_num="L15" pin_signal="GPIO1_IO01"/>
+                  <pin peripheral="I2C3" signal="i2c_scl" pin_num="A9" pin_signal="LCD_DATA01"/>
+                  <pin peripheral="I2C3" signal="i2c_sda" pin_num="B9" pin_signal="LCD_DATA00"/>
+                  <pin peripheral="I2C4" signal="i2c_scl" pin_num="D10" pin_signal="LCD_DATA03"/>
+                  <pin peripheral="I2C4" signal="i2c_sda" pin_num="E10" pin_signal="LCD_DATA02"/>
+                  <pin peripheral="UART6" signal="uart_rx" pin_num="F5" pin_signal="CSI_MCLK"/>
+                  <pin peripheral="UART6" signal="uart_tx" pin_num="E5" pin_signal="CSI_PIXCLK"/>
+                  <pin peripheral="UART7" signal="uart_rx" pin_num="C13" pin_signal="LCD_DATA16"/>
+                  <pin peripheral="UART7" signal="uart_tx" pin_num="B13" pin_signal="LCD_DATA17"/>
+                  <pin peripheral="UART8" signal="uart_rx" pin_num="C14" pin_signal="LCD_DATA20"/>
+                  <pin peripheral="UART8" signal="uart_tx" pin_num="B14" pin_signal="LCD_DATA21"/>
+                  <pin peripheral="UART5" signal="uart_rx" pin_num="G13" pin_signal="UART5_RX_DATA"/>
+                  <pin peripheral="UART5" signal="uart_tx" pin_num="F17" pin_signal="UART5_TX_DATA"/>
+                  <pin peripheral="UART4" signal="uart_rx" pin_num="G16" pin_signal="UART4_RX_DATA"/>
+                  <pin peripheral="UART4" signal="uart_tx" pin_num="G17" pin_signal="UART4_TX_DATA"/>
+                  <pin peripheral="UART3" signal="uart_tx" pin_num="H17" pin_signal="UART3_TX_DATA"/>
+                  <pin peripheral="UART3" signal="uart_rx" pin_num="H16" pin_signal="UART3_RX_DATA"/>
+                  <pin peripheral="UART2" signal="uart_tx" pin_num="J17" pin_signal="UART2_TX_DATA"/>
+                  <pin peripheral="UART2" signal="uart_rx" pin_num="J16" pin_signal="UART2_RX_DATA"/>
+                  <pin peripheral="UART1" signal="uart_rx" pin_num="K16" pin_signal="UART1_RX_DATA"/>
+                  <pin peripheral="UART1" signal="uart_tx" pin_num="K14" pin_signal="UART1_TX_DATA"/>
+                  <pin peripheral="uSDHC1" signal="usdhc_cd_b" pin_num="D3" pin_signal="CSI_DATA05"/>
+                  <pin peripheral="ECSPI2" signal="ecspi_miso" pin_num="E1" pin_signal="CSI_DATA03"/>
+                  <pin peripheral="ECSPI2" signal="ecspi_mosi" pin_num="E2" pin_signal="CSI_DATA02"/>
+                  <pin peripheral="ECSPI2" signal="ecspi_sclk" pin_num="E4" pin_signal="CSI_DATA00"/>
+                  <pin peripheral="ECSPI2" signal="ecspi_ss, 0" pin_num="E3" pin_signal="CSI_DATA01"/>
+                  <pin peripheral="ECSPI1" signal="ecspi_miso" pin_num="B16" pin_signal="LCD_DATA23"/>
+                  <pin peripheral="ECSPI1" signal="ecspi_mosi" pin_num="A14" pin_signal="LCD_DATA22"/>
+                  <pin peripheral="ECSPI1" signal="ecspi_sclk" pin_num="C14" pin_signal="LCD_DATA20"/>
+               </pins>
+            </function>
+         </functions_list>
+      </pins>
+      <ddr name="DDR" version="1.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
+         <components/>
+      </ddr>
+      <periphs name="Peripherals" version="11.0" enabled="false" update_project_code="true">
+         <peripherals_profile>
+            <processor_version>N/A</processor_version>
+         </peripherals_profile>
+         <functional_groups/>
+         <components/>
+      </periphs>
+      <pbl name="PBL" version="1.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
+         <pbl_configuration class="java.util.ArrayList"/>
+      </pbl>
+      <serdes name="SERDES" version="1.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
+         <components/>
+      </serdes>
+   </tools>
+</configuration>

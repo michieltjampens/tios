@@ -1,0 +1,7 @@
+0 -> 0_1
+- Switch on Mode1 instead of Mode0
+- R9=0R 0402 => R9=1k 0603
+- Some more room between C4,C14 and C12
+- Replaced the mosfet with BSR802NL6327HTSA1
+- Moved X5 and X6 to better align so can be a single connector
+- Replaced U5 with TCK106AF, which can be soldered by hand
