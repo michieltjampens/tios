@@ -5,3 +5,4 @@
 - Replaced the mosfet with BSR802NL6327HTSA1
 - Moved X5 and X6 to better align so can be a single connector
 - Replaced U5 with TCK106AF, which can be soldered by hand
+- Replaced ... with MP2159, cheaper, 1A instead of 600mA and smaller parts around
