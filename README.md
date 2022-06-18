@@ -17,7 +17,7 @@ So, what are those requirements?
 
 ## What?
 
-The hardware will be in different layers/floors/segments...
+The hardware will be in different layers/floors/segments...  
 Main restriction is limiting the size of the core to 50x50mm, just because that's the size at which 4 layers are still cheap (at a certain pcb fab).
 
 ### Core
