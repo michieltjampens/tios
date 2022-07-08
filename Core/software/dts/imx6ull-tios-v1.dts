@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Copyright (C) 2022 IO Stuff
+ * Author: Michiel
+ */
+
+ 
+/dts-v1/;
+
+#include "imx6ull-tios-v1.dtsi"
+
+/ {
+	model = "i.MX6 ULL TIOS Board";
+	compatible = "fsl,imx6ull";
+};
+

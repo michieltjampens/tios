@@ -1,2 +1,0 @@
-1/ 0 [Failure open usb device               ]
--> https://github.com/NXPmicro/mfgtools/issues/270
