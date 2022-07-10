@@ -1,16 +1,13 @@
+// SPDX-License-Identifier: GPL-2.0
 /*
- * Copyright 2019 NXP
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Copyright (C) 2022 IO Stuff
+ * Author: Michiel
  */
  
 /dts-v1/;
 
 #include "imx6ull.dtsi"
-#include "imx6ull-tios.dtsi"
+#include "imx6ull-tios-v1.dtsi"
 
 / {
 	model = "i.MX6 ULL TIOS Board";
