@@ -1,0 +1,6 @@
+board/iostuff/tios-6ull/tios-6ull.c:44:5:dram_init	0	static
+board/iostuff/tios-6ull/tios-6ull.c:102:5:board_phy_config	24	static
+board/iostuff/tios-6ull/tios-6ull.c:113:5:board_early_init_f	8	static
+board/iostuff/tios-6ull/tios-6ull.c:120:5:board_init	8	static
+board/iostuff/tios-6ull/tios-6ull.c:144:5:board_late_init	8	static
+board/iostuff/tios-6ull/tios-6ull.c:161:5:checkboard	8	static

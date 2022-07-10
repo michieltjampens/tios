@@ -1,8 +1,14 @@
-0 -> 0_1
+0 -> 1a
 - Switch on Mode1 instead of Mode0
 - R9=0R 0402 => R9=1k 0603
 - Some more room between C4,C14 and C12
 - Replaced the mosfet with BSR802NL6327HTSA1
 - Moved X5 and X6 to better align so can be a single connector
 - Replaced U5 with TCK106AF, which can be soldered by hand
-- Replaced ... with MP2159, cheaper, 1A instead of 600mA and smaller parts around
+- Replaced ... with MPM3833, 3A instead of 600mA and smaller parts around
+
+1a -> 1b
+- Fixed mistake in U3/TCK106AF pinlayout, swapped 3 and 4
+- Removed pulldown between gate and load switch, because load switch contains it
+- A lot of rooting improvements (i think)
+- RefDes renumbered

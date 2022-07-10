@@ -23,9 +23,6 @@
 #include <miiphy.h>
 #include <linux/sizes.h>
 #include <mmc.h>
-#include <power/pmic.h>
-#include <power/pfuze3000_pmic.h>
-#include "../common/pfuze.h"
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -38,93 +35,15 @@ DECLARE_GLOBAL_DATA_PTR;
 	PAD_CTL_DSE_40ohm | PAD_CTL_HYS |			\
 	PAD_CTL_ODE)
 
-#define LCD_PAD_CTRL    (PAD_CTL_HYS | PAD_CTL_PUS_100K_UP | PAD_CTL_PUE | \
-	PAD_CTL_PKE | PAD_CTL_SPEED_MED | PAD_CTL_DSE_40ohm)
-
 #define GPMI_PAD_CTRL0 (PAD_CTL_PKE | PAD_CTL_PUE | PAD_CTL_PUS_100K_UP)
 #define GPMI_PAD_CTRL1 (PAD_CTL_DSE_40ohm | PAD_CTL_SPEED_MED | \
 			PAD_CTL_SRE_FAST)
 #define GPMI_PAD_CTRL2 (GPMI_PAD_CTRL0 | GPMI_PAD_CTRL1)
 
 
-#ifdef CONFIG_DM_PMIC
-int power_init_board(void)
-{
-	struct udevice *dev;
-	int ret, dev_id, rev_id;
-	unsigned int reg;
-
-	ret = pmic_get("pfuze3000@8", &dev);
-	if (ret == -ENODEV)
-		return 0;
-	if (ret != 0)
-		return ret;
-
-	dev_id = pmic_reg_read(dev, PFUZE3000_DEVICEID);
-	rev_id = pmic_reg_read(dev, PFUZE3000_REVID);
-	printf("PMIC: PFUZE3000 DEV_ID=0x%x REV_ID=0x%x\n", dev_id, rev_id);
-
-	/* disable Low Power Mode during standby mode */
-	reg = pmic_reg_read(dev, PFUZE3000_LDOGCTL);
-	reg |= 0x1;
-	pmic_reg_write(dev, PFUZE3000_LDOGCTL, reg);
-
-	/* SW1B step ramp up time from 2us to 4us/25mV */
-	pmic_reg_write(dev, PFUZE3000_SW1BCONF, 0x40);
-
-	/* SW1B mode to APS/PFM */
-	pmic_reg_write(dev, PFUZE3000_SW1BMODE, 0xc);
-
-	/* SW1B standby voltage set to 0.975V */
-	pmic_reg_write(dev, PFUZE3000_SW1BSTBY, 0xb);
-
-	return 0;
-}
-
-#ifdef CONFIG_LDO_BYPASS_CHECK
-void ldo_mode_set(int ldo_bypass)
-{
-	unsigned int value;
-	u32 vddarm;
-	struct udevice *dev;
-	int ret;
-
-	ret = pmic_get("pfuze3000@8", &dev);
-	if (ret == -ENODEV) {
-		printf("No PMIC found!\n");
-		return;
-	}
-
-	/* switch to ldo_bypass mode */
-	if (ldo_bypass) {
-		prep_anatop_bypass();
-		/* decrease VDDARM to 1.275V */
-		value = pmic_reg_read(dev, PFUZE3000_SW1BVOLT);
-		value &= ~0x1f;
-		value |= PFUZE3000_SW1AB_SETP(12750);
-		pmic_reg_write(dev, PFUZE3000_SW1BVOLT, value);
-
-		set_anatop_bypass(1);
-		vddarm = PFUZE3000_SW1AB_SETP(11750);
-
-		value = pmic_reg_read(dev, PFUZE3000_SW1BVOLT);
-		value &= ~0x1f;
-		value |= vddarm;
-		pmic_reg_write(dev, PFUZE3000_SW1BVOLT, value);
-
-		finish_anatop_bypass();
-
-		printf("switch to ldo_bypass mode!\n");
-	}
-}
-#endif
-#endif
-
 int dram_init(void)
 {
-	//gd->ram_size = imx_ddr_size();
 	gd->ram_size = ((ulong)CONFIG_DDR_MB * SZ_1M);
-
 	return 0;
 }
 
@@ -137,37 +56,6 @@ static void setup_iomux_uart(void)
 {
 	imx_iomux_v3_setup_multiple_pads(uart1_pads, ARRAY_SIZE(uart1_pads));
 }
-
-#ifdef CONFIG_FSL_QSPI
-
-#ifndef CONFIG_DM_SPI
-#define QSPI_PAD_CTRL1	\
-	(PAD_CTL_SRE_FAST | PAD_CTL_SPEED_MED | \
-	 PAD_CTL_PKE | PAD_CTL_PUE | PAD_CTL_PUS_47K_UP | PAD_CTL_DSE_120ohm)
-
-static iomux_v3_cfg_t const quadspi_pads[] = {
-	MX6_PAD_NAND_WP_B__QSPI_A_SCLK | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
-	MX6_PAD_NAND_READY_B__QSPI_A_DATA00 | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
-	MX6_PAD_NAND_CE0_B__QSPI_A_DATA01 | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
-	MX6_PAD_NAND_CE1_B__QSPI_A_DATA02 | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
-	MX6_PAD_NAND_CLE__QSPI_A_DATA03 | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
-	MX6_PAD_NAND_DQS__QSPI_A_SS0_B | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
-};
-#endif
-
-static int board_qspi_init(void)
-{
-#ifndef CONFIG_DM_SPI
-	/* Set the iomux */
-	imx_iomux_v3_setup_multiple_pads(quadspi_pads,
-					 ARRAY_SIZE(quadspi_pads));
-#endif
-	/* Set the clock */
-	enable_qspi_clk(0);
-
-	return 0;
-}
-#endif
 
 #ifdef CONFIG_FEC_MXC
 static int setup_fec(void)
@@ -238,10 +126,8 @@ int board_init(void)
 	setup_fec();
 #endif
 
-#ifdef CONFIG_FSL_QSPI
-	board_qspi_init();
-#endif
-
+	gpio_request(IMX_GPIO_NR(1, 14), "peri_on");
+	gpio_direction_output(IMX_GPIO_NR(1, 14) , 1);
 	return 0;
 }
 
@@ -262,18 +148,10 @@ int board_late_init(void)
 #endif
 
 	env_set("tee", "no");
-#ifdef CONFIG_IMX_OPTEE
-	env_set("tee", "yes");
-#endif
-
-#ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	env_set("board_name", "TIOS");
 	env_set("board_rev", "14X14");
-#endif
 
-#ifdef CONFIG_ENV_IS_IN_MMC
 	board_late_mmc_env_init();
-#endif
 
 	set_wdog_reset((struct wdog_regs *)WDOG1_BASE_ADDR);
 
