@@ -111,7 +111,9 @@
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
+	uart-has-rtscts;
 	status = "okay";
+	
 };
 &uart4 {
 	pinctrl-names = "default";
