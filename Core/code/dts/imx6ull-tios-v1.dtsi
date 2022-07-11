@@ -28,17 +28,17 @@
 };
 /* I2C */
 &i2c1 {
-	clock-frequency = <100000>;
-	pinctrl-names = "default";
+	clock-frequency = <100000>;				// Not sure if needed to specify
+	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c1>;
 	pinctrl-1 = <&pinctrl_i2c1_gpio>;   // second iomux group
 	sda-gpios = <&gpio1 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	scl-gpios = <&gpio1 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	status = "okay";
 };
-&i2c2 {
-	clock-frequency = <100000>;
-	pinctrl-names = "default";
+&i2c2 {	
+	clock-frequency = <100000>;				// Not sure if needed to specify
+	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c2>;
 	pinctrl-1 = <&pinctrl_i2c2_gpio>;   // second iomux group
 	sda-gpios = <&gpio1 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
@@ -46,8 +46,8 @@
 	status = "okay";
 };
 &i2c3 {
-	clock-frequency = <100000>;
-	pinctrl-names = "default";
+	clock-frequency = <100000>;				// Not sure if needed to specify
+	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c3>;
 	pinctrl-1 = <&pinctrl_i2c3_gpio>;   // second iomux group
 	sda-gpios = <&gpio1 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
@@ -55,8 +55,8 @@
 	status = "okay";
 };
 &i2c4 {
-	clock-frequency = <100000>;
-	pinctrl-names = "default";
+	clock-frequency = <100000>;				// Not sure if needed to specify
+	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c4>;	
 	pinctrl-1 = <&pinctrl_i2c4_gpio>;   // second iomux group
 	sda-gpios = <&gpio1 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
@@ -308,6 +308,7 @@
 			MX6UL_PAD_LCD_DATA03__GPIO3_IO08 0x4001b8b0
 		>;
 	};
+	
 	/* SPI */
 	pinctrl_ecspi1: spi1grp {
 		fsl,pins = <
