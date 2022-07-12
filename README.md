@@ -1,5 +1,4 @@
-# tIOs
-Tower of IO Stuff, hardware for dcafs.
+# Tower of IO stuff aka TIOS
 
 ## Why?
 
