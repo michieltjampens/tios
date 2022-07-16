@@ -15,16 +15,6 @@
 		device_type = "memory";
 		reg = <0x80000000 0x20000000>;
 	};
-
-	reg_sd1_vmmc: regulator-sd1-vmmc {
-		compatible = "regulator-fixed";
-		regulator-name = "VSD_3V3";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&gpio1 9 GPIO_ACTIVE_HIGH>;
-		off-on-delay-us = <20000>;
-		enable-active-high;
-	};
 };
 /* I2C */
 &i2c1 {
@@ -32,8 +22,8 @@
 	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c1>;
 	pinctrl-1 = <&pinctrl_i2c1_gpio>;   // second iomux group
-	sda-gpios = <&gpio1 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-	scl-gpios = <&gpio1 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	sda-gpios = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	scl-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	status = "okay";
 };
 &i2c2 {	
@@ -41,8 +31,8 @@
 	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c2>;
 	pinctrl-1 = <&pinctrl_i2c2_gpio>;   // second iomux group
-	sda-gpios = <&gpio1 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-	scl-gpios = <&gpio1 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	sda-gpios = <&gpio1 1 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	scl-gpios = <&gpio1 0 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	status = "okay";
 };
 &i2c3 {
@@ -50,8 +40,8 @@
 	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c3>;
 	pinctrl-1 = <&pinctrl_i2c3_gpio>;   // second iomux group
-	sda-gpios = <&gpio1 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-	scl-gpios = <&gpio1 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	sda-gpios = <&gpio3 5 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	scl-gpios = <&gpio3 6 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	status = "okay";
 };
 &i2c4 {
@@ -59,8 +49,8 @@
 	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c4>;	
 	pinctrl-1 = <&pinctrl_i2c4_gpio>;   // second iomux group
-	sda-gpios = <&gpio1 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-	scl-gpios = <&gpio1 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	sda-gpios = <&gpio3 7 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+	scl-gpios = <&gpio3 8 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	status = "okay";
 	
 	/* RTC */
@@ -120,11 +110,13 @@
 	pinctrl-0 = <&pinctrl_uart4>;
 	status = "okay";
 };
+/*
 &uart5 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
 	status = "okay";
 };
+*/
 &uart6 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart6>;
@@ -135,7 +127,6 @@
 &usbotg1 {
 	dr_mode = "otg";
 	pinctrl-names = "default";
-	//pinctrl-0 = <&pinctrl_usb_otg1>;
 	status = "okay";
 };
 
@@ -205,6 +196,142 @@
 	};
 };
 
+&gpio1 {
+	gpio-line-names = "I2C2_SCL",
+					  "I2C2_SDA", 
+					  "I2C1_SCL",
+					  "I2C1_SDA",
+					  "IO1.4",
+					  "IO1.5",
+					  "IO1.6",
+					  "IO1.7",
+					  "IO1.8",
+					  "IO1.9",
+					  "IO1.10",					  
+					  "IO1.11", 
+					  "IO1.12",
+					  "IO1.13",
+					  "IO1.14",
+					  "IO1.15",
+					  "IO1.16",
+					  "IO1.17",
+					  "IO1.18",
+					  "SD1_CD",
+					  "IO1.20",
+					  "IO1.21", 
+					  "IO1.22",
+					  "IO1.23",
+					  "IO1.24",
+					  "IO1.25",
+					  "IO1.26",
+					  "IO1.27",
+					  "IO1.28",
+					  "IO1.29",
+					  "IO1.30",
+					  "IO1.31";
+};
+&gpio2 {
+	gpio-line-names = "IO2.0",
+					  "IO2.1", 
+					  "IO2.2",
+					  "IO2.3",
+					  "IO2.4",
+					  "IO2.5",
+					  "IO2.6",
+					  "IO2.7",
+					  "IO2.8",
+					  "IO2.9",
+					  "IO2.10",					  
+					  "IO2.11", 
+					  "IO2.12",
+					  "IO2.13",
+					  "IO2.14",
+					  "IO2.15",
+					  "IO2.16",
+					  "IO2.17",
+					  "IO2.18",
+					  "IO2.19",
+					  "IO2.20",
+					  "IO2.21", 
+					  "IO2.22",
+					  "IO2.23",
+					  "IO2.24",
+					  "IO2.25",
+					  "IO2.26",
+					  "IO2.27",
+					  "IO2.28",
+					  "IO2.29",
+					  "IO2.30",
+					  "IO2.31";
+};
+&gpio3 {
+	gpio-line-names = "IO3.0",
+					  "IO3.1", 
+					  "IO3.2",
+					  "IO3.3",
+					  "IO3.4",
+					  "I2C3_SDA",
+					  "I2C3_SCL",
+					  "I2C4_SDA",
+					  "I2C4_SCL",
+					  "IO3.9",
+					  "IO3.10",					  
+					  "IO3.11", 
+					  "IO3.12",
+					  "IO3.13",
+					  "IO3.14",
+					  "IO3.15",
+					  "IO3.16",
+					  "IO3.17",
+					  "IO3.18",
+					  "IO3.19",
+					  "IO3.20",
+					  "IO3.21", 
+					  "IO3.22",
+					  "IO3.23",
+					  "IO3.24",
+					  "IO3.25",
+					  "IO3.26",
+					  "IO3.27",
+					  "IO3.28",
+					  "IO3.29",
+					  "IO3.30",
+					  "IO3.31";
+};
+&gpio5 {
+	gpio-line-names = "IO5.0",
+					  "IO5.1", 
+					  "IO5.2",
+					  "IO5.3",
+					  "IO5.4",
+					  "IO5.5",
+					  "IO5.6",
+					  "IO5.7",
+					  "IO5.8",
+					  "IO5.9",
+					  "IO5.10",					  
+					  "IO5.11", 
+					  "IO5.12",
+					  "IO5.13",
+					  "IO5.14",
+					  "IO5.15",
+					  "IO5.16",
+					  "IO5.17",
+					  "IO5.18",
+					  "IO5.19",
+					  "IO5.20",
+					  "IO5.21", 
+					  "IO5.22",
+					  "IO5.23",
+					  "IO5.24",
+					  "IO5.25",
+					  "IO5.26",
+					  "IO5.27",
+					  "IO5.28",
+					  "IO5.29",
+					  "IO5.30",
+					  "IO5.31";
+};
 /* Other */
 &sdma {
 	status = "okay";
@@ -221,6 +348,7 @@
 /* IO MUXING */
 &iomuxc {
 	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_gpio1 &pinctrl_gpio5>;
 	
 	/* GPIO */
 	pinctrl_gpio1: gpio1-grp {
@@ -231,8 +359,8 @@
 			//MX6UL_PAD_GPIO1_IO03__GPIO1_IO03 	0x10b0 
 			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04 	0x10b0 
 			MX6UL_PAD_GPIO1_IO05__GPIO1_IO05 	0x10b0 
-			MX6UL_PAD_GPIO1_IO06__GPIO1_IO06 	0x10b0 
-			MX6UL_PAD_GPIO1_IO07__GPIO1_IO07  	0x10b0 
+//			MX6UL_PAD_GPIO1_IO06__GPIO1_IO06 	0x10b0 
+//			MX6UL_PAD_GPIO1_IO07__GPIO1_IO07  	0x10b0 
 			MX6UL_PAD_GPIO1_IO08__GPIO1_IO08  	0x10b0 
 			MX6UL_PAD_GPIO1_IO09__GPIO1_IO09	0x10b0 
 		>;
@@ -391,12 +519,6 @@
 			MX6UL_PAD_ENET2_RX_DATA1__UART6_DCE_RX	0x1b0b1
 		>;
 	};
-	/* USB */
-/*	pinctrl_usb_otg1: usbotg1grp {
-		fsl,pins = <
-			MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x17059
-		>;
-	};*/
 	/* USDHC */
 	pinctrl_usdhc1: usdhc1grp {
 		fsl,pins = <
@@ -407,8 +529,8 @@
 			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2 		0x17059
 			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3 		0x17059
 			MX6UL_PAD_UART1_RTS_B__GPIO1_IO19       0x17059 /* SD1 CD */
-		  //MX6UL_PAD_GPIO1_IO05__USDHC1_VSELECT  0x17059 /* SD1 VSELECT */
-			MX6UL_PAD_GPIO1_IO09__GPIO1_IO09        0x17059 /* SD1 RESET */
+		//  MX6UL_PAD_GPIO1_IO05__USDHC1_VSELECT  0x17059   /* SD1 VSELECT */
+		//	MX6UL_PAD_GPIO1_IO09__GPIO1_IO09        0x17059 /* SD1 RESET */
 		>;
 	};
 

@@ -3,3 +3,6 @@
 *.dip~
 #Build files
 *.o
+*.cmd
+*.u
+Core/bin/uuu.exe
