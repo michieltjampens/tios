@@ -1,7 +1,7 @@
 # Temp Diptrace files #
 *.dch~
 *.dip~
-#Build files
+# Build files
 *.o
 *.cmd
 *.u
