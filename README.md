@@ -43,3 +43,4 @@ Will be the first extension, will probably:
 - one or two USB host connectors
 - 12V to 5V DCDC
 
+Other info on supporting [wiki](https://wiki.iostuff.dev/)
