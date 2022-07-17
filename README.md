@@ -6,10 +6,15 @@ Why would you design this thing?
 - Learning experience
 - Fun?
 
+Other info on supporting [wiki](https://wiki.iostuff.dev/)
+
 ## What?
 
 The hardware will be in different layers/floors/segments...  
-Main restriction is limiting the size of the core to 50x50mm, just because that's the size at which 4 layers are still cheap (at a certain pcb fab).
+Main restriction is limiting the size of the core to 50x50mm, just because that's the size at which 4 layers are still cheap (at a certain pcb fab).  
+But no EMI testing to pass, so 2 layers for now...
+
+
 
 ### Core
 
@@ -56,5 +61,3 @@ Will be the first extension, will probably:
 - one or two ethernet connectors
 - one or two USB host connectors
 - 12V to 5V DCDC
-
-Other info on supporting [wiki](https://wiki.iostuff.dev/)
