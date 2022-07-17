@@ -101,7 +101,7 @@
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
-	uart-has-rtscts;
+	//uart-has-rtscts;
 	status = "okay";
 	
 };
@@ -151,9 +151,8 @@
 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
 	cd-gpios = <&gpio1 19 GPIO_ACTIVE_LOW>;
-	//keep-power-in-suspend;
+	keep-power-in-suspend;
 	wakeup-source;
-	no-1-8-v;
 	status = "okay";
 };
 
@@ -224,8 +223,8 @@
 					  "IO1.23",
 					  "IO1.24",
 					  "IO1.25",
-					  "IO1.26",
-					  "IO1.27",
+					  "ESP32_IO9",
+					  "ESP32_EN",
 					  "IO1.28",
 					  "IO1.29",
 					  "IO1.30",
@@ -364,6 +363,8 @@
 //			MX6UL_PAD_GPIO1_IO07__GPIO1_IO07  	0x10b0 
 			MX6UL_PAD_GPIO1_IO08__GPIO1_IO08  	0x10b0 
 			MX6UL_PAD_GPIO1_IO09__GPIO1_IO09	0x10b0 
+			MX6UL_PAD_UART3_CTS_B__GPIO1_IO26	0x10b0
+			MX6UL_PAD_UART3_RTS_B__GPIO1_IO27	0x10b0
 		>;
 	};
 	pinctrl_gpio5: gpio5-grp {
@@ -498,8 +499,7 @@
 		fsl,pins = <
 			MX6UL_PAD_UART3_TX_DATA__UART3_DCE_TX	0x1b0b1
 			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX	0x1b0b1
-			MX6UL_PAD_UART3_CTS_B__UART3_DCE_CTS	0x1b0b1
-			MX6UL_PAD_UART3_RTS_B__UART3_DCE_RTS	0x1b0b1
+			
 		>;
 	};
 	pinctrl_uart4: uart4grp {
@@ -523,20 +523,22 @@
 	/* USDHC */
 	pinctrl_usdhc1: usdhc1grp {
 		fsl,pins = <
-			MX6UL_PAD_SD1_CLK__USDHC1_CLK			0x10059
-			MX6UL_PAD_SD1_CMD__USDHC1_CMD     		0x17059			 
+			MX6UL_PAD_SD1_CMD__USDHC1_CMD     		0x17059
+			MX6UL_PAD_SD1_CLK__USDHC1_CLK			0x10071
 			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0 		0x17059
 			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1 		0x17059
 			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2 		0x17059
 			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3 		0x17059
 			MX6UL_PAD_UART1_RTS_B__GPIO1_IO19       0x17059 /* SD1 CD */
+		//  MX6UL_PAD_GPIO1_IO05__USDHC1_VSELECT  0x17059   /* SD1 VSELECT */
+		//	MX6UL_PAD_GPIO1_IO09__GPIO1_IO09        0x17059 /* SD1 RESET */
 		>;
 	};
 
 	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
 		fsl,pins = <
+			MX6UL_PAD_SD1_CMD__USDHC1_CMD     0x170b9
 			MX6UL_PAD_SD1_CLK__USDHC1_CLK     0x100b9
-			MX6UL_PAD_SD1_CMD__USDHC1_CMD     0x170b9			
 			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0 0x170b9
 			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1 0x170b9
 			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2 0x170b9
@@ -547,8 +549,8 @@
 
 	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
 		fsl,pins = <
+			MX6UL_PAD_SD1_CMD__USDHC1_CMD     0x170f9
 			MX6UL_PAD_SD1_CLK__USDHC1_CLK     0x100f9
-			MX6UL_PAD_SD1_CMD__USDHC1_CMD     0x170f9			
 			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0 0x170f9
 			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1 0x170f9
 			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2 0x170f9
