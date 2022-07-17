@@ -42,12 +42,12 @@ The main part of the tower (not neccessarily the base).
   - USB Client for usb-gadget and updating
   - [Debug uart via USB](https://www.silabs.com/interface/usb-bridges/usbxpress)
   - 2.00mm pinheaders, all also have atleast one 3V3 and gnd pin
-    - X1: both fec, Vbat, + 18x SoM IO
-    - X2 : RTC Int + 12x SoM IO 
+    - X1: both fec, Vbat, 18x SoM IO
+    - X2 : RTC Int (input),12x SoM IO 
     - X3 : 13x SoM IO
     - X4 : USB Host pins and 'clean' 5V
     - X5 : 10x SoM IO 
-    - X6: 4x ESP32-C3 IO, 4 pins for tower passthrough 
+    - X6 : 4x ESP32-C3 IO, 4 pins for tower passthrough 
   - Recovery mode switch
 - **Sensors**
   - [Battery backed RTC](https://www.nxp.com/products/peripherals-and-logic/signal-chain/real-time-clocks/rtcs-with-ic-bus/tiny-real-time-clock-calendar-with-alarm-function-battery-switch-over-time-stamp-input-and-ic-bus:PCF85263A)
