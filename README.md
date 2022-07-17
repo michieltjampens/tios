@@ -1,12 +1,12 @@
 # Tower of IO stuff aka TIOS
 
 ## Why?
-I'm building a hexapod and want to make my own controller for it.
+I'm building a hexapod and want to make my own controller for it.  
 Why would you design this thing?
 - Learning experience
 - Fun?
 
-Other info on supporting [wiki](https://wiki.iostuff.dev/)
+Other info on supporting [wiki](https://wiki.iostuff.dev/).
 
 ## What?
 
