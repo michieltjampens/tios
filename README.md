@@ -38,11 +38,8 @@ Which is:
 
 ### Base IO
 
-This will expand the core to add other basics that didn't fit on the core...
-- Ethernet port
-- 2x USB Host
-- 4x RS232
-- <24V to 5V switching regulator
-
-### Analog
+Will be the first extension, will probably:
+- one or two ethernet connectors
+- one or two USB host connectors
+- 12V to 5V DCDC
 
