@@ -24,11 +24,11 @@ The main part of the tower (not neccessarily the base).
 - [Debian 11.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
 - My own software to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
 #### Hardware
-- Two layer PCB with a SoM on one side and everything else on the other.
+- Two layer PCB with a SoM on one side and everything else (about 195 components) on the other.
 - [iMX6ULL SOM by Myir](http://www.myirtech.com/list.asp?id=644)
   - [Low power consumption core](https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-6-processors/i-mx-6ull-single-core-processor-with-arm-cortex-a7-core:i.MX6ULL)
   - 8 uarts
-  - Built in Ethernet chip
+  - Built in Ethernet chip, up to two ethernet ports
   - 4GB eMMC
   - Pretty much all pins brought out
 - **Power:**
