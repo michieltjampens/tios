@@ -19,18 +19,18 @@ But no EMI testing to pass yet and trying to keep prototyping costs low, so 2 la
 The main part of the tower (not neccessarily the base). 
 
 #### Software
-- Custom U-boot based on [Myir u-boot fork](https://github.com/MYiR-Dev/myir-imx-uboot)
-- Recent [IMX-linux kernel](https://www.codeaurora.org/projects/i-mx) (rolling updates 5.16.x)
+- [U-boot](https://github.com/u-boot/u-boot) config/boardfiles for [Myir u-boot 2020.04 fork](https://github.com/MYiR-Dev/myir-imx-uboot) 
+- Recent [IMX-linux kernel](https://www.codeaurora.org/projects/i-mx) (rolling updates, 5.16.x)
 - [Debian 11.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
 - My other project to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
 #### Hardware
-- Two layer PCB with a SoM on one side and everything else (about 195 components) on the other.
+- Two layer PCB with a SoM on one side and nearly everything else (about 190 components) on the other.
 - [iMX6ULL SOM by Myir](http://www.myirtech.com/list.asp?id=644)
   - [Low power consumption core](https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-6-processors/i-mx-6ull-single-core-processor-with-arm-cortex-a7-core:i.MX6ULL)
   - 8 uarts (one used for debug port)
-  - Built in Ethernet chip, up to two ethernet ports
+  - Up to two ethernet ports (SoM contains one LAN8720) all pins available for both
   - 4GB eMMC
-  - Pretty much all pins brought out
+  - Pretty much all pins brought out (meaning up to 4xI2C, 3xSPI, 1xCSI ...)
 - **Power:**
   - [6V to 3V3(3A max) regulator](https://www.monolithicpower.com/en/mpm3833c.html)
   - Peripherials behind user controllable load switch and fused
