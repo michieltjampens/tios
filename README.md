@@ -21,7 +21,7 @@ But no EMI testing to pass, so 2 layers for now...
 The main part of the tower (not neccessarily the base). 
 
 #### Software
-- Custom U-boot based on Myir u-boot
+- Custom U-boot based on [Myir u-boot fork](https://github.com/MYiR-Dev/myir-imx-uboot)
 - Recent IMX-linux kernel (5.16.x)
 - Debian 11.x rootfs
 - [dcafs](https://github.com/vlizBE/dcafs)
