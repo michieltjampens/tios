@@ -55,7 +55,7 @@ The main part of the tower (not neccessarily the base).
     - With interrupt connected to SoM IO
 ### Base IO
 
-Will be the first extension, will probably:
+Will be the base 'floor', providing:
 - one or two ethernet connectors
 - one or two USB host connectors
 - 12V to 5V DCDC
