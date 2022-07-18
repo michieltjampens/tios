@@ -11,8 +11,8 @@ Other info on supporting [wiki](https://wiki.iostuff.dev/).
 ## What?
 
 The hardware will be in different layers/floors/segments...  
-Main restriction is limiting the size of the core to 50x50mm, just because that's the size at which 4 layers are still cheap (at a certain pcb fab).  
-But no EMI testing to pass, so 2 layers for now...
+Main restriction is limiting the size of the core to 50x50mm, because that was the max size at which 4 layers was still 'cheap'.  
+But no EMI testing to pass yet and trying to keep prototyping costs low, so 2 layers for now...
 
 ### Core
 
