@@ -22,7 +22,7 @@ The main part of the tower (not neccessarily the base).
 - Custom U-boot based on [Myir u-boot fork](https://github.com/MYiR-Dev/myir-imx-uboot)
 - Recent [IMX-linux kernel](https://www.codeaurora.org/projects/i-mx) (rolling updates 5.16.x)
 - [Debian 11.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
-- My own software to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
+- My other project to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
 #### Hardware
 - Two layer PCB with a SoM on one side and everything else (about 195 components) on the other.
 - [iMX6ULL SOM by Myir](http://www.myirtech.com/list.asp?id=644)
