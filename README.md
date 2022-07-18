@@ -27,7 +27,7 @@ The main part of the tower (not neccessarily the base).
 - Two layer PCB with a SoM on one side and everything else (about 195 components) on the other.
 - [iMX6ULL SOM by Myir](http://www.myirtech.com/list.asp?id=644)
   - [Low power consumption core](https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-6-processors/i-mx-6ull-single-core-processor-with-arm-cortex-a7-core:i.MX6ULL)
-  - 8 uarts
+  - 8 uarts (one used for debug port)
   - Built in Ethernet chip, up to two ethernet ports
   - 4GB eMMC
   - Pretty much all pins brought out
