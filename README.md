@@ -17,7 +17,7 @@ But no EMI testing to pass yet and trying to keep prototyping costs low, so 2 la
 ### Core 
 
 The main part of the tower (not neccessarily the base).  
-[Aisler share-link](https://aisler.net/p/ODAXVAOY)
+[Aisler PCBfab share-link](https://aisler.net/p/ODAXVAOY)
 
 #### Software
 - [U-boot](https://github.com/u-boot/u-boot) config/boardfiles for [Myir u-boot 2020.04 fork](https://github.com/MYiR-Dev/myir-imx-uboot) 
