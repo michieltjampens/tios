@@ -2,7 +2,7 @@
 
 ## Rev 3
 Summary:
- * Reduced unique components with 3
+ * Reduced unique components by 3
 
 ### Maybe...
  * Replace HI0805P390R-10 with BLM18PG330SN1D, result:
