@@ -16,3 +16,4 @@ Summary:
  * C7,C8 to a 10V version
  * C18 was 47µF 6V3, replaced with dual 22µF 10V 
  * C17 changed from 0603/10V to 0805/16V because it was the only 10uF/0603
+ * Replaced F1 with a 0603 fuse instead to save on bom (1,4pp -> 0,2pp)
