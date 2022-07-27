@@ -57,6 +57,7 @@ The main part of the tower (not neccessarily the base).
 ### Base IO
 
 Will be the base 'floor', providing:
-- one or two ethernet connectors
-- one or two USB host connectors
-- 12V to 5V DCDC
+- one ethernet RJ45
+- one USB type A host connector
+- 26V to 5V@2A DC-DC 
+- Filtered Power in passthrough to upper layers via one of the reserved pins
