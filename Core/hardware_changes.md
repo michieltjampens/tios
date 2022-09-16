@@ -23,6 +23,12 @@ Summary:
  * Removed R7 & J4 because not needed (wasn't sure)
  * Removed TP1, was only for debug if USB->UART design was flawed
  * Replaced the common mode + esd parts for usb with single component
+ * Added R8 as weak pulldown for U5... eventhough it should have one build in
+ * Removed C5, C6 because create more issues than possibly cause
+
+### Routing stuff
+ * Increased the traces from/to sd card slot to 0,3 (was 0,25)
+ * Moved the FB's for the usb client to topside
  
 ### Silkscreen/Pattern edits
  * X3,X5,X6 changed holesize to 0.8
