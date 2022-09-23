@@ -2,7 +2,7 @@
 
 ## Rev 3
 Summary:
- * Reduced unique components by 4
+ * Reduced unique components by 5
 
 ### Maybe...
  * Replace HI0805P390R-10 with BLM18PG330SN1D, result:
@@ -23,7 +23,6 @@ Summary:
  * Removed R7 & J4 because not needed (wasn't sure)
  * Removed TP1, was only for debug if USB->UART design was flawed
  * Replaced the common mode + esd parts for usb with single component
- * Added R8 as weak pulldown for U5... eventhough it should have one build in
  * Removed C5, C6 because create more issues than possibly cause
 
 ### Routing stuff
