@@ -45,10 +45,12 @@
 	status = "okay";
 	
 	/* RTC */
+	/*
 	pcf85363: pcf85363@51 {
 		compatible = "nxp,pcf85363";
 		reg = <0x51>;
 	};
+	*/
 };
 &i2c4 {
 	clock-frequency = <100000>;				// Not sure if needed to specify
