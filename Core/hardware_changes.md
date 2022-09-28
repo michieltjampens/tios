@@ -20,11 +20,16 @@ Summary:
  * C17 changed from 0603/10V to 0805/16V because it was the only 10uF/0603
  * Replaced F1 with a 1206 fuse instead to save on bom (1,4pp -> 0,2pp)
  * Replaced R8 with a part of RA14, we'll see if that is enough (R for filter)
+ * SHT1C with SHT40, cheaper, better now available
+ * Replaced the common mode + esd parts for usb with single component
+ 
+
+### Removals
  * Removed R7 & J4 because not needed (wasn't sure)
  * Removed TP1, was only for debug if USB->UART design was flawed
- * Replaced the common mode + esd parts for usb with single component
  * Removed C5, C6 because create more issues than possibly cause
-
+ * Removed pressure sensor, to expensive for usage
+ 
 ### Routing stuff
  * Increased the traces from/to sd card slot to 0,3 (was 0,25)
  * Moved the FB's for the usb client to topside
