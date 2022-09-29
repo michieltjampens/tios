@@ -1,4 +1,4 @@
-IDE=$1
+IDE=imx6ull-tios_r2
 SRC=$IDE.dts
 TMP=$IDE.tmp.dts
 DST=$IDE.dtb
