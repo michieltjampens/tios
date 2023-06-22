@@ -35,6 +35,12 @@ DECLARE_GLOBAL_DATA_PTR;
 	PAD_CTL_DSE_40ohm | PAD_CTL_HYS |			\
 	PAD_CTL_ODE)
 
+#define GPMI_PAD_CTRL0 (PAD_CTL_PKE | PAD_CTL_PUE | PAD_CTL_PUS_100K_UP)
+#define GPMI_PAD_CTRL1 (PAD_CTL_DSE_40ohm | PAD_CTL_SPEED_MED | \
+			PAD_CTL_SRE_FAST)
+#define GPMI_PAD_CTRL2 (GPMI_PAD_CTRL0 | GPMI_PAD_CTRL1)
+
+
 int dram_init(void)
 {
 	gd->ram_size = ((ulong)CONFIG_DDR_MB * SZ_1M);
@@ -120,8 +126,17 @@ int board_init(void)
 	setup_fec();
 #endif
 
-	gpio_request(IMX_GPIO_NR(1, 14), "peri_on");
-	gpio_direction_output(IMX_GPIO_NR(1, 14) , 1);
+	gpio_request(IMX_GPIO_NR(1, 9), "peri_on");
+	gpio_direction_output(IMX_GPIO_NR(1, 9) , 1);
+	udelay(1000);
+	
+	// Start the ESP32-C3
+	gpio_request(IMX_GPIO_NR(1, 26), "esp32_io9");
+ 	gpio_direction_output(IMX_GPIO_NR(1, 26) , 1); // High for normal mode
+	gpio_request(IMX_GPIO_NR(1, 27), "esp32_en");
+	gpio_direction_output(IMX_GPIO_NR(1, 27) , 0);
+	udelay(500);
+	gpio_direction_output(IMX_GPIO_NR(1, 27) , 1); // Enabled
 	return 0;
 }
 
@@ -143,7 +158,7 @@ int board_late_init(void)
 
 	env_set("tee", "no");
 	env_set("board_name", "TIOS");
-	env_set("board_rev", "14X14");
+	env_set("board_rev", "rev2");
 
 	board_late_mmc_env_init();
 
