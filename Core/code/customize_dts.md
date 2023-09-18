@@ -500,3 +500,4 @@ aliases {
     vdd_3v3_usbfs-supply = <&vdd_usb>;
   };
 ````
+## 4. Alter kernel
