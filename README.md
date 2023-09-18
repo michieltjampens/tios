@@ -6,8 +6,6 @@ Why would you design this thing?
 - Learning experience
 - Fun?
 
-Other info on supporting [wiki](https://wiki.iostuff.dev/).
-
 ## What?
 
 The hardware will be in different layers/floors/segments...  
@@ -16,11 +14,11 @@ But no EMI testing to pass yet and trying to keep prototyping costs low, so 2 la
 
 ### Core 
 
-The main part of the tower (not neccessarily the base).  
+The main part of the tower.  
 
 #### Software
-- [U-boot](https://github.com/u-boot/u-boot) config/boardfiles for [Myir u-boot 2020.04 fork](https://github.com/MYiR-Dev/myir-imx-uboot) 
-- Recent [kernel](https://www.codeaurora.org/projects/i-mx) (rolling updates, 5.16.x)
+- Standard STM32MP1 boostage of TF-A, OPTEE and U-Boot
+- Recent kernel based on ST ECO 5.0.0
 - [Debian 12.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
 - My other project to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
 #### Hardware
@@ -32,8 +30,7 @@ The main part of the tower (not neccessarily the base).
   - Two available SDMMC's (third one has the eMMC)
   - Pretty much all pins brought out
 - **Power:**
-  - [36V to 5V(0.6A max) regulator](https://www.monolithicpower.com/en/mpm3833c.html)
-  - Peripherials behind user controllable load switch and fused
+  - [36V to 5V(0.6A max) regulator](https://www.monolithicpower.com/en/mpm3506a.html)
 - **On-board Connectivity**
   - microsd slot
   - USB Client for usb-gadget and updating
