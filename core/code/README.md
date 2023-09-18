@@ -1,3 +1,10 @@
+# Content
+## Folders
+* **Yocto** contains the machine/conf
+* **dts** contains the final DTS
+* **cubemx** contains the CubeMX project files
+  
+### Guides
 There are three guides:
 * build_dts.md
   * starts from the CubeMX project
