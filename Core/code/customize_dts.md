@@ -1,5 +1,5 @@
-#  Create the DTS's
-* Generate default DTS's using the CubeMX project found at `tios/Core/cubemx`
+#  Customize the Device Tree files
+* First generate default DTS's using the CubeMX project found at `tios/Core/cubemx`
 * This is based on a ST HandsOn Lab, but with various issues fixed.
 
 ## 1. Alter TF-A
