@@ -6,7 +6,7 @@
   
 ## Guides
 There are three guides:
-* build_dts.md
+* customize_dts.md
   * starts from the CubeMX project
   * alters the generated DTS to match the hardware
 * build_yocto.md
