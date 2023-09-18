@@ -17,43 +17,29 @@ But no EMI testing to pass yet and trying to keep prototyping costs low, so 2 la
 ### Core 
 
 The main part of the tower (not neccessarily the base).  
-[Aisler PCBfab share-link](https://aisler.net/p/ODAXVAOY)
 
 #### Software
 - [U-boot](https://github.com/u-boot/u-boot) config/boardfiles for [Myir u-boot 2020.04 fork](https://github.com/MYiR-Dev/myir-imx-uboot) 
-- Recent [IMX-linux kernel](https://www.codeaurora.org/projects/i-mx) (rolling updates, 5.16.x)
-- [Debian 11.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
+- Recent [kernel](https://www.codeaurora.org/projects/i-mx) (rolling updates, 5.16.x)
+- [Debian 12.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
 - My other project to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
 #### Hardware
-- Two layer PCB with a SoM on one side and nearly everything else (about 95 components) on the other.
-- [iMX6ULL SOM by Myir](http://www.myirtech.com/list.asp?id=644)
-  - [Low power consumption core](https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-6-processors/i-mx-6ull-single-core-processor-with-arm-cortex-a7-core:i.MX6ULL)
+- Two layer PCB with SoM on one side and nearly everything else on the other.
+- [STM32MP151 SOM by Myir](https://www.myirtech.com/list.asp?id=658)
   - 8 uarts (one used for debug port)
-  - Up to two ethernet ports (SoM contains one LAN8720) all pins available for both
-  - 4GB eMMC
-  - Pretty much all pins brought out (meaning up to 4xI2C, 3xSPI, 1xCSI ...)
+  - One ethernet port up to Gbit speeds
+  - 4GB eMMC, 512MB ram
+  - Two available SDMMC's (third one has the eMMC)
+  - Pretty much all pins brought out
 - **Power:**
-  - [6V to 3V3(3A max) regulator](https://www.monolithicpower.com/en/mpm3833c.html)
+  - [36V to 5V(0.6A max) regulator](https://www.monolithicpower.com/en/mpm3833c.html)
   - Peripherials behind user controllable load switch and fused
 - **On-board Connectivity**
   - microsd slot
-  - [ESP32-C3 for Wifi/BLE (can be flashed , some IO available)](https://docs.ai-thinker.com/en/esp32c3)
   - USB Client for usb-gadget and updating
   - [Debug uart via USB](https://www.silabs.com/interface/usb-bridges/usbxpress)
-  - List of 2.00mm pinheaders (all have at least one 3V3 and gnd pin available) :
-    - X1: both ethernet module pins, Vbat, 18x SoM IO
-    - X2 : RTC Timestamping Interrupt pin,12x SoM IO 
-    - X3 : 13x SoM IO
-    - X4 : USB Host pins and 'clean' 5V
-    - X5 : 10x SoM IO 
-    - X6 : 4x ESP32-C3 IO, 4 pins for tower passthrough (meaning no signals connected to them)
   - Recovery mode switch
-- **Sensors**
-  - [Battery backed RTC](https://www.nxp.com/products/peripherals-and-logic/signal-chain/real-time-clocks/rtcs-with-ic-bus/tiny-real-time-clock-calendar-with-alarm-function-battery-switch-over-time-stamp-input-and-ic-bus:PCF85263A)
-    - With Interrupts connected to ESP32-C3 and one on X2 (provide choice between clock output or timestamping input)
-  - [Hum/temp I2C sensor](https://sensirion.com/products/catalog/SHTC1/) 
-  - [pressure/temp I2C sensor](https://invensense.tdk.com/products/smartpressure/icp-20100/)
-    - With interrupt connected to SoM IO
+    
 ### Base IO
 
 Will be the base 'floor', providing:
