@@ -9,6 +9,7 @@ This guide assumes the DTS files are already made.
   * arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz
 * Make sure clang (14.0.0) is installed  `sudo apt-get install clang` (needed for FIP)
 * Install the ST SDK by following this guide `https://wiki.st.com/stm32mpu/wiki/STM32MP1_Developer_Package#Installing_the_SDK`
+* Create a working folder called `tios` inside home and move into it
 
 ### Initialize cross-compilation via SDK
 
@@ -26,9 +27,10 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 * Copy the relevant dts into the fdts folder
 * Reset the flags `unset LDFLAGS` & `unset CFLAGS`
 * Make usb boot with `make ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_USB_PROGRAMMER=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb`
-  * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/f-a-stm32mp151a-tios-usb.stm32`
+  * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/tf-a-stm32mp151a-tios-usb.stm32`
+* Just to be certain that the next make is proper `make realclean` to remove all build files 
 * Make with `make ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_EMMC=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb`
-  * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/f-a-stm32mp151a-tios-emmc.stm32`
+  * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/tf-a-stm32mp151a-tios-emmc.stm32`
 
 ## 2. Optee
 > Source: `https://wiki.st.com/stm32mpu/wiki/How_to_configure_OP-TEE`
