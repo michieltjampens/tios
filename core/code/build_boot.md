@@ -3,6 +3,24 @@
 This document explains how to build TF-A,OPTEE,U-Boot and package those inside a FIP.  
 This guide assumes the DTS files are already made.
 
+The flashlayout for eMMC looks like this
+````c
+#Opt  Id	Name	    Type	    IP	    Offset	    Binary
+-	  0x01	fsbl-boot	Binary		none	0x0	        arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-usb.stm32
+-	  0x03	fip-boot	FIP			none	0x0	        fip/fip-stm32mp151a-tios-mx-optee.bin
+P	  0x04	fsbl1		Binary		mmc1	boot1	    arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-emmc.stm32
+P	  0x05	fsbl2		Binary		mmc1	boot2	    arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-emmc.stm32
+P	  0x06	metadata1	FWU_MDATA	mmc1	0x00080000	arm-trusted-firmware/metadata.bin
+P	  0x07	metadata2	FWU_MDATA	mmc1	0x00100000	arm-trusted-firmware/metadata.bin
+P	  0x08	fip-a		FIP			mmc1	0x00180000	fip/fip-stm32mp151a-tios-mx-optee.bin
+PED	  0x09	fip-b		FIP			mmc1	0x00580000	none
+PED	  0x0A	u-boot-env	ENV			mmc1	0x00980000	none
+P	  0x10	bootfs		System		mmc1	0x00A00000	st-image-bootfs-openstlinux-weston-stm32mp1-tios.ext4
+P	  0x11	vendorfs	FileSystem	mmc1	0x04A00000	st-image-vendorfs-openstlinux-weston-stm32mp1-tios.ext4
+P	  0x12	rootfs		FileSystem	mmc1	0x05A00000	st-image-core-openstlinux-weston-stm32mp1-tios.ext4
+````
+So the goal of this guide is to Id 1 till 8.
+
 ## 0. Prereq
 * Get the toolchains from `https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads`
   * arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz (or newer)
@@ -27,10 +45,13 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 * Copy the relevant dts into the fdts folder
 * Reset the flags `unset LDFLAGS` & `unset CFLAGS`
 * Make usb boot with `make ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_USB_PROGRAMMER=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb`
-  * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/tf-a-stm32mp151a-tios-usb.stm32`
+  * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-usb.stm32`
 * Just to be certain that the next make is proper `make realclean` to remove all build files 
 * Make with `make ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_EMMC=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb`
-  * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/tf-a-stm32mp151a-tios-emmc.stm32`
+  * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-emmc.stm32`
+* Next up, metadata.bin will also be made
+  * First create the var that references the source .json `export TF_A_METADATA_JSON=plat/st/stm32mp1/default_metadata.json`
+  * Then use it to build: `tools/fwu_gen_metadata/fwumd_tool.py jsonparse $TF_A_METADATA_JSON -b ../deploy/arm-trusted-firmware/metadata.bin`
 
 ## 2. Optee
 > Source: `https://wiki.st.com/stm32mpu/wiki/How_to_configure_OP-TEE`
@@ -57,16 +78,19 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 > `https://wiki.st.com/stm32mpu/wiki/U-Boot_overview#U-Boot_build`
 > `https://wiki.st.com/stm32mpu/wiki/STM32MP15_U-Boot`
 > `https://wiki.st.com/stm32mpu/wiki/How_to_configure_U-Boot_for_your_board`
+> Info: U-Boot is the BL33 boot stage, will be added to the fip.
 
 * Get the sources `git clone https://github.com/STMicroelectronics/u-boot`
 * Copy the dts generated with CubeMX for U-boot to `arch/arm/dts`
-* Make sure these are mentioned in `arch/arm/dts/Makefile` in the section `dtb-$(CONFIG_STM32MP15X)`
+* Add the dts to the section `dtb-$(CONFIG_STM32MP15X)` inside `arch/arm/dts/Makefile`
 * Apply the default config `make stm32mp15_defconfig`
 * Build it `make DEVICE_TREE=stm32mp151a-tios-mx all`
 * This will generate files in the u-boot root folder, the ones we need are `u-boot-nodtb.bin` and `u-boot.dtb`
 
 ## 4. Build FIP
 > Source: `https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/plat/stm32mp1.rst`
+> Info: FIP contains OPTEE,U-Boot and the U-Boot DTB
+
 * Open a new terminal to make sure the earlier used SDK environment isn't active anymore (because it results in a lot of errors)
 * Prepare cross compiling `export CROSS_COMPILE=~/tios/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-`
 ```
