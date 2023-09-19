@@ -1,4 +1,4 @@
-# Build the kernel
+    # Build the kernel
 > Source: README_HOW_TO.txt found in the kernel folder of the ST Dev package
 
 ## 0. Prereq's
@@ -25,27 +25,31 @@
 For easier build management it's recommended to make a dedicated folder for that 
 * First go into the git folder `cd <directory to kernel source code>`
 * Create the var that holds the build folder `export OUTPUT_BUILD_DIR=$PWD/../build`
-* Create the folder for the var `mkdir -p ${OUTPUT_BUILD_DIR}`
+* Create the folder for the var `mkdir -p ${OUTPUT_BUILD_DIR}/install_artifact/boot/`
 * Prepare the .config inside there `make ARCH=arm O="${OUTPUT_BUILD_DIR}" multi_v7_defconfig fragment*.config`
 
 Now it's possible to make changes to the config
 * To open a gui `make ARCH=arm nconfig O="${OUTPUT_BUILD_DIR}"`
 
 Finally build it
-* Kernel `make ARCH=arm uImage vmlinux dtbs LOADADDR=0xC2000040 O="${OUTPUT_BUILD_DIR}" -j$(nproc)`
-    * ARCH=arm -> Because compiling for arm proc
-    * uImage vmlinux dtbs -> build uImage, vmlinux and dtbs
-    * LOADADDR=0xC2000040
-    * O="${OUTPUT_BUILD_DIR}" -> use earlier defined build folder
-    * -j$(nproc) -> Use threads according to processor
-* Modules `make ARCH=arm modules O="${OUTPUT_BUILD_DIR}"  -j$(nproc)`
-    * ARCH=arm -> Because compiling for arm proc
-    * modules -> build the modules
-    * LOADADDR=0xC2000040    
-    * O="${OUTPUT_BUILD_DIR}" -> use earlier defined build folder
-    * -j$(nproc) -> Use threads according to processor
+* Kernel 
+    * Build `make ARCH=arm uImage vmlinux dtbs LOADADDR=0xC2000040 O="${OUTPUT_BUILD_DIR}" -j$(nproc)` 
+        * ARCH=arm -> Because compiling for arm proc
+        * uImage vmlinux dtbs -> build uImage, vmlinux and dtbs
+        * LOADADDR=0xC2000040
+        * O="${OUTPUT_BUILD_DIR}" -> use earlier defined build folder
+        * -j$(nproc) -> Use threads according to processor
+    * Copy result
+        * mkdir -p ${OUTPUT_BUILD_DIR}/install_artifact/boot/
+        * cp ${OUTPUT_BUILD_DIR}/arch/arm/boot/uImage ${OUTPUT_BUILD_DIR}/install_artifact/boot/
+* Modules 
+    * Build `make ARCH=arm modules O="${OUTPUT_BUILD_DIR}"  -j$(nproc)` 
+        * ARCH=arm -> Because compiling for arm proc
+        * modules -> build the modules
+        * LOADADDR=0xC2000040    
+        * O="${OUTPUT_BUILD_DIR}" -> use earlier defined build folder
+        * -j$(nproc) -> Use threads according to processor
 * Artifacts
-    * Build them `make ARCH=arm INSTALL_MOD_PATH="${OUTPUT_BUILD_DIR}/install_artifact" modules_install O="${OUTPUT_BUILD_DIR}" -j$(nproc)`
-    * mkdir -p ${OUTPUT_BUILD_DIR}/install_artifact/boot/
-    * cp ${OUTPUT_BUILD_DIR}/arch/arm/boot/uImage ${OUTPUT_BUILD_DIR}/install_artifact/boot/
+    * Build `make ARCH=arm INSTALL_MOD_PATH="${OUTPUT_BUILD_DIR}/install_artifact" modules_install O="${OUTPUT_BUILD_DIR}" -j$(nproc)`
+        
     * cp ${OUTPUT_BUILD_DIR}/arch/arm/boot/dts/st*.dtb ${OUTPUT_BUILD_DIR}/install_artifact/boot/
