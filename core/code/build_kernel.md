@@ -1,4 +1,4 @@
-    # Build the kernel
+# Build the kernel
 > Source: README_HOW_TO.txt found in the kernel folder of the ST Dev package
 
 ## 0. Prereq's
@@ -51,5 +51,28 @@ Finally build it
         * -j$(nproc) -> Use threads according to processor
 * Artifacts
     * Build `make ARCH=arm INSTALL_MOD_PATH="${OUTPUT_BUILD_DIR}/install_artifact" modules_install O="${OUTPUT_BUILD_DIR}" -j$(nproc)`
-        
     * cp ${OUTPUT_BUILD_DIR}/arch/arm/boot/dts/st*.dtb ${OUTPUT_BUILD_DIR}/install_artifact/boot/
+* Go into the install_artifact folder
+* Remove the link on install_artifact/lib/modules/<kernel version>/
+    * rm lib/modules/<kernel version>/source lib/modules/<kernel version>/build
+* Optionally, strip kernel modules (to reduce the size of each kernel modules)
+    * find . -name "*.ko" | xargs $STRIP --strip-debug --remove-section=.comment --remove-section=.note --preserve-dates
+
+## 3. Copy to board
+
+* Boot into U-boot
+* Use `ums mmc 1` to be able to mount the partitions
+* Mount rootfs and bootfs
+* Copy the kernel & dtb
+    * sudo cp -r boot/* /media/$USER/bootfs/
+* Copy kernel modules
+    * sudo cp -rf lib/modules/* /media/$USER/rootfs/lib/modules/
+* Unmount the partitions
+    * sudo umount /media/$USER/rootfs
+    * sudo umount /media/$USER/bootfs
+* In the U-Boot console, cancel ums with CTRL+C
+* Reset the board with `reset`
+* Hope that the kernel starts
+* Generate the list of modules dependencies with `depmod -a`
+* Then `sync` and `reboot`
+
