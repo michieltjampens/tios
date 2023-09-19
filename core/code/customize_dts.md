@@ -119,7 +119,7 @@ clock-frequency = <400000>;
 	no-sd;
 	no-sdio;
 	st,neg-edge;
-	bus-width = <8>;
+	bus-width = <4>;
 	vmmc-supply = <&v3v3>;
 	vqmmc-supply = <&v3v3>;
 	mmc-ddr-3_3v;

@@ -106,13 +106,27 @@ NOTICE:  BL2: Built : 23:03:15, Sep 18 2023
 ERROR:   Could NOT find the fip partition!
 ERROR:   BL2: Failure in pre image load handling (-2)
 ````
-Boot works fine when going through USB.
+Boot works fine when going through USB, so does programming.
 
 ### When?
 When trying to boot from eMMC
 
 ### Cause?
-Beats me, still looking into this one.
+Buswidth for the sdmmc wasn't correct in the TF-A.  
+In hindsight, programming was working because this is done by U-Boot which uses a different device tree (without that mistake).
+The odd thing about this is that part was copy pasted from the 'official' device tree from Myir
 
 ### Fix
-Yes please?
+
+````c
+	/* USER CODE BEGIN sdmmc2 */
+	non-removable;
+	no-sd;
+	no-sdio;
+	st,neg-edge;
+	bus-width = <4>; // Changed from 8
+	vmmc-supply = <&v3v3>;
+	vqmmc-supply = <&vdd>;
+	mmc-ddr-3_3v;
+	/* USER CODE END sdmmc2 */
+````
