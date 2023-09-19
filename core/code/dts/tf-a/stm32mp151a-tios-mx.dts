@@ -37,6 +37,8 @@
 	/* USER CODE BEGIN root */
 	aliases {		
 		serial0 = &uart4;
+		mmc0 = &sdmmc1;
+		mmc1 = &sdmmc2;
 	};
 	chosen {
 		stdout-path = "serial0:115200n8";
@@ -366,7 +368,7 @@
 	no-sd;
 	no-sdio;
 	st,neg-edge;
-	bus-width = <8>;
+	bus-width = <4>;
 	vmmc-supply = <&v3v3>;
 	vqmmc-supply = <&v3v3>;
 	mmc-ddr-3_3v;
