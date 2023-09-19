@@ -4,10 +4,11 @@ Just to document all the issues I've encountered that shouldn't happen anymore..
 Started doing this later than most of them, so some might be missing.
 
 ## ERROR:   regul ldo3: max value 750 is invalid
-`````c
+````c
 ERROR:   regul ldo3: max value 750 is invalid
 WARNING: register_pmic:423 failed to register ldo3
-`````
+````
+
 ### Cause
 This wasn't an issue with old ECO but is now.
 The likely reason is that the ldo's normal mode have a range from 1,8V to 3,3V but ldo3 has a 'sink source' mode that
@@ -64,7 +65,7 @@ This happens during the boot of OPTEE.
 
 ### Cause?
 Unsure, but this is part of the pmic setup
-````c
+```c
       vddcore: buck1 {
           regulator-name = "vddcore";
           regulator-min-microvolt = <1200000>;
@@ -73,9 +74,9 @@ Unsure, but this is part of the pmic setup
           regulator-initial-mode = <0>;
           regulator-over-current-protection;
       };
-````
+```
 Compared to this node in root USER CODE
-````c
+```c
 	vddcore: vddcore {
 		compatible = "regulator-fixed";
 		regulator-name = "vddcore";
@@ -83,12 +84,12 @@ Compared to this node in root USER CODE
 		regulator-max-microvolt = <1350000>;
 		regulator-always-on;
 	};
-````
+```
 So maybe the reason is a mismatch?
 
 ### Fix
 Altering the node inside the root USER CODE of the optee DT.
-````c
+```c
 	vddcore: vddcore {
 		compatible = "regulator-fixed";
 		regulator-name = "vddcore";
@@ -96,16 +97,16 @@ Altering the node inside the root USER CODE of the optee DT.
 		regulator-max-microvolt = <1350000>;
 		regulator-always-on;
 	};
-````
+```
 
 ## ERROR: Could NOT find the fip partition
-````c
+```c
 NOTICE:  Model: STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21
 NOTICE:  BL2: v2.8-stm32mp1-r1.0(release):v2.8-stm32mp-r1(230b4d84)
 NOTICE:  BL2: Built : 23:03:15, Sep 18 2023
 ERROR:   Could NOT find the fip partition!
 ERROR:   BL2: Failure in pre image load handling (-2)
-````
+```
 Boot works fine when going through USB, so does programming.
 
 ### When?
@@ -118,7 +119,7 @@ The odd thing about this is that part was copy pasted from the 'official' device
 
 ### Fix
 
-````c
+```c
 	/* USER CODE BEGIN sdmmc2 */
 	non-removable;
 	no-sd;
@@ -129,4 +130,50 @@ The odd thing about this is that part was copy pasted from the 'official' device
 	vqmmc-supply = <&vdd>;
 	mmc-ddr-3_3v;
 	/* USER CODE END sdmmc2 */
-````
+```
+
+## Stuck at 'Starting kernel'
+
+To troubleshoot this, first enable lowlevel debugging and early printk in the kernel
+```
+Symbol: DEBUG_LL
+Depends on: DEBUG_KERNEL
+Location:
+  -> Kernel hacking
+    -> arm Debugging
+      [*] Kernel low-level debugging functions
+
+Symbol: STM32MP1_DEBUG_UART
+Location:
+  -> Kernel hacking
+    -> arm Debugging
+      [*] Kernel low-level debugging functions
+        [*] Kernel low-level debugging port
+        (X) Use STM32MP1 UART for low-level debug
+
+Symbol: EARLY_PRINTK
+Depends on: DEBUG_LL
+Location:
+  -> Kernel hacking
+    -> arm Debugging
+      [*] Kernel low-level debugging functions
+      [*] Early printk
+```
+
+Then alter extlinux.conf (found on the bootfs) to include earlyprintk
+    * root=/dev/mmcblk0p6 rootwait rw **earlyprintk** console=ttySTM0,115200`
+    
+### Issue 1
+```
+[    0.199871] cpuidle: using governor menu
+[    0.210280] hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
+[    0.218341] hw-breakpoint: maximum watchpoint size is 8 bytes.
+[    0.224779] Serial: AMBA PL011 UART driver
+[    0.231370] stm32-pm-domain pm_domain: domain core-ret-power-domain registered
+[    0.238744] stm32-pm-domain pm_domain: subdomain core-power-domain registered
+[    0.245927] stm32-pm-domain pm_domain: domains probed
+[    0.259010] 8<--- cut here ---
+[    0.262103] Unhandled fault: imprecise external abort (0x1c06) at 0xae4a437e
+[    0.269191] [ae4a437e] *pgd=00000000
+[    0.272801] Internal error: : 1c06 [#1] PREEMPT SMP ARM
+```
