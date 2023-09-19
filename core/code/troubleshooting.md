@@ -112,7 +112,22 @@ Boot works fine when going through USB.
 When trying to boot from eMMC
 
 ### Cause?
-Beats me, still looking into this one.
+Buswidth for the sdmmc wasn't correct in the TF-A.  
+The odd thing about this: 
+ * it programmed just fine
+ * that part was copy pasted from the 'official' device tree from Myir
 
 ### Fix
-Yes please?
+
+````c
+	/* USER CODE BEGIN sdmmc2 */
+	non-removable;
+	no-sd;
+	no-sdio;
+	st,neg-edge;
+	bus-width = <4>; // Changed from 8
+	vmmc-supply = <&v3v3>;
+	vqmmc-supply = <&vdd>;
+	mmc-ddr-3_3v;
+	/* USER CODE END sdmmc2 */
+````

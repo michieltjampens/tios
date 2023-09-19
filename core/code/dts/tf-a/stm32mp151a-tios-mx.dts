@@ -37,8 +37,6 @@
 	/* USER CODE BEGIN root */
 	aliases {		
 		serial0 = &uart4;
-		mmc0 = &sdmmc1;
-		mmc1 = &sdmmc2;
 	};
 	chosen {
 		stdout-path = "serial0:115200n8";
