@@ -237,6 +237,8 @@
 	status = "okay";
 
 	/* USER CODE BEGIN m4_rproc */
+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
+	mbox-names = "vq0", "vq1", "shutdown";
 	/* USER CODE END m4_rproc */
 
 	m4_system_resources{
@@ -295,6 +297,7 @@
 	pmic: stpmic@33 {
 		compatible = "st,stpmic1";
 		reg = <0x33>;
+
 		status = "okay";
 		regulators {
 		compatible = "st,stpmic1-regulators";
@@ -313,6 +316,7 @@
 			pwr_sw2-supply = <&bst_out>;
 
 			vddcore: buck1 {
+				regulator-compatible = "buck1";
 				regulator-name = "vddcore";
 				regulator-min-microvolt = <1200000>;
 				regulator-max-microvolt = <1350000>;
@@ -322,6 +326,7 @@
 			};
 
 			vdd_ddr: buck2 {
+				regulator-compatible = "buck2";
 				regulator-name = "vdd_ddr";
 				regulator-min-microvolt = <1350000>;
 				regulator-max-microvolt = <1350000>;
@@ -331,6 +336,7 @@
 			};
 
 			vdd: buck3 {
+				regulator-compatible = "buck3";
 				regulator-name = "vdd";
 				regulator-min-microvolt = <3300000>;
 				regulator-max-microvolt = <3300000>;
@@ -341,6 +347,7 @@
 			};
 
 			v3v3: buck4 {
+				regulator-compatible = "buck4";
 				regulator-name = "v3v3";
 				regulator-min-microvolt = <3300000>;
 				regulator-max-microvolt = <3300000>;
@@ -351,8 +358,6 @@
 
 			vtt_ddr: ldo3 {
 				regulator-name = "vtt_ddr";
-				//regulator-min-microvolt = <500000>;
-				//regulator-max-microvolt = <750000>;
 				regulator-always-on;
 				regulator-over-current-protection;
 				st,regulator-sink-source;

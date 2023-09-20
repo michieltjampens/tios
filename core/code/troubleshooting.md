@@ -177,6 +177,32 @@ Then alter extlinux.conf (found on the bootfs) to include earlyprintk
 [    0.269191] [ae4a437e] *pgd=00000000
 [    0.272801] Internal error: : 1c06 [#1] PREEMPT SMP ARM
 ```
+**Cause** Missing scmi in kernel dts, because it wasn't copy of u-boot?
+**Fix**   Use the u-boot dts
+
+### Issue 2
+```
+[    0.402919] Driver 'scmi-optee' was unable to register with bus_type 'tee' because the bus was not initialized.
+```
+### Issue 3
+```
+[    1.665708] (NULL device *): TA_CMD_GET_ENTROPY invoke err: ffff000a
+
+Starting systemd-udevd version 253.1^
+[   10.725045] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
+root '/dev/disk/by-partuuid/491f6117-415d-4f53-88c9-6e0de54deac6' doesn't exist or does not contain a /dev.
+```
+Regulator issue?
+https://community.st.com/t5/stm32-mpus-products/root-dev-mmcblk0p6-doesn-t-exist-or-does-not-contain-a-dev/td-p/65350
+https://wiki.st.com/stm32mpu/wiki/Regulator_overview
+https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/Documentation/devicetree/bindings/mfd/st,stpmic1.yaml
+
+### Issue 4
+```
+[    3.365707] stpmic1 0-0033: Failed to get main IRQ: -22
+[    3.369655] stpmic1: probe of 0-0033 failed with error -22
+[    3.384419] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
+```
 
 ### Issue 2
 Error
