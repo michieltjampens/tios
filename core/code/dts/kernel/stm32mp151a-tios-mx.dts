@@ -237,6 +237,8 @@
 	status = "okay";
 
 	/* USER CODE BEGIN m4_rproc */
+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
+	mbox-names = "vq0", "vq1", "shutdown";
 	/* USER CODE END m4_rproc */
 
 	m4_system_resources{
@@ -295,6 +297,7 @@
 	pmic: stpmic@33 {
 		compatible = "st,stpmic1";
 		reg = <0x33>;
+		
 		status = "okay";
 		regulators {
 		compatible = "st,stpmic1-regulators";
