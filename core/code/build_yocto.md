@@ -48,3 +48,5 @@
 * Check inside `build-openstlinuxweston-stm32mp1-tios/tmp-glibc/deploy/images/stm32mp1-tios/`
   * 
  
+## 4. Stuff to do
+* Fix `/etc/fstab` because for some reason this is filled in according to the PC that build it
