@@ -177,3 +177,57 @@ Then alter extlinux.conf (found on the bootfs) to include earlyprintk
 [    0.269191] [ae4a437e] *pgd=00000000
 [    0.272801] Internal error: : 1c06 [#1] PREEMPT SMP ARM
 ```
+
+### Issue 2
+Error
+```
+[   12.063815] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
+root '/dev/disk/by-partuuid/491f6117-415d-4f53-88c9-6e0de54deac6' doesn't exist or does not contain a /dev.
+```
+Relevant info
+```
+Part    Start LBA       End LBA         Name
+        Attributes
+        Type GUID
+        Partition GUID
+  1     0x00000400      0x000007ff      "metadata1"
+        attrs:  0x0000000000000000
+        type:   8a7a84a0-8387-40f6-ab41-a8b9a5a60d23
+                (8a7a84a0-8387-40f6-ab41-a8b9a5a60d23)
+        guid:   7acd65d2-7fab-4d12-8608-b1595a77876f
+  2     0x00000800      0x00000bff      "metadata2"
+        attrs:  0x0000000000000000
+        type:   8a7a84a0-8387-40f6-ab41-a8b9a5a60d23
+                (8a7a84a0-8387-40f6-ab41-a8b9a5a60d23)
+        guid:   c2abdaa4-73f1-40c5-9c6f-01a04d94b731
+  3     0x00000c00      0x00002bff      "fip-a"
+        attrs:  0x0000000000000000
+        type:   19d5df83-11b0-457b-be2c-7559c13142a5
+                (19d5df83-11b0-457b-be2c-7559c13142a5)
+        guid:   4fd84c93-54ef-463f-a7ef-ae25ff887087
+  4     0x00002c00      0x00004bff      "fip-b"
+        attrs:  0x0000000000000000
+        type:   19d5df83-11b0-457b-be2c-7559c13142a5
+                (19d5df83-11b0-457b-be2c-7559c13142a5)
+        guid:   09c54952-d5bf-45af-acee-335303766fb3
+  5     0x00004c00      0x00004fff      "u-boot-env"
+        attrs:  0x0000000000000000
+        type:   3de21764-95bd-54bd-a5c3-4abe786f38a8
+                (u-boot-env)
+        guid:   830e6107-bbc6-4ef0-bfe1-7f2137955d77
+  6     0x00005000      0x00024fff      "bootfs"
+        attrs:  0x0000000000000004
+        type:   0fc63daf-8483-4772-8e79-3d69d8477de4
+                (linux)
+        guid:   9ff74730-6568-4a18-bebd-eaf318cce82d
+  7     0x00025000      0x0002cfff      "vendorfs"
+        attrs:  0x0000000000000000
+        type:   0fc63daf-8483-4772-8e79-3d69d8477de4
+                (linux)
+        guid:   eda9384a-8feb-41bf-8716-d9d86bea28b9
+  8     0x0002d000      0x00747bff      "rootfs"
+        attrs:  0x0000000000000000
+        type:   0fc63daf-8483-4772-8e79-3d69d8477de4
+                (linux)
+        guid:   491f6117-415d-4f53-88c9-6e0de54deac6
+``
