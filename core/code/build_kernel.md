@@ -19,7 +19,7 @@
     * Open the file `arch/arm/boot/dts/Makefile`
     * Look for dtb-$(CONFIG_ARCH_STM32) += \
     * Append a \ to the last entry of that listing
-    * Add `stm32mp151a-tios-mx.dts`to the list
+    * Add `stm32mp151a-tios-mx.dtb`to the list, **DTB not DTS**
     
 ## 2. Building
 For easier build management it's recommended to make a dedicated folder for that 
