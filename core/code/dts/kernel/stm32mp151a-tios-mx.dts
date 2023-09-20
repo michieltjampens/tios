@@ -316,7 +316,7 @@
 			pwr_sw2-supply = <&bst_out>;
 
 			vddcore: buck1 {
-				regulator-compatible = "buck1";
+				regulator-compatible = "buck1"; // might not be needed
 				regulator-name = "vddcore";
 				regulator-min-microvolt = <1200000>;
 				regulator-max-microvolt = <1350000>;
@@ -326,7 +326,7 @@
 			};
 
 			vdd_ddr: buck2 {
-				regulator-compatible = "buck2";
+				regulator-compatible = "buck2"; // might not be needed
 				regulator-name = "vdd_ddr";
 				regulator-min-microvolt = <1350000>;
 				regulator-max-microvolt = <1350000>;
@@ -336,7 +336,7 @@
 			};
 
 			vdd: buck3 {
-				regulator-compatible = "buck3";
+				regulator-compatible = "buck3"; // might not be needed
 				regulator-name = "vdd";
 				regulator-min-microvolt = <3300000>;
 				regulator-max-microvolt = <3300000>;
@@ -347,7 +347,7 @@
 			};
 
 			v3v3: buck4 {
-				regulator-compatible = "buck4";
+				regulator-compatible = "buck4"; // might not be needed
 				regulator-name = "v3v3";
 				regulator-min-microvolt = <3300000>;
 				regulator-max-microvolt = <3300000>;
