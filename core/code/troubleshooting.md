@@ -184,6 +184,19 @@ Then alter extlinux.conf (found on the bootfs) to include earlyprintk
 ```
 [    0.402919] Driver 'scmi-optee' was unable to register with bus_type 'tee' because the bus was not initialized.
 ```
+
+**Cause**
+Missing node in dts
+
+
+```
+[    0.440275] optee: probing for conduit method.
+[    0.440311] optee: revision 3.19 (afacf356)
+[    0.441006] optee: dynamic shared memory is enabled
+[    0.442159] (NULL device *): TA_CMD_GET_ENTROPY invoke err: ffff000a
+[    0.442692] optee: initialized driver
+```
+
 ### Issue 3
 ```
 [    1.665708] (NULL device *): TA_CMD_GET_ENTROPY invoke err: ffff000a
@@ -204,7 +217,7 @@ https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/Documentation/devi
 [    3.384419] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
 ```
 
-### Issue 2
+### Issue 5
 Error
 ```
 [   12.063815] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
