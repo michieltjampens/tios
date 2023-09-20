@@ -14,8 +14,10 @@
 #include "stm32mp151.dtsi"
 #include "stm32mp15xa.dtsi"
 #include "stm32mp15xxac-pinctrl.dtsi"
+#include "stm32mp15-m4-srm.dtsi"
 
 /* USER CODE BEGIN includes */
+#include "stm32mp151a-tios-scmi.dtsi"
 #include <dt-bindings/mfd/st,stpmic1.h>
 /* USER CODE END includes */
 
@@ -230,14 +232,21 @@
 	/* USER CODE BEGIN pinctrl_z */
 	/* USER CODE END pinctrl_z */
 };
-/*
+
 &m4_rproc{
 	status = "okay";
+
+	/* USER CODE BEGIN m4_rproc */
+	/* USER CODE END m4_rproc */
+
 	m4_system_resources{
 		status = "okay";
+
+		/* USER CODE BEGIN m4_system_resources */
+		/* USER CODE END m4_system_resources */
 	};
 };
-*/
+
 &bsec{
 	status = "okay";
 
@@ -376,11 +385,14 @@
 	};
 	/* USER CODE END i2c4 */
 };
-/*
+
 &m4_dma2{
 	status = "okay";
+
+	/* USER CODE BEGIN m4_dma2 */
+	/* USER CODE END m4_dma2 */
 };
-*/
+
 &mdma1{
 	status = "okay";
 
