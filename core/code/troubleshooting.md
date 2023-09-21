@@ -197,12 +197,9 @@ Missing node in dts
 [    0.442692] optee: initialized driver
 ```
 
-### Issue 3
+### Issue 3, can't find /dev/disk
 ```
-[    1.665708] (NULL device *): TA_CMD_GET_ENTROPY invoke err: ffff000a
-
 Starting systemd-udevd version 253.1^
-[   10.725045] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
 root '/dev/disk/by-partuuid/491f6117-415d-4f53-88c9-6e0de54deac6' doesn't exist or does not contain a /dev.
 ```
 Relevant info
@@ -266,9 +263,25 @@ https://unix.stackexchange.com/questions/533500/systemd-boot-cannot-find-my-root
 [    3.384419] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
 ```
 
-### Issue 5
-Error
+### Issue 6, entropy failure
 ```
+[    1.665708] (NULL device *): TA_CMD_GET_ENTROPY invoke err: ffff000a
 [   12.063815] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
-root '/dev/disk/by-partuuid/491f6117-415d-4f53-88c9-6e0de54deac6' doesn't exist or does not contain a /dev.
 ```
+#### Cause
+Missing node in optee dts.
+
+#### Fix
+Either make sure the RNG module is active in CubeMX or manually edit the dts
+Add this to the optee dts
+````
+&rng1{
+	status = "okay";
+
+	/* USER CODE BEGIN rng1 */
+	/* USER CODE END rng1 */
+}; 	
+// in the etzpc node
+/*"Secured" peripherals*/
+DECPROT(STM32MP1_ETZPC_RNG1_ID, DECPROT_S_RW, DECPROT_UNLOCK) // Added rng
+````
