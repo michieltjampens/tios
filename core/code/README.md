@@ -14,5 +14,7 @@ There are three guides:
    * builds all boot stages, kernel and rootfs
 * build_boot.md
    * build the boot stages and allows for customization (fe. increased debug level)
+* build_rootfs
+   * explains how to create a debian 12 rootfs
 * troubleshooting.md
    * Info on various issues encountered and how they were solved 
