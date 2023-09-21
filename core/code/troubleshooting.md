@@ -205,24 +205,6 @@ Starting systemd-udevd version 253.1^
 [   10.725045] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
 root '/dev/disk/by-partuuid/491f6117-415d-4f53-88c9-6e0de54deac6' doesn't exist or does not contain a /dev.
 ```
-Regulator issue?
-https://community.st.com/t5/stm32-mpus-products/root-dev-mmcblk0p6-doesn-t-exist-or-does-not-contain-a-dev/td-p/65350
-https://wiki.st.com/stm32mpu/wiki/Regulator_overview
-https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/Documentation/devicetree/bindings/mfd/st,stpmic1.yaml
-
-### Issue 4
-```
-[    3.365707] stpmic1 0-0033: Failed to get main IRQ: -22
-[    3.369655] stpmic1: probe of 0-0033 failed with error -22
-[    3.384419] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
-```
-
-### Issue 5
-Error
-```
-[   12.063815] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
-root '/dev/disk/by-partuuid/491f6117-415d-4f53-88c9-6e0de54deac6' doesn't exist or does not contain a /dev.
-```
 Relevant info
 ```
 Part    Start LBA       End LBA         Name
@@ -269,4 +251,24 @@ Part    Start LBA       End LBA         Name
         type:   0fc63daf-8483-4772-8e79-3d69d8477de4
                 (linux)
         guid:   491f6117-415d-4f53-88c9-6e0de54deac6
-``
+```
+
+Regulator issue?
+https://community.st.com/t5/stm32-mpus-products/root-dev-mmcblk0p6-doesn-t-exist-or-does-not-contain-a-dev/td-p/65350
+https://wiki.st.com/stm32mpu/wiki/Regulator_overview
+https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/Documentation/devicetree/bindings/mfd/st,stpmic1.yaml
+> Tried altering dt, no difference.
+https://unix.stackexchange.com/questions/533500/systemd-boot-cannot-find-my-root
+### Issue 5
+```
+[    3.365707] stpmic1 0-0033: Failed to get main IRQ: -22
+[    3.369655] stpmic1: probe of 0-0033 failed with error -22
+[    3.384419] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
+```
+
+### Issue 5
+Error
+```
+[   12.063815] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
+root '/dev/disk/by-partuuid/491f6117-415d-4f53-88c9-6e0de54deac6' doesn't exist or does not contain a /dev.
+```
