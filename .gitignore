@@ -6,3 +6,4 @@
 *.cmd
 *.u
 Core/bin/uuu.exe
+.idea/
