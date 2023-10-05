@@ -87,6 +87,12 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 * Build it `make DEVICE_TREE=stm32mp151a-tios-mx all`
 * This will generate files in the u-boot root folder, the ones we need are `u-boot-nodtb.bin` and `u-boot.dtb`
 
+> Note: To get extra debug Info
+> * Add #define LOG_DEBUG to the to of these files
+>   * <uboot folder>/drivers/clk/stm32/clk-stm32mp1.c
+>   * <uboot folder>/board/st/stm32mp1/stm32mp1.c
+> * Add CONFIG_LOG_MAX_LEVEL=7 to stm32mp1_defconfig
+
 ## 4. Build FIP
 > Source: `https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/plat/stm32mp1.rst`
 > Info: FIP contains OPTEE,U-Boot and the U-Boot DTB
