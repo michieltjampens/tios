@@ -84,7 +84,10 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 * Copy the dts generated with CubeMX for U-boot to `arch/arm/dts`
 * Add the dts to the section `dtb-$(CONFIG_STM32MP15X)` inside `arch/arm/dts/Makefile`
 * Apply the default config `make stm32mp15_defconfig`
+  * Extra Info, there are two other stm32mp15 defconfig files in there, those are legacy
+	
 * Build it `make DEVICE_TREE=stm32mp151a-tios-mx all`
+  * For extra debug `make DEVICE_TREE=stm32mp151a-tios-mx all LOG_LEVEL=LOG_LEVEL_INFO DEBUG=1`
 * This will generate files in the u-boot root folder, the ones we need are `u-boot-nodtb.bin` and `u-boot.dtb`
 
 > Note: To get extra debug Info
@@ -92,6 +95,7 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 >   * <uboot folder>/drivers/clk/stm32/clk-stm32mp1.c
 >   * <uboot folder>/board/st/stm32mp1/stm32mp1.c
 > * Add CONFIG_LOG_MAX_LEVEL=7 to stm32mp1_defconfig
+> * Add #define DEBUG 1 in include/configs/<board_name>.h
 
 ## 4. Build FIP
 > Source: `https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/plat/stm32mp1.rst`
