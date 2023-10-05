@@ -216,7 +216,6 @@ Missing node in dts?
 [    0.440275] optee: probing for conduit method.
 [    0.440311] optee: revision 3.19 (afacf356)
 [    0.441006] optee: dynamic shared memory is enabled
-[    0.442159] (NULL device *): TA_CMD_GET_ENTROPY invoke err: ffff000a
 [    0.442692] optee: initialized driver
 ```
 
@@ -285,4 +284,11 @@ https://unix.stackexchange.com/questions/533500/systemd-boot-cannot-find-my-root
 [    3.365707] stpmic1 0-0033: Failed to get main IRQ: -22
 [    3.369655] stpmic1: probe of 0-0033 failed with error -22
 [    3.384419] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
+```
+
+### Issue 6
+```
+[    2.028867] sysfs: cannot create duplicate filename '/devices/platform/cpufreq-dt'
+...
+[    2.603873] kobject_add_internal failed for cpufreq-dt with -EEXIST, don't try to register things with the same name in the same directory.
 ```
