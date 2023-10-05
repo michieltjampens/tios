@@ -58,7 +58,7 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 
 ### Build
 * Get the sources `git clone https://github.com/STMicroelectronics/optee_os.git`
-* Copy the dts generated with CubeMX for OPTEE, and add the *-fw-config.dts generated for tf-a to `optee_os/arch/arm/dts`
+* Copy the dts generated with CubeMX for OPTEE, and add the *-fw-config.dts generated for tf-a to `optee_os/core/arch/arm/dts`
 * Go into the optee_os folder
 * Reset the flags `unset LDFLAGS` & `unset CFLAGS`
 * Build `make PLATFORM=stm32mp1 CFG_EMBED_DTB_SOURCE_FILE=stm32mp151a-tios-mx.dts CFG_TEE_CORE_LOG_LEVEL=2 O=build all`
