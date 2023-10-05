@@ -4,7 +4,7 @@ This document explains how to build TF-A,OPTEE,U-Boot and package those inside a
 This guide assumes the DTS files are already made.
 
 The flashlayout for eMMC looks like this
-````c
+```c
 #Opt  Id	Name	    Type	    IP	    Offset	    Binary
 -	  0x01	fsbl-boot	Binary		none	0x0	        arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-usb.stm32
 -	  0x03	fip-boot	FIP			none	0x0	        fip/fip-stm32mp151a-tios-mx-optee.bin
@@ -18,7 +18,7 @@ PED	  0x0A	u-boot-env	ENV			mmc1	0x00980000	none
 P	  0x10	bootfs		System		mmc1	0x00A00000	st-image-bootfs-openstlinux-weston-stm32mp1-tios.ext4
 P	  0x11	vendorfs	FileSystem	mmc1	0x04A00000	st-image-vendorfs-openstlinux-weston-stm32mp1-tios.ext4
 P	  0x12	rootfs		FileSystem	mmc1	0x05A00000	st-image-core-openstlinux-weston-stm32mp1-tios.ext4
-````
+```
 So the goal of this guide is to Id 1 till 8.
 
 ## 0. Prereq
