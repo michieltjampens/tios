@@ -10,10 +10,15 @@
     * yaml (check dts) `sudo apt-get install libyaml-dev`
     
 ## 1. Get the sources
-
-* Clone the git `git clone https://github.com/STMicroelectronics/linux.git -b v6.1-stm32mp-r1 --depth 1`
-    * -b v6.1-stm32mp-r1 -> only get that branch
-    * --depth 1 -> do't get the history (makes for a smaller download/install)
+* ST Github
+    * Clone the git `git clone https://github.com/STMicroelectronics/linux.git -b v6.1-stm32mp-r1 --depth 1`
+        * -b v6.1-stm32mp-r1 -> only get that branch
+        * --depth 1 -> don't get the history (makes for a smaller download/install)
+* Mainline github
+    * Clone the git `git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git -b linux-6.1.y --depth 1`
+            * -b linux-6.1.y -> get that branch
+            * --depth 1 -> don't get the history (makes for a smaller download/install)
+    
 * Copy the generated `stm32mp151a-tios-mx.dts` into `arch/arm/boot/dts`
 * Add it to the list of generated dtb's 
     * Open the file `arch/arm/boot/dts/Makefile`
