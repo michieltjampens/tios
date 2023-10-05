@@ -186,7 +186,7 @@ Then alter extlinux.conf (found on the bootfs) to include earlyprintk
 ```
 
 **Cause**
-Missing node in dts
+Missing node in dts?
 
 
 ```
@@ -256,14 +256,15 @@ https://wiki.st.com/stm32mpu/wiki/Regulator_overview
 https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/Documentation/devicetree/bindings/mfd/st,stpmic1.yaml
 > Tried altering dt, no difference.
 https://unix.stackexchange.com/questions/533500/systemd-boot-cannot-find-my-root
-### Issue 5
+### Issue 4
 ```
 [    3.365707] stpmic1 0-0033: Failed to get main IRQ: -22
 [    3.369655] stpmic1: probe of 0-0033 failed with error -22
 [    3.384419] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
 ```
 
-### Issue 6, entropy failure
+
+### Issue 5, entropy failure
 ```
 [    1.665708] (NULL device *): TA_CMD_GET_ENTROPY invoke err: ffff000a
 [   12.063815] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
