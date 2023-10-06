@@ -3,6 +3,43 @@
 Just to document all the issues I've encountered that shouldn't happen anymore...  
 Started doing this later than most of them, so some might be missing.
 
+## During build of tf-a
+stm32mp151a-tios-mx-bl2.pre.dts:1321.3-4 syntax error
+```c
+ st,clkdiv = <
+  DIV(DIV_MPU, 1) <<< syntax error here
+  DIV(DIV_AXI, 0)
+  DIV(DIV_MCU, 0)
+  DIV(DIV_APB1, 1)
+  DIV(DIV_APB2, 1)
+  DIV(DIV_APB3, 1)
+  DIV(DIV_APB4, 1)
+  DIV(DIV_APB5, 2)
+  DIV(DIV_RTC, 0)
+  DIV(DIV_MCO1, 0)
+  DIV(DIV_MCO2, 0)
+ >;
+```
+No idea yet...
+The DIV function and DIV_MPU variable can both be found in the included <dt-bindings/clock/stm32mp1-clksrc.h>
+
+Workaround is to replace with actual values
+```c
+	st,clkdiv = <
+		1//DIV(DIV_MPU, 1)
+		0//DIV(DIV_AXI, 0)
+		0//DIV(DIV_MCU, 0)
+		1//DIV(DIV_APB1, 1)
+		1//DIV(DIV_APB2, 1)
+		1//DIV(DIV_APB3, 1)
+		1//DIV(DIV_APB4, 1)
+		2//DIV(DIV_APB5, 2)
+		0//DIV(DIV_RTC, 0)
+		0//DIV(DIV_MCO1, 0)
+		0//DIV(DIV_MCO2, 0)
+	>;
+```
+
 ## ERROR:   regul ldo3: max value 750 is invalid
 ````c
 ERROR:   regul ldo3: max value 750 is invalid
