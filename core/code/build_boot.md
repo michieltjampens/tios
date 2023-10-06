@@ -95,7 +95,6 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 >   * <uboot folder>/drivers/clk/stm32/clk-stm32mp1.c
 >   * <uboot folder>/board/st/stm32mp1/stm32mp1.c
 > * Add CONFIG_LOG_MAX_LEVEL=7 to stm32mp1_defconfig
-> * Add #define DEBUG 1 in include/configs/<board_name>.h
 
 ## 4. Build FIP
 > Source: `https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/plat/stm32mp1.rst`
