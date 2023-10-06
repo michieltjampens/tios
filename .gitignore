@@ -5,5 +5,5 @@
 *.o
 *.cmd
 *.u
-Core/bin/uuu.exe
 .idea/
+/core/code/build/
