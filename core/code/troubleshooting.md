@@ -3,6 +3,10 @@
 Just to document all the issues I've encountered that shouldn't happen anymore...  
 Started doing this later than most of them, so some might be missing.
 
+## Things that might be good to know when debugging
+* U-boot initializes and loads files off of MMC/microSD, then we jump from u-boot into the kernel, where things get re-initialized again
+
+
 ## ERROR:   regul ldo3: max value 750 is invalid
 ````c
 ERROR:   regul ldo3: max value 750 is invalid
@@ -292,3 +296,10 @@ https://unix.stackexchange.com/questions/533500/systemd-boot-cannot-find-my-root
 ...
 [    2.603873] kobject_add_internal failed for cpufreq-dt with -EEXIST, don't try to register things with the same name in the same directory.
 ```
+### Issue 7, deferred probe pending
+
+```
+amba 58005000.mmc: deferred probe pending
+```
+**Cause**
+MMC is still not up (deferred probe pending), it’s either waiting for pinmux, dma, or even something else…
