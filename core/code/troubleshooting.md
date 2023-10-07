@@ -3,6 +3,10 @@
 Just to document all the issues I've encountered that shouldn't happen anymore...  
 Started doing this later than most of them, so some might be missing.
 
+## Things that might be good to know when debugging
+* U-boot initializes and loads files off of MMC/microSD, then we jump from u-boot into the kernel, where things get re-initialized again
+
+
 ## During build of tf-a
 stm32mp151a-tios-mx-bl2.pre.dts:1321.3-4 syntax error
 ```c
@@ -20,25 +24,8 @@ stm32mp151a-tios-mx-bl2.pre.dts:1321.3-4 syntax error
   DIV(DIV_MCO2, 0)
  >;
 ```
-No idea yet...
-The DIV function and DIV_MPU variable can both be found in the included <dt-bindings/clock/stm32mp1-clksrc.h>
-
-Workaround is to replace with actual values
-```c
-	st,clkdiv = <
-		1//DIV(DIV_MPU, 1)
-		0//DIV(DIV_AXI, 0)
-		0//DIV(DIV_MCU, 0)
-		1//DIV(DIV_APB1, 1)
-		1//DIV(DIV_APB2, 1)
-		1//DIV(DIV_APB3, 1)
-		1//DIV(DIV_APB4, 1)
-		2//DIV(DIV_APB5, 2)
-		0//DIV(DIV_RTC, 0)
-		0//DIV(DIV_MCO1, 0)
-		0//DIV(DIV_MCO2, 0)
-	>;
-```
+This is because the stm32mp15_clsrc.h changed between mainline (2.9.0 at time of writing) and the ST version.
+Overwriting mainline with ST version of this file fixed this.
 
 ## ERROR:   regul ldo3: max value 750 is invalid
 ````c
@@ -329,3 +316,10 @@ https://unix.stackexchange.com/questions/533500/systemd-boot-cannot-find-my-root
 ...
 [    2.603873] kobject_add_internal failed for cpufreq-dt with -EEXIST, don't try to register things with the same name in the same directory.
 ```
+### Issue 7, deferred probe pending
+
+```
+amba 58005000.mmc: deferred probe pending
+```
+**Cause**
+MMC is still not up (deferred probe pending), it’s either waiting for pinmux, dma, or even something else…
