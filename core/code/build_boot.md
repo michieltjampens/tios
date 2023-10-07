@@ -1,4 +1,5 @@
 # Manually build the bootstages step by step
+> Source: `https://forum.digikey.com/t/debian-getting-started-with-the-stm32mp157/12459`
 
 This document explains how to build TF-A,OPTEE,U-Boot and package those inside a FIP.  
 This guide assumes the DTS files are already made.
@@ -22,18 +23,16 @@ P	  0x12	rootfs		FileSystem	mmc1	0x05A00000	st-image-core-openstlinux-weston-stm
 So the goal of this guide is to Id 1 till 8.
 
 ## 0. Prereq
+* Create a working folder called `build` inside code (folder containing this file) and move into it
+* Get the gcc compiler for tf-a
+    * wget -c https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/11.3.0/x86_64-gcc-11.3.0-nolibc-arm-linux-gnueabi.tar.xz
+    * Unpack `tar -xf x86_64-gcc-11.3.0-nolibc-arm-linux-gnueabi.tar.xz`
+    * Export the var`export CC=`pwd`/gcc-11.3.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-`
 * Get the toolchains from `https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads`
   * arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz (or newer)
   * arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz
 * Make sure clang (14.0.0) is installed  `sudo apt-get install clang` (needed for FIP)
 * Install the ST SDK by following this guide `https://wiki.st.com/stm32mpu/wiki/STM32MP1_Developer_Package#Installing_the_SDK`
-* Create a working folder called `tios` inside home and move into it
-
-### Initialize cross-compilation via SDK
-
-`source ~/tios/SDK/environment-setup-cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi`
-Check with `set | grep CROSS`, this should return
-CROSS_COMPILE=arm-ostl-linux-gnueabi-
 
 ## 1. TF-A
 > Source: `https://wiki.st.com/stm32mpu/wiki/How_to_configure_TF-A_BL2` and older version `https://wiki.st.com/stm32mpu/index.php?title=How_to_configure_TF-A_BL2&oldid=78136`
@@ -41,15 +40,19 @@ CROSS_COMPILE=arm-ostl-linux-gnueabi-
 
 ### Build
 * Get sources `git clone https://github.com/STMicroelectronics/arm-trusted-firmware.git`
+    * Or mainline `git clone -b v2.9.0 https://github.com/ARM-software/arm-trusted-firmware --depth=1`
+* Copy the tios dt's `cp ../dts/tf-a/* arm-trusted-firmware/fdts/`
+* If using mainly overwrite `stm32mp15_clksrc.h`
+    * First make backup `cp arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h.BAK`
+    * Then overwrite it `cp ../dts/tf-a/include/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/`
 * Step into `arm-trusted-firmware`
-* Copy the relevant dts into the fdts folder
-* Reset the flags `unset LDFLAGS` & `unset CFLAGS`
-* Make usb boot with `make ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_USB_PROGRAMMER=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb`
+* Make sure it's clean `make CROSS_COMPILE=${CC} realclean`
+* Make with `make CROSS_COMPILE=${CC} ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_USB_PROGRAMMER=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb`
   * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-usb.stm32`
-* Just to be certain that the next make is proper `make realclean` to remove all build files 
-* Make with `make ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_EMMC=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb`
+* Make sure it's clean `make CROSS_COMPILE=${CC} realclean` for the emmc build
+* Make with `make CROSS_COMPILE=${CC} ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_EMMC=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb`
   * Copy the result to deploy: `cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-emmc.stm32`
-* Next up, metadata.bin will also be made
+* Next up, metadata.bin will also be made (THIS ONLY WORKS IN THE ST VERSION OF THE REPO)
   * First create the var that references the source .json `export TF_A_METADATA_JSON=plat/st/stm32mp1/default_metadata.json`
   * Then use it to build: `tools/fwu_gen_metadata/fwumd_tool.py jsonparse $TF_A_METADATA_JSON -b ../deploy/arm-trusted-firmware/metadata.bin`
 

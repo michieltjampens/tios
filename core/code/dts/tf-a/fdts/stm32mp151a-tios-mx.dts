@@ -10,11 +10,11 @@
 
 /dts-v1/;
 #include <dt-bindings/pinctrl/stm32-pinfunc.h>
-#include <dt-bindings/clock/stm32mp1-clksrc.h>
+#include <dt-bindings/clock/stm32mp1-clksrc.h> // redirects to stm32mp15-cksrc.h
 #include "stm32mp15-mx.dtsi"
 
 #include "stm32mp151.dtsi"
-#include "stm32mp15xa.dtsi"
+//#include "stm32mp15xa.dtsi" // has been made empty in st version of tf-a src
 #include "stm32mp15-pinctrl.dtsi"
 #include "stm32mp15xxac-pinctrl.dtsi"
 #include "stm32mp15-ddr.dtsi"
