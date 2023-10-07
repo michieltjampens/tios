@@ -1,7 +1,7 @@
 # Manually build the bootstages step by step
 > Source: `https://forum.digikey.com/t/debian-getting-started-with-the-stm32mp157/12459`
 
-This document explains how to build TF-A,OPTEE,U-Boot and package those inside a FIP.  
+This document explains how to build TF-A,OPTEE,U-Boot and package those inside a FIP.
 This guide assumes the DTS files are already made.
 
 The flashlayout for eMMC looks like this
@@ -42,7 +42,7 @@ So the goal of this guide is to Id 1 till 8.
 * Get sources `git clone https://github.com/STMicroelectronics/arm-trusted-firmware.git`
     * Or mainline `git clone -b v2.9.0 https://github.com/ARM-software/arm-trusted-firmware --depth=1`
 * Copy the tios dt's `cp ../dts/tf-a/* arm-trusted-firmware/fdts/`
-* If using mainly overwrite `stm32mp15_clksrc.h`
+* If using main overwrite `stm32mp15_clksrc.h`
     * First make backup `cp arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h.BAK`
     * Then overwrite it `cp ../dts/tf-a/include/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/`
 * Step into `arm-trusted-firmware`
@@ -60,17 +60,24 @@ So the goal of this guide is to Id 1 till 8.
 > Source: `https://wiki.st.com/stm32mpu/wiki/How_to_configure_OP-TEE`
 
 ### Build
-* Get the sources `git clone https://github.com/STMicroelectronics/optee_os.git`
+* Get the sources `git clone https://github.com/STMicroelectronics/optee_os.git --depth=1`
+    * Or mainline `git clone https://github.com/OP-TEE/optee_os.git --depth=1` (untested)
 * Copy the dts generated with CubeMX for OPTEE, and add the *-fw-config.dts generated for tf-a to `optee_os/core/arch/arm/dts`
 * Go into the optee_os folder
-* Reset the flags `unset LDFLAGS` & `unset CFLAGS`
-* Build `make PLATFORM=stm32mp1 CFG_EMBED_DTB_SOURCE_FILE=stm32mp151a-tios-mx.dts CFG_TEE_CORE_LOG_LEVEL=2 O=build all`
-    * Or to get more error output `make PLATFORM=stm32mp1 CFG_EMBED_DTB_SOURCE_FILE=stm32mp151a-tios-mx.dts CFG_TEE_CORE_LOG_LEVEL=4 DEBUG=1 O=build all`
+* There's an issue with the conf.mk file for custom boards with 512MB ram, so we'll need to change it
+    * Edit `optee_os/core/arch/arm/platstm32mp1/conf.mk` to make flavorlist-no_cryp-512M look like this
+     ```
+        flavorlist-no_cryp-512M = $(flavor_dts_file-157A_DK1) \
+		                    	  $(flavor_dts_file-157D_DK1) \
+			                     stm32mp151a-tios-mx.dts
+     ```
+* Build `make CROSS_COMPILE=${CC} PLATFORM=stm32mp1 CFG_EMBED_DTB_SOURCE_FILE=stm32mp151a-tios-mx.dts CFG_TEE_CORE_LOG_LEVEL=2 O=build all`
+    * Or to get more error output `make CROSS_COMPILE=${CC} PLATFORM=stm32mp1 CFG_EMBED_DTB_SOURCE_FILE=stm32mp151a-tios-mx.dts CFG_TEE_CORE_LOG_LEVEL=4 DEBUG=1 O=build all`
 * Fix the errors
 * Result should be the following files
-> <optee-os>/build/core/tee-header_v2.bin
-> <optee-os>/build/core/tee-pageable_v2.bin
-> <optee-os>/build/core/tee-pager_v2.bin
+> build/core/tee-header_v2.bin
+> build/core/tee-pageable_v2.bin
+> build/core/tee-pager_v2.bin
 * Copy those to deploy: `cp build/core/*_v2.bin ../deploy`
   
 ### Deploy

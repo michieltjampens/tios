@@ -3,9 +3,10 @@
 * **Yocto** contains the machine/conf
 * **dts** contains the final DTS
 * **cubemx** contains the CubeMX project files
-  
+* **scripts** contains scripts that automate the build process
+
 ## Guides
-There are three guides:
+There are five guides:
 * customize_dts.md
   * starts from the CubeMX project
   * alters the generated DTS to match the hardware
