@@ -12,7 +12,7 @@
 #include <dt-bindings/pinctrl/stm32-pinfunc.h>
 
 #include "stm32mp151.dtsi"
-#include "stm32mp15xa.dtsi"
+//#include "stm32mp15xa.dtsi" >> has been made empty anyway 
 #include "stm32mp15xxac-pinctrl.dtsi"
 #include "stm32mp15-m4-srm.dtsi"
 
