@@ -2,7 +2,7 @@
 > Source: `https://wiki.st.com/stm32mpu/wiki/How_to_create_your_own_machine`
 
 ## 0. Prereq
-* DTS files have been generated with CubeMX and altered or downloaded from this git at `tios/Core/code/dts`.
+* DTS files have been generated with CubeMX and altered or downloaded from this git at `tios/core/code/dts`.
 * Required tools: `sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev python3-subunit mesa-common-dev zstd liblz4-tool file locales repo`
   * If repo isn't found, add `contrib` to sources.
 * Locale `en_US.UTF-8 UTF-8` exists, if not `sudo locale-gen en_US.UTF-8`
@@ -17,16 +17,16 @@
 * Copy the content of `tios/Core/code/dts` to `layers/meta-st/meta-st-stm32mp-addons`
 * Go into `layers/meta-st/meta-st-stm32mp-addons/conf/machine/` inside the working dir
 
-## Use git repo
+## A. Use this repo
 * Copy `tios/Core/yocto/stm32mp1-tios.conf` into `layers/meta-st/meta-st-stm32mp-addons/conf/machine/`
 
-## Start from scratch
+## B. Start from scratch
 * Copy the file `stm32mp15-mx.conf` as `stm32mp1-tios.conf`
 * Open the resulting file in a text editor
   * Uncomment line 90 to enable emmc boot
   * Alter line 114 to `CUBEMX_DTB = "stm32mp151a-tios-mx"` (base name of dts files)
   * Alter line 115 to `CUBEMX_PROJECT = "tios"` (name of folder in first step)
-  * Alter line 118 to `CUBEMX_SOC_PACKAGE = "A"` (mean no encrypt)
+  * Alter line 118 to `CUBEMX_SOC_PACKAGE = "A"` (means no encrypt)
   * Alter line 121 to `CUBEMX_BOARD_DDR_SIZE = "512"` (ram size of board)
   * Uncomment line 124 
   * Save and quit
