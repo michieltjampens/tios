@@ -41,6 +41,7 @@ then
 	cd deploy
 	mkdir arm-trusted-firmware
 	mkdir debug
+	mkdir bootfs
 	cd ..
 fi
 

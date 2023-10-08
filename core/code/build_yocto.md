@@ -69,5 +69,5 @@
         * Go into the created deploy folder and alter the names of the ext4 file to omit everything between tios and .ext4  
  
 ## 4. Stuff to do
-* Fix `/etc/fstab` because for some reason this is filled in according to the PC that build it
+* Check `/etc/fstab`
 
