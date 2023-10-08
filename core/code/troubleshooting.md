@@ -40,22 +40,22 @@ sets the voltage to half of buck2 and that falls outside that range. The check d
 
 ### Fix 
 Change the ldo3 node by removing the lines about the min/max.
-````c
+```c
       vtt_ddr: ldo3 {
           regulator-name = "vtt_ddr";
           regulator-always-on;
           regulator-over-current-protection;
           st,regulator-sink-source;
       };
-````
+```
 
 ## ERROR:   DDR addr bus test: can't access memory @ 0xc8000000
-````c
+```c
 INFO:    BL2: Doing platform setup
 INFO:    RAM: DDR3-DDR3L 16bits 533000kHz
 ERROR:   DDR addr bus test: can't access memory @ 0xc8000000
 PANIC at PC : 0x2ffead5d
-````
+```
 ### When?
 During boot of TF-A.
 
@@ -71,17 +71,17 @@ That points to a hardware issue 'Check for address bits stuck high.' but I gues 
 
 ### Fix
 As mentioned change the line about `DDR_ADDRMAP6`
-````c
+```c
 #define DDR_ADDRMAP6 0x0F060606
-````
+```
 And maybe add/check the calibration values.
 
 ## E/TC:0 0 Panic at core/arch/arm/plat-stm32mp1/cpu_opp.c:106 <set_clock_then_voltage>
-````c
+```c
 D/TC:0 0 stm32mp1_cpu_opp_get_dt_subnode:291 Found OPP 0 (650000kHz/1200mV) from DT
 F/TC:0 0 regulator_set_voltage:299 vddcore 1200mV
 E/TC:0 0 Panic at core/arch/arm/plat-stm32mp1/cpu_opp.c:106 <set_clock_then_voltage>
-````
+```
 > Note: Optee debug log level needs to be at four (or atleast higher than two).
 
 ### When?
@@ -231,17 +231,14 @@ DECPROT(STM32MP1_ETZPC_RNG1_ID, DECPROT_S_RW, DECPROT_UNLOCK) // Added rng
 ```
 [    0.402919] Driver 'scmi-optee' was unable to register with bus_type 'tee' because the bus was not initialized.
 ```
-
-**Cause**
-Missing node in dts?
-
-
+But later in boot you get
 ```
 [    0.440275] optee: probing for conduit method.
 [    0.440311] optee: revision 3.19 (afacf356)
 [    0.441006] optee: dynamic shared memory is enabled
 [    0.442692] optee: initialized driver
 ```
+So unsure if this is actually an issue?
 
 ### Issue 4, can't find /dev/disk
 ```
@@ -323,3 +320,39 @@ amba 58005000.mmc: deferred probe pending
 ```
 **Cause**
 MMC is still not up (deferred probe pending), it’s either waiting for pinmux, dma, or even something else…
+
+### Issue 8, events_unbound deferred_probe_work_func 
+
+```c
+[    0.531964] Hardware name: STM32 (Device Tree Support)
+[    0.531976] Workqueue: events_unbound deferred_probe_work_func
+[    0.532034]  unwind_backtrace from show_stack+0x10/0x14
+[    0.532072]  show_stack from dump_stack_lvl+0x40/0x4c
+[    0.532106]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
+[    0.532141]  sysfs_warn_dup from sysfs_create_dir_ns+0xf4/0x104
+[    0.532170]  sysfs_create_dir_ns from create_dir+0x1c/0x164
+[    0.532204]  create_dir from kobject_add_internal+0xa4/0x208
+[    0.532239]  kobject_add_internal from kobject_add+0x60/0xc4
+[    0.532274]  kobject_add from device_add+0xcc/0x6d4
+[    0.532308]  device_add from platform_device_add+0x100/0x244
+[    0.532334]  platform_device_add from platform_device_register_full+0x108/0x158
+[    0.532361]  platform_device_register_full from stm32_cpufreq_probe+0xfc/0x19c
+[    0.532399]  stm32_cpufreq_probe from platform_probe+0x5c/0xb0
+[    0.532430]  platform_probe from really_probe+0xe0/0x40c
+[    0.532459]  really_probe from __driver_probe_device+0x9c/0x130
+[    0.532494]  __driver_probe_device from driver_probe_device+0x30/0xc0
+[    0.532530]  driver_probe_device from __device_attach_driver+0xa8/0x120
+[    0.532566]  __device_attach_driver from bus_for_each_drv+0x88/0xd4
+[    0.532601]  bus_for_each_drv from __device_attach+0xa8/0x1ec
+[    0.532634]  __device_attach from bus_probe_device+0x84/0x8c
+[    0.532668]  bus_probe_device from deferred_probe_work_func+0x8c/0xd4
+[    0.532702]  deferred_probe_work_func from process_one_work+0x1e8/0x510
+[    0.532733]  process_one_work from worker_thread+0x208/0x504
+[    0.532757]  worker_thread from kthread+0xdc/0xf8
+[    0.532790]  kthread from ret_from_fork+0x14/0x2c
+[    0.532819] Exception stack(0xde8c9fb0 to 0xde8c9ff8)
+[    0.532835] 9fa0:                                     00000000 00000000 00000000 00000000
+[    0.532851] 9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    0.532866] 9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+
+```
