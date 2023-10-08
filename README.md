@@ -9,15 +9,13 @@ Why would you design this thing?
 ## What?
 
 The hardware will be in different layers/floors/segments...  
-Main restriction is limiting the size of the core to 50x50mm, because that was the max size at which 4 layers was still 'cheap'.  
-But no EMI testing to pass yet and trying to keep prototyping costs low, so 2 layers for now...
 
 ### Core 
 
 The main part of the tower.  
 
 #### Software
-- Standard STM32MP1 boostage of TF-A, OPTEE and U-Boot
+- Standard STM32MP1 bootstage of TF-A, OPTEE and U-Boot
 - Recent kernel based on ST ECO 5.0.0
 - [Debian 12.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
 - My other project to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
