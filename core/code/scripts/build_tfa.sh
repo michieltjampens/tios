@@ -57,7 +57,7 @@ then
 	echo "Backing up stm32mp15_clksrc.h just to be sure"
 	cp arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h.BAK
 	echo "Overwriting the existing one"
-	cp ../dts/tf-a/include/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/
+	cp --verbose ../dts/tf-a/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/
 	cd arm-trusted-firmware
 else
 	echo -e "${GREEN}Arm-trusted repo present, doing a pull"
@@ -66,7 +66,7 @@ else
 fi
 # Copy the dt's so the latest version is used
 echo "Added the latest tios dt's to the repo"
-cp ../../dts/tf-a/fdts/* fdts/
+cp --verbose ../../dts/tf-a/fdts/* fdts/
 
 # Perform cleanup
 echo -e "${GREEN}Perform cleanup${NC}"
