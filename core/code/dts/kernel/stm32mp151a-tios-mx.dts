@@ -251,6 +251,9 @@
 	/* USER CODE BEGIN m4_rproc */
 	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
 	mbox-names = "vq0", "vq1", "shutdown";
+	interrupt-parent = <&exti>;
+	interrupts = <68 1>;
+	wakeup-source;
 	/* USER CODE END m4_rproc */
 
 	m4_system_resources{
