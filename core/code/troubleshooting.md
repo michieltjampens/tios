@@ -328,16 +328,20 @@ Still need to figure out the cause of the failure
 
 ### Issue 6, various odd issues [SOLVED]
 ```
-[    2.028867] sysfs: cannot create duplicate filename '/devices/platform/cpufreq-dt'
-...
-[    2.603873] kobject_add_internal failed for cpufreq-dt with -EEXIST, don't try to register things with the same name in the same directory.
-```
-And
-```
 amba 58005000.mmc: deferred probe pending
 ```
-And
+No longer appear after fixing issue 5...
+
+### Issue 7, m4?
+The line below is repeated a couple of times
 ```c
+stm32-rproc 10000000.m4: error -ENXIO: IRQ index 0 not found
+[   14.608918] platform 10000000.m4: deferred probe pending
+```
+### Issue 8
+```
+[    2.028867] sysfs: cannot create duplicate filename '/devices/platform/cpufreq-dt'
+...
 [    0.531964] Hardware name: STM32 (Device Tree Support)
 [    0.531976] Workqueue: events_unbound deferred_probe_work_func
 [    0.532034]  unwind_backtrace from show_stack+0x10/0x14
@@ -368,12 +372,6 @@ And
 [    0.532835] 9fa0:                                     00000000 00000000 00000000 00000000
 [    0.532851] 9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
 [    0.532866] 9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+...
+[    2.603873] kobject_add_internal failed for cpufreq-dt with -EEXIST, don't try to register things with the same name in the same directory.
 ```
-No longer appear after fixing issue 5...
-
-### Issue 9, m4?
-The line below is repeated a couple of times
-```c
-stm32-rproc 10000000.m4: error -ENXIO: IRQ index 0 not found
-[   14.608918] platform 10000000.m4: deferred probe pending
-``
