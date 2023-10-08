@@ -12,17 +12,18 @@
 #include <dt-bindings/pinctrl/stm32-pinfunc.h>
 
 #include "stm32mp151.dtsi"
-//#include "stm32mp15xa.dtsi" >> has been made empty anyway 
+//#include "stm32mp15xa.dtsi" >> has been made empty and then removed in later versions
 #include "stm32mp15xxac-pinctrl.dtsi"
 #include "stm32mp15-m4-srm.dtsi"
 
 /* USER CODE BEGIN includes */
 #include "stm32mp151a-tios-scmi.dtsi"
 #include <dt-bindings/mfd/st,stpmic1.h>
+#include <dt-bindings/gpio/gpio.h> // Because it's not referenced in the recent u-boot files
 /* USER CODE END includes */
 
 / {
-	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
+	model = "Custom board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
 	compatible = "st,stm32mp151a-tios-mx", "st,stm32mp151";
 
 	memory@c0000000 {

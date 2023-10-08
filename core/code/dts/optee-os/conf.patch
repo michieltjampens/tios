@@ -1,0 +1,14 @@
+diff --git a/core/arch/arm/plat-stm32mp1/conf.mk b/core/arch/arm/plat-stm32mp1/conf.mk
+index 381569e..81f01ba 100644
+--- a/core/arch/arm/plat-stm32mp1/conf.mk
++++ b/core/arch/arm/plat-stm32mp1/conf.mk
+@@ -21,7 +21,8 @@ flavorlist-cryp-512M = $(flavor_dts_file-157C_DK2) \
+ 		       $(flavor_dts_file-135F_DK)
+ 
+ flavorlist-no_cryp-512M = $(flavor_dts_file-157A_DK1) \
+-			  $(flavor_dts_file-157D_DK1)
++			  $(flavor_dts_file-157D_DK1) \
++			  stm32mp151a-tios-mx.dts
+ 
+ flavorlist-cryp-1G = $(flavor_dts_file-157C_DHCOM_PDK2) \
+ 		     $(flavor_dts_file-157C_ED1) \

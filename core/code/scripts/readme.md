@@ -6,6 +6,7 @@ Do note that you'll probably have to chmod +x them to use.
 * build_all.sh
   * run build_tfa.sh
   * run build_optee.sh
+  * run build_uboot.sh
 * build_tfa.sh
   * Create a 'build' folder inside 'code'
   * Get the compiler
@@ -18,5 +19,12 @@ Do note that you'll probably have to chmod +x them to use.
   * Get the compiler
   * Get the repo or pull
   * Copy the dts and replace conf.mk
+  * Build regular and debug (level=4) version
+  * Copy the results to deploy
+* build_uboot.sh
+  * Create a 'build' folder inside 'code'
+  * Get the compiler
+  * Get the repo or pull
+  * Copy the dts and alter makefile in the dts folder
   * Build regular and debug (level=4) version
   * Copy the results to deploy

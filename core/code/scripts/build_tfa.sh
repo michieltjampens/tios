@@ -7,8 +7,10 @@ RED='\033[0;31m'
 ORANGE='\033[0;33m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-# Go up one level
-cd ..
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+echo "Script directory: $SCRIPT_DIR"
+# Go up to the code folder
+cd ${SCRIPT_DIR}/..
 # Create build directory if it doesn't exists
 if [ ! -d "build" ]
 then
@@ -81,11 +83,19 @@ make CROSS_COMPILE=${CC} realclean
 # Perform build for mmc boot
 echo -e "${GREEN}Build the emmc booting into optee${NC}"
 make CROSS_COMPILE=${CC} ARM_ARCH_MAJOR=7 ARCH=aarch32 PLAT=stm32mp1 STM32MP_EMMC=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb
+if [ ! $? -eq 0 ]; then
+    echo -e "${RED}Build failed${NC}"
+    exit
+fi
 # Copy the result to deploy folder
 echo -e "${GREEN}Copying result to deploy${NC}"
 cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-emmc.stm32
 echo -e "${GREEN}Build the emmc booting into sp_min${NC}"
 make CROSS_COMPILE=${CC} ARM_ARCH_MAJOR=7 ARCH=aarch32 AARCH32_SP=sp_min PLAT=stm32mp1 STM32MP_EMMC=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb
+if [ ! $? -eq 0 ]; then
+    echo -e "${RED}Build failed${NC}"
+    exit
+fi
 # Copy the result to deploy folder
 echo -e "${GREEN}Copying result to deploy${NC}"
 cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-spmin.stm32

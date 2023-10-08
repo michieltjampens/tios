@@ -8,3 +8,8 @@ echo -e "${GREEN}Building tf-a!${NC}"
 ./build_tfa.sh
 echo -e "${GREEN}Building optee!${NC}"
 ./build_optee.sh
+echo -e "${GREEN}Building u-boot!${NC}"
+./build_uboot.sh
+echo -e "${GREEN}Building fips!${NC}"
+./build_fip.sh
+echo -e "${GREEN}Everything done!${NC}"
