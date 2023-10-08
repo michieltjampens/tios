@@ -187,7 +187,7 @@ Location:
 Then alter extlinux.conf (found on the bootfs) to include earlyprintk
     * root=/dev/mmcblk0p6 rootwait rw **earlyprintk** console=ttySTM0,115200`
     
-### Issue 1
+### Issue 1, scmi missing [SOLVED]
 ```
 [    0.199871] cpuidle: using governor menu
 [    0.210280] hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
@@ -204,7 +204,7 @@ Then alter extlinux.conf (found on the bootfs) to include earlyprintk
 **Cause** Missing scmi in kernel dts, because it wasn't copy of u-boot?
 **Fix**   Use the u-boot dts
 
-### Issue 2, entropy failure
+### Issue 2, entropy failure [SOLVED]
 ```
 [    1.665708] (NULL device *): TA_CMD_GET_ENTROPY invoke err: ffff000a
 [   12.063815] optee-rng optee-ta-ab7a617c-b8e7-4d8f-8301-d09b61036b64: TA_CMD_GET_ENTROPY invoke err: ffff000a
@@ -240,7 +240,7 @@ But later in boot you get
 ```
 So unsure if this is actually an issue?
 
-### Issue 4, can't find /dev/disk
+### Issue 4, can't find /dev/disk [SOLVED]
 ```
 Starting systemd-udevd version 253.1^
 root '/dev/disk/by-partuuid/491f6117-415d-4f53-88c9-6e0de54deac6' doesn't exist or does not contain a /dev.
@@ -299,30 +299,44 @@ https://wiki.st.com/stm32mpu/wiki/Regulator_overview
 https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/Documentation/devicetree/bindings/mfd/st,stpmic1.yaml
 > Tried altering dt, no difference.
 https://unix.stackexchange.com/questions/533500/systemd-boot-cannot-find-my-root
+**This issue has the same cause and solution as issue 5**
 
-### Issue 5
+### Issue 5, stpmic init [PARTIALLY SOLVED]
 ```
 [    3.365707] stpmic1 0-0033: Failed to get main IRQ: -22
 [    3.369655] stpmic1: probe of 0-0033 failed with error -22
 [    3.384419] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
 ```
+The reason for this is missing interrupt information in the pmic node...
+```c
+pmic: stpmic@33 {
+    ...
+    interrupts-extended = <&exti 55 IRQ_TYPE_EDGE_FALLING>;
+    interrupt-controller;
+    #interrupt-cells = <2>;
+    ...
+};
+```
+After adding this, the output becomes
+```c
+[    3.734803] stpmic1 0-0033: PMIC Chip Version: 0x21
+[    3.791026] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators: Failed to create device link (0x180) with 0-0033
+[    3.814759] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators: Failed to create device link (0x180) with 0-0033
+[    3.823589] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators: Failed to create device link (0x180) with 0-0033
+```
+Still need to figure out the cause of the failure
 
-### Issue 6
+### Issue 6, various odd issues [SOLVED]
 ```
 [    2.028867] sysfs: cannot create duplicate filename '/devices/platform/cpufreq-dt'
 ...
 [    2.603873] kobject_add_internal failed for cpufreq-dt with -EEXIST, don't try to register things with the same name in the same directory.
 ```
-### Issue 7, deferred probe pending
-
+And
 ```
 amba 58005000.mmc: deferred probe pending
 ```
-**Cause**
-MMC is still not up (deferred probe pending), it’s either waiting for pinmux, dma, or even something else…
-
-### Issue 8, events_unbound deferred_probe_work_func 
-
+And
 ```c
 [    0.531964] Hardware name: STM32 (Device Tree Support)
 [    0.531976] Workqueue: events_unbound deferred_probe_work_func
@@ -355,9 +369,11 @@ MMC is still not up (deferred probe pending), it’s either waiting for pinmux, 
 [    0.532851] 9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
 [    0.532866] 9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
 ```
+No longer appear after fixing issue 5...
 
 ### Issue 9, m4?
 The line below is repeated a couple of times
 ```c
 stm32-rproc 10000000.m4: error -ENXIO: IRQ index 0 not found
+[   14.608918] platform 10000000.m4: deferred probe pending
 ``
