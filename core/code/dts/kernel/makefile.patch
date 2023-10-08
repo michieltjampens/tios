@@ -1,0 +1,14 @@
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index 916915e88..99cac3c92 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -1258,7 +1258,8 @@ dtb-$(CONFIG_ARCH_STM32) += \
+ 	stm32mp157f-ed1.dtb \
+ 	stm32mp157f-ev1.dtb \
+ 	stm32mp157f-ev1-a7-examples.dtb \
+-	stm32mp157f-ev1-m4-examples.dtb
++	stm32mp157f-ev1-m4-examples.dtb \
++	stm32mp151a-tios-mx.dtb
+ dtb-$(CONFIG_MACH_SUN4I) += \
+ 	sun4i-a10-a1000.dtb \
+ 	sun4i-a10-ba10-tvbox.dtb \
