@@ -154,7 +154,7 @@
 					 <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
 					 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
 					 <STM32_PINMUX('D', 3, AF9)>, /* SDMMC2_D7 */
-					 <STM32_PINMUX('E', 5, AF9)>; /* SDMMC2_D6 */ 
+					 <STM32_PINMUX('E', 5, AF9)>; /* SDMMC2_D6 */
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <1>;
@@ -332,7 +332,7 @@
 			
 			ldo3-supply = <&vdd_ddr>;
 			ldo4-supply = <&vin>;
-			ldo5-supply = <&vin>;
+			//ldo5-supply = <&vin>;
 			
 			vref_ddr-supply = <&vin>;
 			boost-supply = <&vin>;
