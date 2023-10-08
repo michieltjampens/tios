@@ -99,10 +99,14 @@
 
 	sdmmc2_pins_mx: sdmmc2_mx-0 {
 		pins1 {
-			pinmux = <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
+			pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
+					 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
+					 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
 					 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
 					 <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
 					 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+					 <STM32_PINMUX('D', 3, AF9)>, /* SDMMC2_D7 */
+					 <STM32_PINMUX('E', 5, AF9)>, /* SDMMC2_D6 */
 					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
 			bias-disable;
 			drive-push-pull;
@@ -232,6 +236,7 @@
 			vref_ddr: vref_ddr {
 				regulator-name = "vref_ddr";
 				regulator-always-on;
+				regulator-over-current-protection;					  
 			};
 		};
 		/*
@@ -366,7 +371,7 @@
 	no-sd;
 	no-sdio;
 	st,neg-edge;
-	bus-width = <4>;
+	bus-width = <8>;
 	vmmc-supply = <&v3v3>;
 	vqmmc-supply = <&v3v3>;
 	mmc-ddr-3_3v;

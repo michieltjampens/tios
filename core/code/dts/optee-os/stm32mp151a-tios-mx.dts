@@ -170,7 +170,7 @@
 		CLK_I2C46_HSI
 		CLK_USBO_USBPHY
 		CLK_UART24_HSI
-		CLK_RNG1_CSI	  
+		CLK_RNG1_CSI
 		CLK_MPU_PLL1P
 		CLK_AXI_PLL2P
 		CLK_MCU_PLL3P
@@ -259,7 +259,7 @@
 
 	/* USER CODE BEGIN rng1 */
 	/* USER CODE END rng1 */
-}; 		 
+};
 &rtc{
 	status = "okay";
 

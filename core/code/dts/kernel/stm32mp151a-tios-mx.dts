@@ -124,10 +124,14 @@
 
 	sdmmc2_pins_mx: sdmmc2_mx-0 {
 		pins1 {
-			pinmux = <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
+			pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
+					 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
+					 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
 					 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
 					 <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
 					 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+					 <STM32_PINMUX('D', 3, AF9)>, /* SDMMC2_D7 */
+					 <STM32_PINMUX('E', 5, AF9)>, /* SDMMC2_D6 */
 					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
 			bias-disable;
 			drive-push-pull;
@@ -143,10 +147,14 @@
 
 	sdmmc2_opendrain_pins_mx: sdmmc2_opendrain_mx-0 {
 		pins1 {
-			pinmux = <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
+			pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
+					 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
+					 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
 					 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
 					 <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
-					 <STM32_PINMUX('B', 15, AF9)>; /* SDMMC2_D1 */
+					 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+					 <STM32_PINMUX('D', 3, AF9)>, /* SDMMC2_D7 */
+					 <STM32_PINMUX('E', 5, AF9)>; /* SDMMC2_D6 */ 
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <1>;
@@ -167,11 +175,15 @@
 
 	sdmmc2_sleep_pins_mx: sdmmc2_sleep_mx-0 {
 		pins {
-			pinmux = <STM32_PINMUX('B', 3, ANALOG)>, /* SDMMC2_D2 */
+			pinmux = <STM32_PINMUX('A', 8, ANALOG)>, /* SDMMC2_D4 */
+					 <STM32_PINMUX('A', 9, ANALOG)>, /* SDMMC2_D5 */
+					 <STM32_PINMUX('B', 3, ANALOG)>, /* SDMMC2_D2 */
 					 <STM32_PINMUX('B', 4, ANALOG)>, /* SDMMC2_D3 */
 					 <STM32_PINMUX('B', 14, ANALOG)>, /* SDMMC2_D0 */
 					 <STM32_PINMUX('B', 15, ANALOG)>, /* SDMMC2_D1 */
+					 <STM32_PINMUX('D', 3, ANALOG)>, /* SDMMC2_D7 */
 					 <STM32_PINMUX('E', 3, ANALOG)>, /* SDMMC2_CK */
+					 <STM32_PINMUX('E', 5, ANALOG)>, /* SDMMC2_D6 */
 					 <STM32_PINMUX('G', 6, ANALOG)>; /* SDMMC2_CMD */
 		};
 	};
@@ -336,7 +348,7 @@
 			};
 
 			vdd: buck3 {
-				regulator-compatible = "buck3"; // might not be needed
+				regulator-compatible = "buck3"; // might not be needed			 
 				regulator-name = "vdd";
 				regulator-min-microvolt = <3300000>;
 				regulator-max-microvolt = <3300000>;
