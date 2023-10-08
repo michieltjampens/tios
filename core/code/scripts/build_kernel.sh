@@ -7,7 +7,7 @@ RED='\033[0;31m'
 ORANGE='\033[0;33m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-# Go up to the code folder
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 echo "Script directory: $SCRIPT_DIR"
 # Go up to the code folder
@@ -46,57 +46,50 @@ then
 	cd ..
 fi
 # Requires tools
-sudo apt install build-essential swig -y
+
 # --------
-# U-BOOT
+# Kernel
 # --------
 # Get the sources
-if [ ! -d "u-boot" ]
+if [ ! -d "linux" ]
 then
-	echo -e "${ORANGE}Retrieving the U-Boot git repo${NC}"
-	#git clone -b v2023.10 https://github.com/u-boot/u-boot --depth=1
-	#Stuck on the missing label hsem... 
-	git clone https://github.com/STMicroelectronics/u-boot --depth=1
-	echo -e "${ORANGE}Applying the patch${NC}"	
-	cd u-boot
-	git apply ${SCRIPT_DIR}/../dts/u-boot/makefile.patch
+	echo -e "${ORANGE}Retrieving the ST linux-os git repo${NC}"
+	git clone https://github.com/STMicroelectronics/linux.git -b v6.1-stm32mp-r1 --depth 1
+	cd linux
+	echo -e "${ORANGE}Updating the makefile to add the dts${NC}"
+	git apply ${SCRIPT_DIR}/../dts/kernel/makefile.patch
+	if [ ! $? -eq 0 ]; then
+    	echo -e "${RED}Failed to apply patch${NC}"
+    exit
+fi
 else
-	echo -e "${GREEN}ST OPTEE repo present, doing a pull${NC}"
-	cd u-boot
+	echo -e "${GREEN}ST Linux repo present, doing a pull${NC}"
+	cd linux
 	git pull
 fi
 # Copy the dt's
 echo -e "${GREEN}Adding the tios dt's to the repo, so the latest are used${NC}"
-cp ../../dts/u-boot/* arch/arm/dts/
-
+cp -v ../../dts/kernel/*.dts* arch/arm/boot/dts/
+if [ ! $? -eq 0 ]; then
+    echo -e "${RED}Failed to copy dts${NC}"
+    exit
+fi
 # Perform cleanup
 echo -e "${GREEN}Perform cleanup${NC}"
-make ARCH=arm CROSS_COMPILE=${CC} distclean
-# Perform build for default version
-echo -e "${GREEN}Prepare the config${NC}"
-make ARCH=arm CROSS_COMPILE=${CC} stm32mp15_defconfig
-echo -e "${GREEN}Build${NC}"
-make ARCH=arm CROSS_COMPILE=${CC} DEVICE_TREE=stm32mp151a-tios-mx -j$(nproc) all
+make CROSS_COMPILE=${CC} clean
+echo -e "${GREEN}Apply config${NC}"
+make ARCH=arm multi_v7_defconfig fragment*.config
+# Allow user to make changes
+make ARCH=arm nconfig
+# Perform build
+echo -e "${GREEN}Build it${NC}"
+make CROSS_COMPILE=${CC} ARCH=arm uImage vmlinux dtbs LOADADDR=0xC2000040 -j$(nproc)
 if [ ! $? -eq 0 ]; then
     echo -e "${RED}Build failed${NC}"
     exit
 fi
+# Copy the result to deploy folder
 echo -e "${GREEN}Copying result to deploy${NC}"
-cp u-boot-dtb.bin ../deploy/
-cp u-boot-nodtb.bin ../deploy/
-cp u-boot.dtb ../deploy/
-echo -e "${GREEN}Perform cleanup${NC}"
-make ARCH=arm CROSS_COMPILE=${CC} distclean
-echo -e "${GREEN}Prepare the config${NC}"
-make ARCH=arm CROSS_COMPILE=${CC} stm32mp15_defconfig
-echo -e "${GREEN}Build with debug enabled${NC}"
-make ARCH=arm CROSS_COMPILE=${CC} DEVICE_TREE=stm32mp151a-tios-mx -j$(nproc) LOG_LEVEL=LOG_LEVEL_INFO DEBUG=1 all
-if [ ! $? -eq 0 ]; then
-    echo -e "${RED}Build failed${NC}"
-    exit
-fi
-echo -e "${GREEN}Copying result to deploy/debug${NC}"
-cp u-boot-dtb.bin ../deploy/debug/
-cp u-boot-nodtb.bin ../deploy/debug/
-cp u-boot.dtb ../deploy/debug/
-echo -e "${GREEN}Finished with u-boot${NC}"
+cp build/core/*_v2.bin ../deploy/
+
+echo -e "${GREEN}Finished building kernel${NC}"
