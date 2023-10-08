@@ -18,23 +18,18 @@
     * Clone the git `git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git -b linux-6.1.y --depth 1`
             * -b linux-6.1.y -> get that branch
             * --depth 1 -> don't get the history (makes for a smaller download/install)
-    
+* Go into the created linux folder
 * Copy the generated `stm32mp151a-tios-mx.dts` into `arch/arm/boot/dts`
-* Add it to the list of generated dtb's 
-    * Open the file `arch/arm/boot/dts/Makefile`
-    * Look for dtb-$(CONFIG_ARCH_STM32) += \
-    * Append a \ to the last entry of that listing
-    * Add `stm32mp151a-tios-mx.dtb`to the list, **DTB not DTS**
+    * cp -v ../../dts/kernel/*.dts* arch/arm/boot/dts/
+* Apply the patch to alter the makefile
+    * git apply ../../dts/kernel/makefile.patch
     
 ## 2. Building
-For easier build management it's recommended to make a dedicated folder for that 
-* First go into the git folder `cd <directory to kernel source code>`
-* Create the var that holds the build folder `export OUTPUT_BUILD_DIR=$PWD/../build`
-* Create the folder for the var `mkdir -p ${OUTPUT_BUILD_DIR}/install_artifact/boot/`
-* Prepare the .config inside there `make ARCH=arm O="${OUTPUT_BUILD_DIR}" multi_v7_defconfig fragment*.config`
+
+* Prepare the .config `make ARCH=arm multi_v7_defconfig fragment*.config`
 
 Now it's possible to make changes to the config
-* To open a gui `make ARCH=arm nconfig O="${OUTPUT_BUILD_DIR}"`
+* To open a gui `make ARCH=arm nconfig`
 
 Finally build it
 * Kernel 
