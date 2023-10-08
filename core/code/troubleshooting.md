@@ -354,5 +354,10 @@ MMC is still not up (deferred probe pending), it’s either waiting for pinmux, 
 [    0.532835] 9fa0:                                     00000000 00000000 00000000 00000000
 [    0.532851] 9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
 [    0.532866] 9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-
 ```
+
+### Issue 9, m4?
+The line below is repeated a couple of times
+```c
+stm32-rproc 10000000.m4: error -ENXIO: IRQ index 0 not found
+``
