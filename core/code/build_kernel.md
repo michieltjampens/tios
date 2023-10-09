@@ -65,6 +65,7 @@ Finally build it
     * sudo cp -r boot/* /media/$USER/bootfs/
 * Copy kernel modules
     * sudo cp -rf lib/modules/* /media/$USER/rootfs/lib/modules/
+    * sync
 * Unmount the partitions
     * sudo umount /media/$USER/rootfs
     * sudo umount /media/$USER/bootfs
