@@ -336,6 +336,20 @@ No longer appear after fixing issue 5...
 The line below is repeated a couple of times
 ```c
 stm32-rproc 10000000.m4: error -ENXIO: IRQ index 0 not found
+```
+**Cause** Missing interrupt info in the node
+**Solution**
+Adding the interrupt lines
+```c
+&m4_rproc{	
+	/* USER CODE BEGIN m4_rproc */	
+	interrupt-parent = <&exti>;
+	interrupts = <68 1>;
+	wakeup-source;
+	/* USER CODE END m4_rproc */
+```
+
+```c
 [   14.608918] platform 10000000.m4: deferred probe pending
 ```
 ### Issue 8
