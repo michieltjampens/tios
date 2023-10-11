@@ -1,0 +1,12 @@
+## Guides
+There are five guides:
+* customize_dts.md
+  * starts from the CubeMX project
+  * alters the generated DTS to match the hardware
+* build_yocto.md
+   * starts from the DTS files
+   * builds all boot stages, kernel and rootfs
+* build_boot.md
+   * build the boot stages and allows for customization (fe. increased debug level)
+* build_rootfs
+   * explains how to create a debian 12 rootfs
