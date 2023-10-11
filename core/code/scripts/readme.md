@@ -7,6 +7,7 @@ Do note that you'll probably have to chmod +x them to use.
   * run build_tfa.sh
   * run build_optee.sh
   * run build_uboot.sh
+  * run build_fip.sh
 * build_tfa.sh
   * Create a 'build' folder inside 'code'
   * Get the compiler
@@ -28,3 +29,9 @@ Do note that you'll probably have to chmod +x them to use.
   * Copy the dts and alter makefile in the dts folder
   * Build regular and debug (level=4) version
   * Copy the results to deploy
+* build_debian.sh
+  * Create a 'build' folder inside 'code'
+  * Get the compiler
+  * Get the debian bookworm sources
+  * Alter sources.list, fstab and hostname
+  * Mount as chroot
