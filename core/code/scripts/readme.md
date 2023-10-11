@@ -1,4 +1,4 @@
-# Content
+# Scripts
 
 This folder contains bash scripts that automate the whole build process.  
 Do note that you'll probably have to chmod +x them to use.
