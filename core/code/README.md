@@ -1,9 +1,9 @@
 # Content
 ## Folders
 * **Yocto** contains the machine/conf
-* **dts** contains the final DTS
+* **dts** contains the final DTS and relevant files for building
 * **cubemx** contains the CubeMX project files
-* **scripts** contains scripts that automate the build process
+* **scripts** contains scripts that automate the build process of tfa,uboot,optee,kernel and rootfs
 
 ## Guides
 There are five guides:
