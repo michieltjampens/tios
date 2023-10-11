@@ -3,7 +3,7 @@
 This folder contains bash scripts that automate the whole build process.  
 Do note that you'll probably have to chmod +x them to use.
 
-* build_all.sh
+* build_bootstages.sh
   * run build_tfa.sh
   * run build_optee.sh
   * run build_uboot.sh
