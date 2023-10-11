@@ -137,23 +137,19 @@ Boot works fine when going through USB, so does programming.
 When trying to boot from eMMC
 
 ### Cause?
-Buswidth for the sdmmc wasn't correct in the TF-A.  
-In hindsight, programming was working because this is done by U-Boot which uses a different device tree (without that mistake).
-The odd thing about this is that part was copy pasted from the 'official' device tree from Myir
+Buswidth was at 8 but no pin definitions were given for 5 to 8,
 
 ### Fix
 
 ```c
-	/* USER CODE BEGIN sdmmc2 */
-	non-removable;
-	no-sd;
-	no-sdio;
-	st,neg-edge;
-	bus-width = <4>; // Changed from 8
-	vmmc-supply = <&v3v3>;
-	vqmmc-supply = <&vdd>;
-	mmc-ddr-3_3v;
-	/* USER CODE END sdmmc2 */
+	pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
+			 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
+			 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
+			 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
+			 <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
+			 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+			 <STM32_PINMUX('D', 3, AF9)>, /* SDMMC2_D7 */
+			 <STM32_PINMUX('E', 5, AF9)>; /* SDMMC2_D6 */
 ```
 
 ## Stuck at 'Starting kernel'
