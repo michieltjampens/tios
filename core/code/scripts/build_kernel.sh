@@ -29,11 +29,14 @@ then
 	tar -xf x86_64-gcc-11.3.0-nolibc-arm-linux-gnueabi.tar.xz
 	# Remove the tar
 	rm x86_64-gcc-11.3.0-nolibc-arm-linux-gnueabi.tar.xz
+	echo CC=`pwd`/gcc-11.3.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi- > compiler.sh
 else
 	echo -e "${GREEN}Compiler found!${NC}"
 fi
 # Create the var (pwd refers to the current folder)
 export CC=`pwd`/gcc-11.3.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-
+# Create a file to source that cc thing
+
 # Create a deploy folder, if it doensn't exist
 if [ ! -d "deploy" ]
 then
@@ -61,6 +64,8 @@ then
 	if [ ! $? -eq 0 ]; then
     	echo -e "${RED}Failed to apply patch${NC}"
     exit
+    echo -e "${GREEN}Apply config${NC}"
+	make ARCH=arm multi_v7_defconfig fragment*.config
 fi
 else
 	echo -e "${GREEN}ST Linux repo present, doing a pull${NC}"
@@ -75,14 +80,13 @@ if [ ! $? -eq 0 ]; then
     exit
 fi
 # Perform cleanup
-echo -e "${GREEN}Perform cleanup${NC}"
-make CROSS_COMPILE=${CC} clean
-echo -e "${GREEN}Apply config${NC}"
-make ARCH=arm multi_v7_defconfig fragment*.config
+#echo -e "${GREEN}Perform cleanup${NC}"
+#make CROSS_COMPILE=${CC} clean
+
 # Allow user to make changes
 make ARCH=arm nconfig
 # Perform build
-echo -e "${GREEN}Build it${NC}"
+echo -e "${GREEN}Build uImage and dtb's${NC}"
 make CROSS_COMPILE=${CC} ARCH=arm uImage vmlinux dtbs LOADADDR=0xC2000040 -j$(nproc)
 if [ ! $? -eq 0 ]; then
     echo -e "${RED}Build failed${NC}"
@@ -90,6 +94,20 @@ if [ ! $? -eq 0 ]; then
 fi
 # Copy the result to deploy folder
 echo -e "${GREEN}Copying result to deploy${NC}"
-cp build/core/*_v2.bin ../deploy/
-
+cp arch/arm/boot/uImage ../deploy/bootfs/
+echo -e "${GREEN}Build modules${NC}"
+make CROSS_COMPILE=${CC} ARCH=arm modules -j$(nproc)
+if [ ! $? -eq 0 ]; then
+    echo -e "${RED}Building modules failed${NC}"
+    exit
+fi
+echo -e "${GREEN}Building artifacts${NC}"
+make CROSS_COMPILE=${CC} ARCH=arm INSTALL_MOD_PATH="../deploy/bootfs/install_artifact" modules_install -j$(nproc)
+if [ ! $? -eq 0 ]; then
+    echo -e "${RED}Building artifacts failed${NC}"
+    exit
+fi
+echo -e "${GREEN}Remove the link on install_artifact/lib/modules${NC}"
+cd ../deploy/bootfs/install_artifact/lib/modules/6.1.28-dirty
+rm source build
 echo -e "${GREEN}Finished building kernel${NC}"
