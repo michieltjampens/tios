@@ -1,21 +1,7 @@
 # Content
 ## Folders
-* **Yocto** contains the machine/conf
-* **dts** contains the final DTS
 * **cubemx** contains the CubeMX project files
-* **scripts** contains scripts that automate the build process
-
-## Guides
-There are five guides:
-* customize_dts.md
-  * starts from the CubeMX project
-  * alters the generated DTS to match the hardware
-* build_yocto.md
-   * starts from the DTS files
-   * builds all boot stages, kernel and rootfs
-* build_boot.md
-   * build the boot stages and allows for customization (fe. increased debug level)
-* build_rootfs
-   * explains how to create a debian 12 rootfs
-* troubleshooting.md
-   * Info on various issues encountered and how they were solved 
+* **dts** contains the final DTS and relevant patches for building
+* **guides** contains guides on building bootstages, kernel and rootfs
+* **Yocto** contains the machine/conf for yocto build
+* **scripts** contains scripts that automate the build process of tfa,uboot,optee,kernel and rootfs

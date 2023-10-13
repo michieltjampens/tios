@@ -28,10 +28,10 @@ This is because the stm32mp15_clsrc.h changed between mainline (2.9.0 at time of
 Overwriting mainline with ST version of this file fixed this.
 
 ## ERROR:   regul ldo3: max value 750 is invalid
-````c
+```c
 ERROR:   regul ldo3: max value 750 is invalid
 WARNING: register_pmic:423 failed to register ldo3
-````
+```
 
 ### Cause
 This wasn't an issue with old ECO but is now.
@@ -137,23 +137,19 @@ Boot works fine when going through USB, so does programming.
 When trying to boot from eMMC
 
 ### Cause?
-Buswidth for the sdmmc wasn't correct in the TF-A.  
-In hindsight, programming was working because this is done by U-Boot which uses a different device tree (without that mistake).
-The odd thing about this is that part was copy pasted from the 'official' device tree from Myir
+Buswidth was at 8 but no pin definitions were given for 5 to 8,
 
 ### Fix
 
 ```c
-	/* USER CODE BEGIN sdmmc2 */
-	non-removable;
-	no-sd;
-	no-sdio;
-	st,neg-edge;
-	bus-width = <4>; // Changed from 8
-	vmmc-supply = <&v3v3>;
-	vqmmc-supply = <&vdd>;
-	mmc-ddr-3_3v;
-	/* USER CODE END sdmmc2 */
+	pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
+			 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
+			 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
+			 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
+			 <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
+			 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+			 <STM32_PINMUX('D', 3, AF9)>, /* SDMMC2_D7 */
+			 <STM32_PINMUX('E', 5, AF9)>; /* SDMMC2_D6 */
 ```
 
 ## Stuck at 'Starting kernel'
@@ -293,12 +289,6 @@ Part    Start LBA       End LBA         Name
         guid:   491f6117-415d-4f53-88c9-6e0de54deac6
 ```
 
-Regulator issue?
-https://community.st.com/t5/stm32-mpus-products/root-dev-mmcblk0p6-doesn-t-exist-or-does-not-contain-a-dev/td-p/65350
-https://wiki.st.com/stm32mpu/wiki/Regulator_overview
-https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/Documentation/devicetree/bindings/mfd/st,stpmic1.yaml
-> Tried altering dt, no difference.
-https://unix.stackexchange.com/questions/533500/systemd-boot-cannot-find-my-root
 **This issue has the same cause and solution as issue 5**
 
 ### Issue 5, stpmic init [PARTIALLY SOLVED]
@@ -330,7 +320,7 @@ Still need to figure out the cause of the failure
 ```
 amba 58005000.mmc: deferred probe pending
 ```
-No longer appear after fixing issue 5...
+No longer appears after fixing issue 5...
 
 ### Issue 7, m4?
 The line below is repeated a couple of times
@@ -348,7 +338,7 @@ Adding the interrupt lines
 	wakeup-source;
 	/* USER CODE END m4_rproc */
 ```
-
+But still got.
 ```c
 [   14.608918] platform 10000000.m4: deferred probe pending
 ```
