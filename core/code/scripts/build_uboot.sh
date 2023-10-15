@@ -89,6 +89,10 @@ cp u-boot-nodtb.bin ../deploy/
 cp u-boot.dtb ../deploy/
 echo -e "${GREEN}Perform cleanup${NC}"
 make ARCH=arm CROSS_COMPILE=${CC} distclean
+if [ ! $? -eq 0 ]; then
+    echo -e "${RED}Cleanup failed${NC}"
+    exit 1
+fi
 echo -e "${GREEN}Prepare the config${NC}"
 make ARCH=arm CROSS_COMPILE=${CC} stm32mp15_defconfig
 echo -e "${GREEN}Build with debug enabled${NC}"
