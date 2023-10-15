@@ -560,5 +560,9 @@
 &optee {
 	status = "okay";
 };
+&cpu0 {
+ 	clock-frequency = <650000000>;
+	cpu-supply = <&vddcore>;
+};
 /* USER CODE END addons */
 
