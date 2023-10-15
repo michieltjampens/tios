@@ -318,6 +318,7 @@
 		pagesize = <32>;
 		//wp-gpios = <&gpioa 14 0>;
 		//num-addresses = <8>;
+		};
 	pmic: stpmic@33 {
 		compatible = "st,stpmic1";
 		reg = <0x33>;
@@ -419,6 +420,7 @@
 		watchdog {
 			compatible = "st,stpmic1-wdt";
 			status = "disabled";
+			};
 	};
 	/* USER CODE END i2c4 */
 };
