@@ -334,7 +334,6 @@
 			
 			ldo3-supply = <&vdd_ddr>;
 			ldo4-supply = <&vin>;
-			//ldo5-supply = <&vin>;
 			
 			vref_ddr-supply = <&vin>;
 			boost-supply = <&vin>;
@@ -526,7 +525,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc_port0 */
-	phy-supply = <&vdd_usb>;
+	phy-supply = <&vdd_usb>; // Required for u-boot ums
 	/* USER CODE END usbphyc_port0 */
 };
 
@@ -534,7 +533,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc_port1 */
-	phy-supply = <&vdd_usb>;
+	phy-supply = <&vdd_usb>; // Required for u-boot ums
 	st,tune-hs-dc-level = <2>;
 	st,enable-fs-rftime-tuning;
 	st,enable-hs-rftime-reduction;
@@ -554,5 +553,8 @@
 &optee {
 	status = "okay";
 };
+&cpu0 {
+ 	clock-frequency = <650000000>;
+	cpu-supply = <&vddcore>;
+};
 /* USER CODE END addons */
-
