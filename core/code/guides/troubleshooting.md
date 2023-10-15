@@ -379,3 +379,16 @@ But still got.
 ...
 [    2.603873] kobject_add_internal failed for cpufreq-dt with -EEXIST, don't try to register things with the same name in the same directory.
 ```
+
+### Issue 9, missing cpufreq propert
+```
+[ 0.003188] /cpus/cpu@0 missing clock-frequency property
+```
+**Solution**
+Add/edit the &cpu node (in addons section)
+```
+&cpu0 {
+ 	clock-frequency = <650000000>;
+	cpu-supply = <&vddcore>;
+};
+```
