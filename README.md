@@ -30,15 +30,10 @@ The main part of the tower.
 - **Power:**
   - [36V to 5V(0.6A max) regulator](https://www.monolithicpower.com/en/mpm3506a.html)
 - **On-board Connectivity**
-  - microsd slot
+  - Microsd slot
   - USB Client for usb-gadget and updating
-  - [Debug uart via USB](https://www.silabs.com/interface/usb-bridges/usbxpress)
-  - Recovery mode switch
-    
-### Base IO
-
-Will be the base 'floor', providing:
-- one ethernet RJ45
-- one USB type A host connector
-- 26V to 5V@2A DC-DC 
-- Filtered Power in passthrough to upper layers via one of the reserved pins
+  - Connector for RJ45 adapter, LAN870A
+  - Recovery mode short pads
+  - Power & Reset switch
+- **Other logic**
+  - RTC with connected wake up pin and battery
