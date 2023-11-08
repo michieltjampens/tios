@@ -15,7 +15,7 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
 ### Core_v2
 - Rev 0 being tested
 - 55x52mm
-- Board contains: 24V DC-DC with filtering etc, RTC (+bat), µSDC slot, µUSB client, ethernet.
+- Board contains: 24V DC-DC with filtering etc, RTC (+bat), µSDC slot, µUSB otg, ethernet.
 - 1mm pitch JST for I2C6, ethernet, USB1
 
 ### Core_v2_tiny
