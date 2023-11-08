@@ -5,7 +5,7 @@
 * **corev2_rev0** Files for rev0 of core v2, including pdf of the schematic and png of the layout
   
 ## Files
-All the files are (Diptrace)[https://diptrace.com/] schematics or layout.
+All the files are [Diptrace](https://diptrace.com/) schematics or layout.
 
 ### Core_v1.*
 - No longer worked on, but also not 'production ready'. Might pick this back up at some time.
