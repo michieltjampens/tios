@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dcafs>
+  <path delimiter=";" id="fuse">
+    <filter type="starts">VC:0x1D</filter>
+    <math>
+      <op scale="2">i1=i1*(32/65535)</op>
+      <op scale="1">i2=i2*(4000/65535)</op>
+      <op scale="2">i3=i3*(32/65535)</op>
+      <op scale="1">i4=i4*(4000/65535)</op>
+      <op scale="2">i5=i5*(32/65535)</op>
+      <op scale="1">i6=i6*(4000/65535)</op>
+      <op scale="2">i7=i7*(32/65535)</op>
+      <op scale="1">i8=i8*(4000/65535)</op>
+    </math>
+    <store>
+      <real group="o1" i="1" unit="V">voltage</real>
+      <real group="o1" i="2" unit="mA">current</real>
+      <real group="o1" o="(o1_voltage*o1_current)/1000" unit="W" scale="3">power</real>
+
+      <real group="o2" i="3" unit="V">voltage</real>
+      <real group="o2" i="4" unit="mA">current</real>
+      <real group="o2" o="(o2_voltage*o2_current)/1000" unit="W" scale="3">power</real>
+
+      <real group="o3" i="5" unit="V">voltage</real>
+      <real group="o3" i="6" unit="mA">current</real>
+      <real group="o3" o="(o3_voltage*o3_current)/1000" unit="W" scale="3">power</real>
+
+      <real group="o4" i="7" unit="V">voltage</real>
+      <real group="o4" i="8" unit="mA">current</real>
+      <real group="o4" o="(o4_voltage*o4_current)/1000" unit="W" scale="3">power</real>
+    </store>
+  </path>
+</dcafs>
