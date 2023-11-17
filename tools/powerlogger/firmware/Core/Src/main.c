@@ -12,8 +12,10 @@ uint16_t i2cError=0;
 uint8_t pacAddress=0x00;
 uint16_t heartBeats=0;
 uint16_t recBuffer[12];
+uint8_t recBuffer8bit[8];
 uint8_t check=0;
 uint8_t pacState=0;
+uint8_t temp=0;
 
 static settings_t _settings_in_ram;
 settings_t *GLOBAL_settings_ptr = &_settings_in_ram;
@@ -35,13 +37,15 @@ int main(void){
 
 	init();
 
+
 	// To test RAM '.data' section initialization:
 	//static int dont_panic = 42;
 	while (1) {
+
 		if( error != 0x00){
 
 		}
-		if( check==5 && pacState==PAC_FOUND){
+		if( check>=5 && pacState==PAC_FOUND){
 			i2cError=I2C1_SendSingleByte(pacAddress,PAC1954_REFRESH_V);
 			if( i2cError != 1){
 				LPUART1_SendString("I2C:Error->");
@@ -53,7 +57,7 @@ int main(void){
 			}
 		}
 		if( check>=10 && pacState==PAC_REFRESHED){
-			check=0;
+
 			// Read Vbus, Vsense
 			i2cError=I2C1_Read16bitData( pacAddress, PAC1954_VBUSN_REG, 8,recBuffer);
 			if( i2cError == 1){
@@ -79,30 +83,21 @@ int main(void){
 			}else{
 				i2cError++;
 			}
-			// Read Vpower
-			i2cError=I2C1_Read16bitData( pacAddress, PAC1954_VPOWERN_REG, 8,recBuffer);
-			if( i2cError == 1){
 
-				pacState=PAC_FOUND;
-				sendData();
-			}else if(i2cError==0x11){
-				LPUART1_SendString("I2C:TimeOut\r\n");
-			}else if(i2cError==0x12){
-				LPUART1_SendString("I2C:TimeOut2\r\n");
-			}else if(i2cError==0x13){
-				LPUART1_SendString("I2C:TimeOut3\r\n");
-			}else if(i2cError==0x14){
-				LPUART1_SendString("I2C:TimeOut4\r\n");
-			}else{
-				i2cError++;
-			}
+			//readAccumulator(1);
+			//readAccumulator(2);
+			//readAccumulator(3);
+			readAccumulator(4);
+
+			pacState=PAC_FOUND;
+			check=0;
 		}
 		if( LPUART1_hasCmd() ){
 			LPUART1_Transfer_Buffer();
 		}
 	}
 }
- 
+
 /**
   * Brief   This function configures the system clock @16MHz and voltage scale 1
   *         assuming the registers have their reset value before the call.
@@ -175,7 +170,7 @@ void init(void){
 
     configure_IO();
     HEART_ON;
-
+    LPUART1_SendWordHexNoPrefix( 0xC080 );
     LPUART1_SendString("I>Booting...\r\n");
     delay = 10; // wait a bit
     while(delay!=0); // 10ms delay
@@ -184,12 +179,11 @@ void init(void){
     	// Get the settings from e²prom
     	memcpy(GLOBAL_settings_ptr, (uint32_t*)DATA_E2_ADDR, sizeof(settings_t));
 
-    	//if( _settings_in_ram.spare==0x00){ // nothing in there yet
+    	if( _settings_in_ram.spare==0x00){ // nothing in there yet
     		resetSettings();
-    	//}
+    	}
     }
     pacAddress = _settings_in_ram.pacAddress;
-    I2C1_FindDevices();
 
     // Check if I2C hardware is found
     LPUART1_SendString("I>PAC1954:");
@@ -340,6 +334,34 @@ void sendData(){
 	  LPUART1_SendString(";");
 	  LPUART1_SendDec(lastVoltCur.out4_current);
 	  LPUART1_SendString("\r\n");
+}
+void readAccumulator( uint8_t acc ){
+	i2cError=I2C1_Read8bitData( pacAddress, 0x02+acc , 7,recBuffer8bit);
+	if( i2cError == 1){
+		LPUART1_SendString("AC;");
+		switch(acc){
+			case 1:LPUART1_SendByte('3'); break;
+			case 2:LPUART1_SendByte('4'); break;
+			case 3:LPUART1_SendByte('1'); break;
+			case 4:LPUART1_SendByte('2'); break;
+		}
+
+		LPUART1_SendString(";");
+		LPUART1_SendHex(recBuffer8bit[0]);
+		LPUART1_SendByteHexNoPrefix(recBuffer8bit[1]);
+		LPUART1_SendByteHexNoPrefix(recBuffer8bit[2]);
+		LPUART1_SendByteHexNoPrefix(recBuffer8bit[3]);
+		LPUART1_SendByteHexNoPrefix(recBuffer8bit[4]);
+		LPUART1_SendByteHexNoPrefix(recBuffer8bit[5]);
+		LPUART1_SendByteHexNoPrefix(recBuffer8bit[6]);
+		LPUART1_SendString(";");
+	}
+	i2cError=I2C1_Read16bitData( pacAddress, PAC1954_ACC_CNT_REG , 2,recBuffer);
+	if( i2cError == 1){
+		LPUART1_SendHex(recBuffer[0]);
+		LPUART1_SendWordHexNoPrefix(recBuffer[1]);
+	}
+	LPUART1_SendString("\r\n");
 }
 /* ************************************* E E P R O M ************************************************************** */
 void resetSettings(){

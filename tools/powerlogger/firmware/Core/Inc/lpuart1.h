@@ -21,6 +21,7 @@ extern __IO uint16_t error;
 
 /* Exported functions prototypes ---------------------------------------------*/
 void LPUART1_Configure(void);
+uint8_t LPUART1_Buffer_Free(void);
 void LPUART1_Configure_Setup(void);
 void LPUART1_Configure_GPIO(void);
 
@@ -32,6 +33,8 @@ void LPUART1_SendArray( uint8_t *buffer, uint8_t length );
 void LPUART1_SendByte( uint8_t data );
 void LPUART1_SendDec( uint16_t nr );
 void LPUART1_SendHex( uint16_t number );
+void LPUART1_SendByteHexNoPrefix( uint8_t nr );
+void LPUART1_SendWordHexNoPrefix( uint16_t nr );
 void LPUART1_SendCRLF(void);
 
 void LPUART1_Transfer_Buffer( void );

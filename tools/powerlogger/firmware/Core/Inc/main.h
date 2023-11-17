@@ -37,7 +37,7 @@ void Enable_All_Outputs( void );
 void executeCommand( uint8_t * cmd );
 void sendData(void);
 uint8_t I2C1_FindPAC1954(void);
-
+void readAccumulator( uint8_t acc );
 void resetSettings(void);
 uint32_t settings_write(void);
 /* Private defines -----------------------------------------------------------*/

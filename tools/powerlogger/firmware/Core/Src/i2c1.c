@@ -11,6 +11,7 @@ uint8_t * i2c_rxBuffer_8bit;
 uint16_t * i2c_rxBuffer_16bit;
 uint8_t bits=0x00;
 uint8_t rec=0x00;
+uint16_t test=0;
 /* *********************************** S E T U P *************************************************** */
 /**
  * Brief Init the I2C1 peripheral and the used GPIO's
@@ -115,6 +116,8 @@ uint8_t I2C1_Read8bitData( uint8_t i2c_Address, uint8_t reg, uint8_t length, uin
 uint8_t I2C1_ReadData( uint8_t i2c_Address, uint8_t reg, uint8_t length){
 	uint32_t tickstart;
 
+	rec=length;
+
 	tickstart = Tick;
 	while((I2C1->ISR & I2C_ISR_TXE) == 0){  // Wait till transfer buffer is empty
 		if ((Tick - tickstart ) > I2C_TIMEOUT_VALUE){
@@ -163,6 +166,13 @@ uint8_t I2C1_ReadData( uint8_t i2c_Address, uint8_t reg, uint8_t length){
 		}
 	}
 	SET_BIT(I2C1->ICR, I2C_ICR_STOPCF); // Clear flag
+
+	tickstart = Tick;
+	while(rec != 0){ //wait for receiving the data?
+		if ((Tick - tickstart ) > I2C_TIMEOUT_VALUE){
+			return ERROR_I2C_TIMEOUT4;
+		}
+	}
 	return 1;
 }
 
@@ -184,19 +194,18 @@ void I2C1_IRQHandler(void){
 
   if(I2C1->ISR & I2C_ISR_RXNE){ // Receive buffer not empty
 	  if( bits == 8 ){
-		  *i2c_rxBuffer_8bit = I2C1->RXDR; /* Read receive register, will clear RXNE flag */
-			/* do something with it */
+		  *i2c_rxBuffer_8bit = I2C1->RXDR;
 		  i2c_rxBuffer_8bit++;
+		  rec--;
 	  }else if( bits == 16 ){
-		  rec++;
 		  if( rec%2==0 ){
-			  *i2c_rxBuffer_16bit += I2C1->RXDR;/* Read second byte from receive register, will clear RXNE flag */
-			  i2c_rxBuffer_16bit++;
-		  }else{
 			  *i2c_rxBuffer_16bit = I2C1->RXDR; /* Read receive register, will clear RXNE flag */
-			  *i2c_rxBuffer_16bit = *i2c_rxBuffer_16bit << 8;/* Shift it? */
+			  *i2c_rxBuffer_16bit = *i2c_rxBuffer_16bit <<8; //Receiving MSB first, so shift it to msb
+		  }else{
+			  *i2c_rxBuffer_16bit += I2C1->RXDR; // Add the LSB
+			  i2c_rxBuffer_16bit++; // Increment the pointer
 		  }
-
+		  rec--;
 	  }
   }else if(I2C1->ISR & I2C_ISR_TXIS){ /*  Ready to send the next byte */
 	  I2C1 ->TXDR = *i2c_txBuffer++; // Put the next byte
@@ -205,7 +214,7 @@ void I2C1_IRQHandler(void){
   }else if(I2C1->ISR & I2C_ISR_STOPF){
 	  SET_BIT(I2C1->ICR, I2C_ICR_STOPCF); // Clear flag
   }else if(I2C1->ISR & I2C_ISR_TC){ // Transfer complete?
-	  //
+	  test=0;
   }else{
     error = ERROR_I2C; /* Report an error */
     NVIC_DisableIRQ(I2C1_IRQn); /* Disable I2C2_IRQn */

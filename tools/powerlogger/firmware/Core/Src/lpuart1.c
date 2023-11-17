@@ -42,6 +42,14 @@ void LPUART1_Configure(){
 
     cmdReady=0;
 }
+/**
+ * Get the space in the buffer
+ */
+uint8_t LPUART1_Buffer_Free(void){
+	if( inputEnd > inputStart )
+		return inputEnd-inputStart;
+	return (inputTail-inputStart)+(inputEnd-inputHead);
+}
 void LPUART1_Configure_GPIO(void){
   /* Enable the peripheral clock of GPIOA */
   RCC->IOPENR |= RCC_IOPENR_GPIOAEN;
@@ -184,6 +192,42 @@ void LPUART1_SendHex( uint16_t nr ){
 		nr -= tmp;
 		nr /= 16;
 		index --;
+	}
+	LPUART1_SendBytes(data);
+}
+void LPUART1_SendWordHexNoPrefix( uint16_t nr ){
+	uint8_t data[5]={'0','0','0','0',0};
+	uint8_t tmp;
+	uint8_t index=3;
+
+	while( nr!=0 ){
+		tmp = nr%16;
+		if(tmp>9){
+			data[index]= tmp+55;
+		}else{
+			data[index] = tmp + '0';
+		}
+		nr /= 16;
+		index --;
+	}
+	LPUART1_SendBytes(data);
+}
+void LPUART1_SendByteHexNoPrefix( uint8_t nr ){
+	uint8_t data[5]={'0','0',0};
+	uint8_t tmp;
+
+	tmp = nr%16;
+	if(tmp>9){
+		data[1]= tmp+55;
+	}else{
+		data[1] = tmp + '0';
+	}
+
+	nr /= 16;
+	if(nr>9){
+		data[0]= nr+55;
+	}else{
+		data[0] = nr + '0';
 	}
 	LPUART1_SendBytes(data);
 }
