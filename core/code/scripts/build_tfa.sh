@@ -47,22 +47,14 @@ then
 	mkdir bootfs
 	cd ..
 fi
-# Requires tools
-sudo apt install python3-pyelftools build-essential swig -y
 # --------
 # TF-A
 # --------
 # Get the sources
 if [ ! -d "arm-trusted-firmware" ]
 then
-	echo -e "${ORANGE}Retrieving the arm-trusted-firmware git repo branch 2.9.0${NC}"
-	git clone -b v2.9.0 https://github.com/ARM-software/arm-trusted-firmware --depth=1	
-	echo "Adding the old stm32mp15_clksrc.h to the bindings"
-	# Fix the changed stm32mp15_clksrc.h by first backing up the old one
-	echo "Backing up stm32mp15_clksrc.h just to be sure"
-	cp arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h.BAK
-	echo "Overwriting the existing one"
-	cp --verbose ../dts/tf-a/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/
+	echo -e "${ORANGE}Retrieving the arm-trusted-firmware ST git${NC}"
+	git clone https://github.com/STMicroelectronics/arm-trusted-firmware.git --depth=1	
 	cd arm-trusted-firmware
 else
 	echo -e "${GREEN}Arm-trusted repo present, doing a pull"
