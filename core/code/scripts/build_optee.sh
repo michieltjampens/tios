@@ -47,8 +47,6 @@ then
 	mkdir bootfs
 	cd ..
 fi
-# Requires tools
-sudo apt install python3-pyelftools build-essential swig -y
 # --------
 # OPTEE
 # --------

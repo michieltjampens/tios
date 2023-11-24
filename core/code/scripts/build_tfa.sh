@@ -78,6 +78,7 @@ fi
 # Copy the result to deploy folder
 echo -e "${GREEN}Copying result to deploy${NC}"
 cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-usb.stm32
+
 # cleanup
 echo -e "${GREEN}Perform cleanup${NC}"
 make CROSS_COMPILE=${CC} realclean
@@ -91,16 +92,6 @@ fi
 # Copy the result to deploy folder
 echo -e "${GREEN}Copying result to deploy${NC}"
 cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-emmc.stm32
-echo -e "${GREEN}Build the emmc booting into sp_min${NC}"
-make CROSS_COMPILE=${CC} ARM_ARCH_MAJOR=7 ARCH=aarch32 AARCH32_SP=sp_min PLAT=stm32mp1 STM32MP_EMMC=1 STM32MP15=1 DTB_FILE_NAME=stm32mp151a-tios-mx.dtb
-if [ ! $? -eq 0 ]; then
-    echo -e "${RED}Building tfa spmin failed${NC}"
-    exit 1
-fi
-# Copy the result to deploy folder
-echo -e "${GREEN}Copying result to deploy${NC}"
-cp build/stm32mp1/release/tf-a-stm32mp151a-tios-mx.stm32 ../deploy/arm-trusted-firmware/tf-a-stm32mp151a-tios-mx-spmin.stm32
-
 # Create metadata.bin??
 echo -e "${RED}Still need to create metadata, TODO${NC}"
 echo -e "${GREEN}TF-A finished!${NC}"

@@ -40,7 +40,6 @@ So the goal of this guide is to Id 1 till 8.
 
 ### Build
 * Get sources `git clone https://github.com/STMicroelectronics/arm-trusted-firmware.git`
-    * Or mainline `git clone -b v2.9.0 https://github.com/ARM-software/arm-trusted-firmware --depth=1`
 * Copy the tios dt's `cp ../dts/tf-a/* arm-trusted-firmware/fdts/`
 * If using main overwrite `stm32mp15_clksrc.h`
     * First make backup `cp arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h arm-trusted-firmware/include/dt-bindings/clock/stm32mp15-clksrc.h.BAK`
@@ -61,11 +60,10 @@ So the goal of this guide is to Id 1 till 8.
 
 ### Build
 * Get the sources `git clone https://github.com/STMicroelectronics/optee_os.git --depth=1`
-    * Or mainline `git clone https://github.com/OP-TEE/optee_os.git --depth=1` (untested)
 * Copy the dts generated with CubeMX for OPTEE, and add the *-fw-config.dts generated for tf-a to `optee_os/core/arch/arm/dts`
 * Go into the optee_os folder
 * There's an issue with the conf.mk file for custom boards with 512MB ram, so we'll need to change it
-    * Edit `optee_os/core/arch/arm/platstm32mp1/conf.mk` to make flavorlist-no_cryp-512M look like this
+    * Edit `optee_os/core/arch/arm/plat-stm32mp1/conf.mk` to make flavorlist-no_cryp-512M look like this
      ```
         flavorlist-no_cryp-512M = $(flavor_dts_file-157A_DK1) \
 		                    	  $(flavor_dts_file-157D_DK1) \
@@ -90,13 +88,13 @@ So the goal of this guide is to Id 1 till 8.
 > `https://wiki.st.com/stm32mpu/wiki/How_to_configure_U-Boot_for_your_board`
 > Info: U-Boot is the BL33 boot stage, will be added to the fip.
 
-* Get the sources `git clone https://github.com/STMicroelectronics/u-boot`
+* Get the sources `git clone https://github.com/STMicroelectronics/u-boot --depth=1`
 * Copy the dts generated with CubeMX for U-boot to `arch/arm/dts`
 * Add the dts to the section `dtb-$(CONFIG_STM32MP15X)` inside `arch/arm/dts/Makefile`
-* Apply the default config `make stm32mp15_defconfig`
+* Apply the default config `make ARCH=arm CROSS_COMPILE=${CC} stm32mp15_defconfig`
   * Extra Info, there are two other stm32mp15 defconfig files in there, those are legacy
 	
-* Build it `make DEVICE_TREE=stm32mp151a-tios-mx all`
+* Build it `make ARCH=arm CROSS_COMPILE=${CC} DEVICE_TREE=stm32mp151a-tios-mx -j$(nproc) all`
   * For extra debug `make DEVICE_TREE=stm32mp151a-tios-mx all LOG_LEVEL=LOG_LEVEL_INFO DEBUG=1`
 * This will generate files in the u-boot root folder, the ones we need are `u-boot-nodtb.bin` and `u-boot.dtb`
 
