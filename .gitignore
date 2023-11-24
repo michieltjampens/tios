@@ -7,3 +7,5 @@
 *.u
 .idea/
 /core/code/build/
+/tools/powerlogger/firmware/Debug/
+/tools/powerlogger/firmware/Release/

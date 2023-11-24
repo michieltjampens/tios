@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dcafs>
+  <path delimiter=";" id="fuse">
+    <filter type="starts">VC:0x1D</filter>
+    <math>
+      <op scale="2">i1=i1*(32/65535)</op> <!-- 0,01V resolution -->
+      <op scale="1">i2=i2*(4000/65535)</op> <!-- 0,1mA resolution -->
+      <op scale="2">i3=i3*(32/65535)</op>
+      <op scale="1">i4=i4*(4000/65535)</op>
+      <op scale="2">i5=i5*(32/65535)</op>
+      <op scale="1">i6=i6*(4000/65535)</op>
+      <op scale="2">i7=i7*(32/65535)</op>
+      <op scale="1">i8=i8*(4000/65535)</op>
+    </math>
+    <store>
+      <real group="o1" i="1" unit="V">voltage</real>
+      <real group="o1" i="2" unit="mA">current</real>
+      <real group="o1" o="(o1_voltage*o1_current)/1000" unit="W" scale="3">power</real>
+
+      <real group="o2" i="3" unit="V">voltage</real>
+      <real group="o2" i="4" unit="mA">current</real>
+      <real group="o2" o="(o2_voltage*o2_current)/1000" unit="W" scale="3">power</real>
+
+      <real group="o3" i="5" unit="V">voltage</real>
+      <real group="o3" i="6" unit="mA">current</real>
+      <real group="o3" o="(o3_voltage*o3_current)/1000" unit="W" scale="3">power</real>
+
+      <real group="o4" i="7" unit="V">voltage</real>
+      <real group="o4" i="8" unit="mA">current</real>
+      <real group="o4" o="(o4_voltage*o4_current)/1000" unit="W" scale="3">power</real>
+    </store>
+    <filter type="starts">AC;1;</filter>
+    <math>
+      <op scale="6">i1=(i2/65535)*(409.6/1024)</op>
+      <op scale="6">i3=i3/1024</op>
+    </math>
+    <store>
+      <real group="o1" i="1" unit="Wh">energy</real>
+      <int group="o1" i="3" unit="s">period</int>
+    </store>
+    <filter type="starts">AC;2;</filter>
+    <math>
+      <op scale="1">i3=i3/1024</op> <!-- Because 1024SPS -->
+      <op scale="6">i2=i2/2^30</op> <!-- Denominator -->
+      <op scale="6">i1=i2/28800</op> <!-- i1=(3.2/0.025)*i2*(1/1024)*(1/3600) -->
+    </math>
+    <store db="power:measu">
+      <real group="o2" i="1" unit="Wh">energy</real>
+      <int group="o2" i="3" unit="s">period</int>
+    </store>
+  </path>
+</dcafs>

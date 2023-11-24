@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dcafs>
+  <settings>
+    <!-- Settings related to the telnet server -->
+    <telnet port="23" title="DCAFS">
+      <textcolor>lightgray</textcolor>
+    </telnet>
+  </settings>
+  <streams>
+    <!-- Defining the various streams that need to be read -->
+    <stream id="fuse" type="serial">
+      <eol>crlf</eol>
+      <port>COM9</port>
+      <serialsettings>19200,8,1,none</serialsettings>
+    </stream>
+  </streams>
+  <paths>
+    <path delimiter=";" id="fuse" import="paths\fuse.xml" src="raw:fuse"/>
+  </paths>
+  <databases>
+    <sqlite id="power" path="C:\local_home\GIT\dcafs\db\power.sqlite">
+      <flush age="30s" batchsize="30"/>
+      <idleclose>-1</idleclose>
+      <table name="measu">
+        <utcnow>timestamp</utcnow>
+        <real rtval="o2_voltage">voltage</real>
+        <real rtval="o2_current">current</real>
+        <real rtval="o2_power">power</real>
+        <int rtval="o2_period">period</int>
+        <real rtval="o2_energy">energy</real>
+      </table>
+    </sqlite>
+  </databases>
+</dcafs>
