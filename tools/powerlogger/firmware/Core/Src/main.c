@@ -37,7 +37,6 @@ int main(void){
 
 	init();
 
-
 	// To test RAM '.data' section initialization:
 	//static int dont_panic = 42;
 	while (1) {
@@ -169,8 +168,7 @@ void init(void){
 	LPUART1_Configure();
 
     configure_IO();
-    HEART_ON;
-    LPUART1_SendWordHexNoPrefix( 0xC080 );
+
     LPUART1_SendString("I>Booting...\r\n");
     delay = 10; // wait a bit
     while(delay!=0); // 10ms delay
@@ -201,31 +199,50 @@ void init(void){
 	while(delay!=0); // 10ms delay
 	LPUART1_SendString("I>Init done.\r\n");
 }
-void clock_test(void){
-	GPIOA->MODER = (GPIOA->MODER & ~(GPIO_MODER_MODE0|GPIO_MODER_MODE1))
-	                  | (GPIO_MODER_MODE0_0|GPIO_MODER_MODE1_0);
-}
+
 void configure_IO(void){
   
   /* Enable the peripheral clock of GPIOA and GPIOB */
   RCC->IOPENR |= RCC_IOPENR_GPIOAEN | RCC_IOPENR_GPIOBEN;
+  /* Enable the SYStemConfiguration peripheral clock, this handles interrupts */
+  RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
 
   /* INPUTS */
   /* 
     A6 = U2 alert1
     A7 = U2 alert2
+    B4 = Outside of board, testing
   */  
-  GPIOA->MODER = (GPIOA->MODER & ~(GPIO_MODER_MODE6 | GPIO_MODER_MODE7));
+  GPIOA->MODER = (GPIOA->MODER & ~(GPIO_MODER_MODE6 | GPIO_MODER_MODE7)); // Make PA6 & PA7 inputs
+
+  GPIOB->MODER = (GPIOB->MODER & ~(GPIO_MODER_MODE4)); // Make PB4 inputs
+  GPIOB->PUPDR = (GPIOB->PUPDR & ~(GPIO_PUPDR_PUPD4))|GPIO_PUPDR_PUPD4_0; // Pull up on PB4
+
+  /* EXTICR[0]= pins 0-3  EXTICR[1]=4-7  EXTICR[2]= 8-11 EXTICR[2]=12-15 ==> Need 6 and 7 so both in EXTICR[1] */
+  /* This is set with the SYSCFG_EXTICRx_EXTIy_Pz macros -> x=2 because second set, y=6 or 7 for the pin number and z is A for the port*/
+
+  SYSCFG->EXTICR[1] &= ~(SYSCFG_EXTICR2_EXTI4_Msk|SYSCFG_EXTICR2_EXTI6_Msk|SYSCFG_EXTICR2_EXTI7_Msk); // First clear the bits that define the port of for pin 4, 6 and 7 (inverse means all other bits remain as they were)
+  SYSCFG->EXTICR[1] |= (SYSCFG_EXTICR2_EXTI4_PB|SYSCFG_EXTICR2_EXTI6_PA|SYSCFG_EXTICR2_EXTI7_PA); // Then set the pins 6 and 7 to select port A and pin 4 to B
+
+  /* Next up is enabling the interrupt */
+  EXTI->IMR |= (EXTI_IMR_IM4|EXTI_IMR_IM6|EXTI_IMR_IM7); // Enable interrupt for both 6 and 7, no need to clear anything first
+
+  /* Next select the kind of edge to trigger on */
+  EXTI->RTSR &= ~(EXTI_RTSR_RT4_Msk|EXTI_RTSR_RT6_Msk|EXTI_RTSR_RT7_Msk);	// Clear rising edge
+  EXTI->FTSR |= (EXTI_FTSR_FT4 | EXTI_FTSR_FT6 | EXTI_FTSR_FT7);			// Set Falling edge
+
+  /* Finally enable the interrupt */
+  NVIC_SetPriority(EXTI4_15_IRQn, 0x03); // This is for pins between 4 and 15 which 6 and 7 belong to, set to lowest priority
+  NVIC_EnableIRQ(EXTI4_15_IRQn); // Actually enable it
 
   /* OUTPUTS */
-  /* Select output mode (01) on GPIOA pin 5,6,7,11 and 12 */
+  /* Select output mode (01) on GPIOB pin 5 */
   /*
     PB5 = Heart beat led
   */
   GPIOB->MODER = (GPIOB->MODER & ~(GPIO_MODER_MODE5))| (GPIO_MODER_MODE5_0);
 
 }
-/* *** */
 
 /* ******************************************** I 2 C ******************************************************** */
 
@@ -254,8 +271,8 @@ void I2C1_FindDevices(){
 				break;
 		}
 
-		delay = 50; // wait a bit
-		while(delay!=0); // 50ms delay
+		delay = 30; // wait a bit
+		while(delay!=0); // 30ms delay
 	}
 	LPUART1_SendString("\r\nI2C>Found ");
 	LPUART1_SendHex(tmp);
@@ -403,15 +420,6 @@ uint32_t settings_write(void){
     uint32_t *src = (uint32_t*)GLOBAL_settings_ptr;
     uint32_t *dst = (uint32_t*)DATA_E2_ADDR;
 
-    //------------------ bug of the day ------------------
-    /* Flash option byte user validity error flag caused write to EEPROM operation to fail!
-     * The problem did not happen when J-Link was connected. Probably J-Link starts execution
-     * right from the application address, skipping the bootloader. The bootloader
-     * may have had set the flag.
-     */
-//    FLASH_ClearFlag(FLASH_FLAG_OPTVERR);
-    //------------------ bug of the day ------------------
-
     //write settings word (uint32_t) at a time
     FLASH->PECR |= FLASH_PECR_DATA; /* (1) */
     for (uint32_t i = 0; i < sizeof(settings_t)/sizeof(uint32_t); i++){
@@ -426,6 +434,27 @@ uint32_t settings_write(void){
 
     LockNVM();
     return 0;
+}
+/******************************************************************************/
+/*            Cortex-M0 Plus Processor Interrupt Handlers                    */
+/******************************************************************************/
+
+void EXTI4_15_IRQHandler(void){
+	if (EXTI->PR & (EXTI_PR_PIF4)) {
+	    // Clear the EXTI status flag.
+	    EXTI->PR |= (EXTI_PR_PIF4); // Writing a 1 clears it
+	    HEART_ON;
+	}
+	if (EXTI->PR & (EXTI_PR_PIF6)) {
+	    // Clear the EXTI status flag.
+	    EXTI->PR |= (EXTI_PR_PIF6); // Writing a 1 clears it
+	    HEART_ON;
+	}
+	if (EXTI->PR & (EXTI_PR_PIF7)) {
+	    // Clear the EXTI status flag.
+	    EXTI->PR |= (EXTI_PR_PIF7); // Writing a 1 clears it
+	    HEART_ON;
+	}
 }
 /******************************************************************************/
 /*            Cortex-M0 Plus Processor Exceptions Handlers                    */
@@ -454,11 +483,10 @@ void SysTick_Handler(void){
     }
 
     heartBeats++;
-    if( heartBeats == 0x500 ){
+    if( heartBeats == 1000 ){ // Every second
     	HEART_ON;
-    	//LPUART1_SendString(".");
-    }else if( heartBeats == 0x600){
-    	HEART_OFF;
     	heartBeats=0;
+    }else if( heartBeats == 50){ // Stay on for 50ms
+    	HEART_OFF;
     }
 }

@@ -71,7 +71,7 @@
 
 	/* Hearbeat */
 	#define HEART_ON  GPIOB->ODR |= GPIO_ODR_OD5
-	#define HEART_OFF GPIOB->ODR = (GPIOB->ODR & ~(GPIO_ODR_OD5))
+	#define HEART_OFF GPIOB->ODR &= ~(GPIO_ODR_OD5)
 
 	// I2C
 	/* Refresh cmds */

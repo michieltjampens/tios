@@ -8,6 +8,8 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "./stm32l0xx.h"
+#include "./core_cm0plus.h"
+
 /* Variables -----------------------------------------------------------------*/
 
 /* Private includes ----------------------------------------------------------*/
@@ -40,6 +42,7 @@ uint8_t I2C1_FindPAC1954(void);
 void readAccumulator( uint8_t acc );
 void resetSettings(void);
 uint32_t settings_write(void);
+void EXTI4_15_IRQ_handler(void);
 /* Private defines -----------------------------------------------------------*/
 
 /* USER CODE BEGIN Private defines */
