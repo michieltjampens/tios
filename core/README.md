@@ -13,10 +13,10 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
 - Board contains: RTC (+bat), µSDC slot, Temp/Hum sensor, pressure sensor, ESP32, DC-DC
 
 ### Core_v2
-- Rev 0 being tested
+- Rev 1 being tested
 - 55x52mm
 - Board contains: 24V DC-DC with filtering etc, RTC (+bat), µSDC slot, µUSB otg, ethernet.
-- 1mm pitch JST for I2C6, ethernet, USB1
+- 1mm pitch JST for I2C6, ethernet, USB1, debug/console
 
 ### Core_v2_tiny
 - Work in progress
