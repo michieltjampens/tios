@@ -15,8 +15,8 @@
         * -b v6.1-stm32mp-r1 -> only get that branch
         * --depth 1 -> don't get the history (makes for a smaller download/install)
 * Mainline github
-    * Clone the git `git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git -b linux-6.5.y --depth 1`
-            * -b linux-6.5.y -> get that branch
+    * Clone the git `git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git -b linux-6.1.y --depth 1`
+            * -b linux-6.1.y -> get that branch
             * --depth 1 -> don't get the history (makes for a smaller download/install)
 * Go into the created linux folder
 * Copy the generated `stm32mp151a-tios-mx.dts` into `arch/arm/boot/dts`
@@ -33,23 +33,22 @@ Now it's possible to make changes to the config
 
 Finally build it
 * Kernel 
-    * Build `make ARCH=arm uImage vmlinux dtbs LOADADDR=0xC2000040 -j$(nproc)` 
+    * Build `make ARCH=arm CROSS_COMPILE=${CC} uImage vmlinux dtbs LOADADDR=0xC2000040 -j$(nproc)` 
         * ARCH=arm -> Because compiling for arm proc
+        * CROSS_COMPILE=${CC} -> Use the cross compiler
         * uImage vmlinux dtbs -> build uImage, vmlinux and dtbs
         * LOADADDR=0xC2000040 -> a uImage needs this
         * -j$(nproc) -> Use threads according to processor
-    * Copy result
-        * mkdir -p ${OUTPUT_BUILD_DIR}/install_artifact/boot/
-        * cp ${OUTPUT_BUILD_DIR}/arch/arm/boot/uImage ${OUTPUT_BUILD_DIR}/install_artifact/boot/
+    * Copy resulting uImage
+        * cp arch/arm/boot/uImage ../deploy/bootfs/
 * Modules 
-    * Build `make ARCH=arm modules -j$(nproc)` 
+    * Build `make ARCH=arm CROSS_COMPILE=${CC} modules -j$(nproc)` 
         * ARCH=arm -> Because compiling for arm proc
         * modules -> build the modules
-        * LOADADDR=0xC2000040    
         * -j$(nproc) -> Use threads according to processor
 * Artifacts
-    * Build `make ARCH=arm INSTALL_MOD_PATH="${OUTPUT_BUILD_DIR}/install_artifact" modules_install -j$(nproc)`
-    * cp arch/arm/boot/dts/st*.dtb ${OUTPUT_BUILD_DIR}/install_artifact/boot/
+    * Build `make ARCH=arm INSTALL_MOD_PATH="../deploy/" modules_install -j$(nproc)`
+    * cp arch/arm/boot/dts/st*.dtb ../deploy/bootfs/
 * Go into the install_artifact folder
 * Remove the link on install_artifact/lib/modules/<kernel version>/
     * rm lib/modules/<kernel version>/source lib/modules/<kernel version>/build

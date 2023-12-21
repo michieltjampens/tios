@@ -47,8 +47,6 @@ then
 	mkdir bootfs
 	cd ..
 fi
-# Requires tools
-sudo apt install python3-pyelftools build-essential swig -y
 # --------
 # U-BOOT
 # --------
@@ -56,8 +54,6 @@ sudo apt install python3-pyelftools build-essential swig -y
 if [ ! -d "u-boot" ]
 then
 	echo -e "${ORANGE}Retrieving the U-Boot git repo${NC}"
-	#git clone -b v2023.10 https://github.com/u-boot/u-boot --depth=1
-	#Stuck on the missing label hsem... 
 	git clone https://github.com/STMicroelectronics/u-boot --depth=1
 	echo -e "${ORANGE}Applying the patch${NC}"	
 	cd u-boot
