@@ -96,7 +96,7 @@
 	/* USER CODE BEGIN pinctrl */
 	uart4_pins_mx: uart4_mx-0 {
 		pins1 {
-			pinmux = <STM32_PINMUX('A', 11, AF6)>; /* UART4_RX */
+			pinmux = <STM32_PINMUX('B', 2, AF6)>; /* UART4_RX */
 			bias-disable;
 		};
 		pins2 {
