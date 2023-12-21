@@ -190,7 +190,7 @@
 
 	uart4_pins_mx: uart4_mx-0 {
 		pins1 {
-			pinmux = <STM32_PINMUX('A', 11, AF6)>; /* UART4_RX */
+			pinmux = <STM32_PINMUX('B', 2, AF6)>; /* UART4_RX */
 			bias-disable;
 		};
 		pins2 {
@@ -203,7 +203,7 @@
 
 	uart4_idle_pins_mx: uart4_idle_mx-0 {
 		pins1 {
-			pinmux = <STM32_PINMUX('A', 11, AF6)>; /* UART4_RX */
+			pinmux = <STM32_PINMUX('B', 2, AF6)>; /* UART4_RX */
 			bias-disable;
 		};
 		pins2 {
@@ -213,7 +213,7 @@
 
 	uart4_sleep_pins_mx: uart4_sleep_mx-0 {
 		pins {
-			pinmux = <STM32_PINMUX('A', 11, ANALOG)>, /* UART4_RX */
+			pinmux = <STM32_PINMUX('B', 2, ANALOG)>, /* UART4_RX */
 					 <STM32_PINMUX('G', 11, ANALOG)>; /* UART4_TX */
 		};
 	};
@@ -240,7 +240,22 @@
 					 <STM32_PINMUX('Z', 5, ANALOG)>; /* I2C4_SDA */
 		};
 	};
+	i2c6_pins_z_mx: i2c6_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('Z', 0, AF2)>, /* I2C6_SCL */
+					 <STM32_PINMUX('Z', 1, AF2)>; /* I2C6_SDA */
+			bias-disable;
+			drive-open-drain;
+			slew-rate = <0>;
+		};
+	};
 
+	i2c6_sleep_pins_z_mx: i2c6_sleep_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('Z', 0, ANALOG)>, /* I2C6_SCL */
+					 <STM32_PINMUX('Z', 1, ANALOG)>; /* I2C6_SDA */
+		};
+	};
 	/* USER CODE BEGIN pinctrl_z */
 	/* USER CODE END pinctrl_z */
 };
@@ -429,7 +444,32 @@
 	};
 	/* USER CODE END i2c4 */
 };
+&i2c6{	
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&i2c6_pins_z_mx>;
+	pinctrl-1 = <&i2c6_sleep_pins_z_mx>;
+	status = "okay";
 
+	/* USER CODE BEGIN i2c6 */
+	/* 6.1 kernel: https://elixir.bootlin.com/linux/v6.1.28/source/Documentation/devicetree/bindings/rtc/nxp,pcf8563.yaml  */
+	/* 6.3 Kernel: https://elixir.bootlin.com/linux/v6.3/source/Documentation/devicetree/bindings/rtc/nxp,pcf85363.yaml */
+	pcf85263: pcf85263@51 {
+		compatible = "nxp,pcf85263";
+		reg = <0x51>;
+		
+		interrupt-parent = <&gpio1>;
+		interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
+
+		#include <dt-bindings/rtc/pcf85363.h>
+		wakeup-source;
+		interrupt-output-pin = "INTB";
+		quartz-load-capacitance = "PCF85263_QUARTZCAP_7pF";
+		quartz-drive-strength = "PCF85263_QUARTZDRIVE_60ko";
+
+		status = "okay";
+	};
+	/* USER CODE END i2c6 */
+};
 &m4_dma2{
 	status = "okay";
 

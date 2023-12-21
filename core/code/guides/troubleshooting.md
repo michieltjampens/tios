@@ -223,7 +223,7 @@ Add this to the optee dts
 DECPROT(STM32MP1_ETZPC_RNG1_ID, DECPROT_S_RW, DECPROT_UNLOCK) // Added rng
 ```
 
-### Issue 3
+### Issue 3 [SOLVED]
 ```
 [    0.402919] Driver 'scmi-optee' was unable to register with bus_type 'tee' because the bus was not initialized.
 ```
@@ -234,7 +234,8 @@ But later in boot you get
 [    0.441006] optee: dynamic shared memory is enabled
 [    0.442692] optee: initialized driver
 ```
-So unsure if this is actually an issue?
+Confirmed by ST that this can be ignored.
+https://community.st.com/t5/stm32-mpus-products/various-issues-when-starting-kernel-on-custom-stm32mp151aac/m-p/614071/highlight/true#M10544
 
 ### Issue 4, can't find /dev/disk [SOLVED]
 ```
