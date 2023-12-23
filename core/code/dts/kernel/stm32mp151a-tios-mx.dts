@@ -190,7 +190,7 @@
 
 	uart4_pins_mx: uart4_mx-0 {
 		pins1 {
-			pinmux = <STM32_PINMUX('B', 2, AF6)>; /* UART4_RX */
+			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
 			bias-disable;
 		};
 		pins2 {
@@ -203,7 +203,7 @@
 
 	uart4_idle_pins_mx: uart4_idle_mx-0 {
 		pins1 {
-			pinmux = <STM32_PINMUX('B', 2, AF6)>; /* UART4_RX */
+			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
 			bias-disable;
 		};
 		pins2 {
@@ -378,7 +378,7 @@
 			};
 
 			vdd: buck3 {
-				regulator-compatible = "buck3"; // might not be needed			 
+				regulator-compatible = "buck3"; // might not be needed
 				regulator-name = "vdd";
 				regulator-min-microvolt = <3300000>;
 				regulator-max-microvolt = <3300000>;
@@ -456,7 +456,7 @@
 	pcf85263: pcf85263@51 {
 		compatible = "nxp,pcf85263";
 		reg = <0x51>;
-		
+/*		
 		interrupt-parent = <&gpio1>;
 		interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
 
@@ -465,7 +465,7 @@
 		interrupt-output-pin = "INTB";
 		quartz-load-capacitance = "PCF85263_QUARTZCAP_7pF";
 		quartz-drive-strength = "PCF85263_QUARTZDRIVE_60ko";
-
+*/
 		status = "okay";
 	};
 	/* USER CODE END i2c6 */
