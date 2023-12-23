@@ -393,3 +393,8 @@ Add/edit the &cpu node (in addons section)
 	cpu-supply = <&vddcore>;
 };
 ```
+
+### Issue 10, etzpc i2c?
+
+`stm32_etzpc etzpc@5c007000: i2c@5c009000 not allowed on bus (-13)`
+`stm32-sys-bus 5c007000.etzpc: Failed to create device link (0x180) with soc:pinctrl@54004000` 
