@@ -16,10 +16,9 @@
 #include "stm32mp15xxac-pinctrl.dtsi"
 #include "stm32mp15-m4-srm.dtsi"
 
-/* USER CODE BEGIN includes */
 #include "stm32mp151a-tios-scmi.dtsi"
 #include <dt-bindings/mfd/st,stpmic1.h>
-/* USER CODE END includes */
+
 
 / {
 	model = "Tios core V1";
@@ -28,24 +27,15 @@
 	memory@c0000000 {
 		device_type = "memory";
 		reg = <0xc0000000 0x20000000>;
-
-		/* USER CODE BEGIN memory */
-		/* USER CODE END memory */
 	};
 
 	reserved-memory {
 		#address-cells = <1>;
 		#size-cells = <1>;
 		ranges;
-
-		/* USER CODE BEGIN reserved-memory */
-		/* USER CODE END reserved-memory */
 	};
 
-	/* USER CODE BEGIN root */
-	aliases {		
-		serial0 = &uart4;
-	};
+
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
@@ -56,12 +46,10 @@
 		regulator-max-microvolt = <5000000>;
 		regulator-always-on;
 	};
-	/* USER CODE END root */
 
 	clocks{
 
-		/* USER CODE BEGIN clocks */
-		/* USER CODE END clocks */
+
 	};
 
 }; /*root*/
@@ -217,9 +205,6 @@
 					 <STM32_PINMUX('G', 11, ANALOG)>; /* UART4_TX */
 		};
 	};
-
-	/* USER CODE BEGIN pinctrl */
-	/* USER CODE END pinctrl */
 };
 
 &pinctrl_z {
@@ -256,48 +241,32 @@
 					 <STM32_PINMUX('Z', 1, ANALOG)>; /* I2C6_SDA */
 		};
 	};
-	/* USER CODE BEGIN pinctrl_z */
-	/* USER CODE END pinctrl_z */
 };
 
 &m4_rproc{
 	status = "okay";
 
-	/* USER CODE BEGIN m4_rproc */
 	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
 	mbox-names = "vq0", "vq1", "shutdown";
 	interrupt-parent = <&exti>;
 	interrupts = <68 1>;
 	wakeup-source;
-	/* USER CODE END m4_rproc */
 
 	m4_system_resources{
 		status = "okay";
-
-		/* USER CODE BEGIN m4_system_resources */
-		/* USER CODE END m4_system_resources */
 	};
 };
 
 &bsec{
 	status = "okay";
-
-	/* USER CODE BEGIN bsec */
-	/* USER CODE END bsec */
 };
 
 &dma1{
 	status = "okay";
-
-	/* USER CODE BEGIN dma1 */
-	/* USER CODE END dma1 */
 };
 
 &dma2{
 	status = "disabled";
-
-	/* USER CODE BEGIN dma2 */
-	/* USER CODE END dma2 */
 };
 
 &dmamux1{
@@ -305,16 +274,10 @@
 
 	dma-masters = <&dma1>;
 	dma-channels = <8>;
-
-	/* USER CODE BEGIN dmamux1 */
-	/* USER CODE END dmamux1 */
 };
 
 &hsem{
 	status = "okay";
-
-	/* USER CODE BEGIN hsem */
-	/* USER CODE END hsem */
 };
 
 &i2c4{
@@ -521,7 +484,6 @@
 	pinctrl-2 = <&sdmmc2_sleep_pins_mx>;
 	status = "okay";
 
-	/* USER CODE BEGIN sdmmc2 */
 	non-removable;
 	no-sd;
 	no-sdio;
@@ -530,7 +492,6 @@
 	vmmc-supply = <&v3v3>;
 	vqmmc-supply = <&vdd>;
 	mmc-ddr-3_3v;
-	/* USER CODE END sdmmc2 */
 };
 
 &tamp{
