@@ -18,20 +18,6 @@
 &cpu0 {
 	clocks = <&scmi_clk CK_SCMI_MPU>;
 };
-/*
-&cpu1 {
-	clocks = <&scmi_clk CK_SCMI_MPU>;
-};
-
-&cryp1 {
-	clocks = <&scmi_clk CK_SCMI_CRYP1>;
-	resets = <&scmi_reset RST_SCMI_CRYP1>;
-};
-
-&dsi {
-	clocks = <&rcc DSI_K>, <&scmi_clk CK_SCMI_HSE>, <&rcc DSI_PX>;
-};
-*/
 &gpioz {
 	clocks = <&scmi_clk CK_SCMI_GPIOZ>;
 };
