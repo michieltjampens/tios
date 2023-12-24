@@ -19,7 +19,7 @@
 #include "stm32mp15xxac-pinctrl.dtsi"
 #include "stm32mp15-ddr.dtsi"
 
-#include <dt-bindings/mfd/st,stpmic1.h>
+//#include <dt-bindings/mfd/st,stpmic1.h>
 
 / {
 	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
@@ -136,9 +136,6 @@
 	i2c-scl-falling-time-ns = <20>;
 	clock-frequency = <400000>;
 	status = "okay";
-	/* spare dmas for other usage */
-	/delete-property/dmas;
-	/delete-property/dma-names;
 	
 	eeprom@50 {
 		compatible = "atmel,24c32";
@@ -212,13 +209,13 @@
 			};
 			vdd_usb: ldo4 {
 				regulator-name = "vdd_usb";
-				interrupts = <IT_CURLIM_LDO4 0>;
+				regulator-min-microvolt = <3300000>;
+				regulator-max-microvolt = <3300000>;
 			};
 			vdda: ldo5 {
 				regulator-name = "vdda";
 				regulator-min-microvolt = <2900000>;
 				regulator-max-microvolt = <2900000>;
-				interrupts = <IT_CURLIM_LDO5 0>;
 				regulator-boot-on;
 			};
 			vref_ddr: vref_ddr {
@@ -227,31 +224,16 @@
 			};
 			bst_out: boost {
 				regulator-name = "bst_out";
-				interrupts = <IT_OCP_BOOST 0>;
-			 };
+			};
 
 			vbus_otg: pwr_sw1 {
 				regulator-name = "vbus_otg";
-				interrupts = <IT_OCP_OTG 0>;
 			 };
 
 			 vbus_sw: pwr_sw2 {
 				regulator-name = "vbus_sw";
-				interrupts = <IT_OCP_SWOUT 0>;
 				regulator-active-discharge = <1>;
 			 };	
-		};
-		onkey {
-			compatible = "st,stpmic1-onkey";
-			interrupts = <IT_PONKEY_F 0>, <IT_PONKEY_R 0>;
-			interrupt-names = "onkey-falling", "onkey-rising";
-			power-off-time-sec = <10>;
-			status = "disabled";
-		};
-
-		watchdog {
-			compatible = "st,stpmic1-wdt";
-			status = "disabled";
 		};
 	};
 };
