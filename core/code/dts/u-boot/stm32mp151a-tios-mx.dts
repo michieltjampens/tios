@@ -10,6 +10,7 @@
 
 /dts-v1/;
 #include <dt-bindings/pinctrl/stm32-pinfunc.h>
+#include <dt-bindings/gpio/gpio.h> // Because it's not referenced in the recent u-boot files
 
 #include "stm32mp151.dtsi"
 //#include "stm32mp15xa.dtsi" >> has been made empty and then removed in later versions
@@ -18,7 +19,6 @@
 
 #include "stm32mp151a-tios-scmi.dtsi"
 #include <dt-bindings/mfd/st,stpmic1.h>
-#include <dt-bindings/gpio/gpio.h> // Because it's not referenced in the recent u-boot files
 
 / {
 	model = "Tios core V1";

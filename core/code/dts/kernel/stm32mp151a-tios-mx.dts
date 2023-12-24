@@ -9,15 +9,16 @@
  */
 
 /dts-v1/;
+/* These need to be at the start */
+#include <dt-bindings/pinctrl/stm32-pinfunc.h>
 
+/* Don't think the order matters */
 #include "stm32mp151.dtsi"
 #include "stm32mp15xa.dtsi"
 #include "stm32mp15xxac-pinctrl.dtsi"
 #include "stm32mp15-m4-srm.dtsi"
 
 #include "stm32mp151a-tios-scmi.dtsi"
-
-#include <dt-bindings/pinctrl/stm32-pinfunc.h>
 #include <dt-bindings/mfd/st,stpmic1.h>
 
 
