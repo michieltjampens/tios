@@ -417,7 +417,6 @@
 	pinctrl-1 = <&i2c6_sleep_pins_z_mx>;
 	status = "okay";
 
-	/* USER CODE BEGIN i2c6 */
 	/* 6.1 kernel: https://elixir.bootlin.com/linux/v6.1.28/source/Documentation/devicetree/bindings/rtc/nxp,pcf8563.yaml  */
 	/* 6.3 Kernel: https://elixir.bootlin.com/linux/v6.3/source/Documentation/devicetree/bindings/rtc/nxp,pcf85363.yaml */
 	pcf85263: pcf85263@51 {
@@ -435,34 +434,21 @@
 */
 		status = "okay";
 	};
-	/* USER CODE END i2c6 */
 };
 &m4_dma2{
 	status = "okay";
-
-	/* USER CODE BEGIN m4_dma2 */
-	/* USER CODE END m4_dma2 */
 };
 
 &mdma1{
 	status = "okay";
-
-	/* USER CODE BEGIN mdma1 */
-	/* USER CODE END mdma1 */
 };
 
 &rcc{
 	status = "okay";
-
-	/* USER CODE BEGIN rcc */
-	/* USER CODE END rcc */
 };
 
 &rtc{
 	status = "okay";
-
-	/* USER CODE BEGIN rtc */
-	/* USER CODE END rtc */
 };
 
 // https://wiki.st.com/stm32mpu/wiki/SDMMC_device_tree_configuration
@@ -490,7 +476,6 @@
 	pinctrl-2 = <&sdmmc3_sleep_pins_mx>;
 	status = "okay";
 
-	/* USER CODE BEGIN sdmmc1 */
 	cd-gpios = <&gpioe 0 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 	disable-wp;
 	st,neg-edge;
@@ -499,9 +484,6 @@
 };
 &tamp{
 	status = "okay";
-
-	/* USER CODE BEGIN tamp */
-	/* USER CODE END tamp */
 };
 
 &uart4{
@@ -510,40 +492,28 @@
 	pinctrl-1 = <&uart4_idle_pins_mx>;
 	pinctrl-2 = <&uart4_sleep_pins_mx>;
 	status = "okay";
-
-	/* USER CODE BEGIN uart4 */
-	/* USER CODE END uart4 */
 };
 
 &usbotg_hs{
 	status = "okay";
 
-	/* USER CODE BEGIN usbotg_hs */
 	phys = <&usbphyc_port1 0>;
 	phy-names = "usb2-phy";
 	usb-role-switch;
-	/* USER CODE END usbotg_hs */
 };
 
 &usbphyc{
 	status = "okay";
-
-	/* USER CODE BEGIN usbphyc */
-	/* USER CODE END usbphyc */
 };
 
 &usbphyc_port0{
 	status = "okay";
-
-	/* USER CODE BEGIN usbphyc_port0 */
 	phy-supply = <&vdd_usb>;
-	/* USER CODE END usbphyc_port0 */
 };
 
 &usbphyc_port1{
 	status = "okay";
 
-	/* USER CODE BEGIN usbphyc_port1 */
 	phy-supply = <&vdd_usb>;
 	st,tune-hs-dc-level = <2>;
 	st,enable-fs-rftime-tuning;
@@ -553,10 +523,8 @@
 	st,tune-squelch-level = <3>;
 	st,tune-hs-rx-offset = <2>;
 	st,no-lsfs-sc;
-	/* USER CODE END usbphyc_port1 */
 };
 
-/* USER CODE BEGIN addons */
 &pwr_regulators {
 	vdd-supply = <&vdd>;
 	vdd_3v3_usbfs-supply = <&vdd_usb>;
@@ -568,5 +536,3 @@
  	clock-frequency = <650000000>;
 	cpu-supply = <&vddcore>;
 };
-/* USER CODE END addons */
-
