@@ -44,7 +44,7 @@
 		regulator-always-on;
     	};
 
-	/* USER CODE END root */
+
 	clocks {
 
 		clk_hsi: clk-hsi {
@@ -79,6 +79,24 @@
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
+			bias-disable;
+			drive-push-pull;
+			slew-rate = <3>;
+		};
+	};
+	sdmmc3_pins_mx: sdmmc3_mx-0 {
+		pins1 {
+			pinmux = <STM32_PINMUX('D', 7, AF10)>, /* SDMMC3_D3 */
+					 <STM32_PINMUX('F', 0, AF9)>,  /* SDMMC3_D0 */
+					 <STM32_PINMUX('F', 1, AF9)>,  /* SDMMC3_CMD */
+					 <STM32_PINMUX('F', 4, AF9)>,  /* SDMMC3_D1 */
+					 <STM32_PINMUX('F', 5, AF9)>;  /* SDMMC3_D2 */
+			bias-disable;
+			drive-push-pull;
+			slew-rate = <1>;
+		};
+		pins2 {
+			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <3>;
@@ -246,6 +264,7 @@
 		CLK_SDMMC12_PLL3R
 		CLK_STGEN_HSI
 		CLK_I2C46_HSI
+		CLK_SDMMC3_PLL3R
 		CLK_UART24_HSI
 		CLK_MPU_PLL1P
 		CLK_AXI_PLL2P
@@ -319,18 +338,7 @@
 
 };
 
-&sdmmc1{
-	pinctrl-names = "default";
-	pinctrl-0 = <&sdmmc1_pins_mx>;
-	status = "okay";
 
-	/* USER CODE BEGIN sdmmc1 */
-	disable-wp;
-	st,neg-edge;
-	bus-width = <4>;
-	vmmc-supply = <&v3v3>;
-	/* USER CODE END sdmmc1 */
-};
 
 &sdmmc2{
 	pinctrl-names = "default";
@@ -347,6 +355,16 @@
 	vqmmc-supply = <&v3v3>;
 	mmc-ddr-3_3v;
 	/* USER CODE END sdmmc2 */
+};
+&sdmmc3{
+	pinctrl-names = "default";
+	pinctrl-0 = <&sdmmc3_pins_mx>;
+	status = "okay";
+
+	disable-wp;
+	st,neg-edge;
+	bus-width = <4>;
+	vmmc-supply = <&v3v3>;
 };
 
 &uart4{
