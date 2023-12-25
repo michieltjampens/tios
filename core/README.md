@@ -15,12 +15,14 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
 ### Core_v2
 - Rev 1 being tested
   - DONE
-    - Console works (pinout changed from rev1)
-    - Reset button and boot selection works
+    - Console port (pinout changed from rev0)
+    - Reset button and boot selection
+    - SD card (sdmmc1 -> sdmmc3), not for booting yet
   - TODO
-    - SD card (sdmmc2 -> sdmmc3)
     - RTC (i2c6)
     - Power button 
+    - USB Gadget
+    - Ethernet
 - 55x52mm
 - Board contains: 24V DC-DC with filtering etc, RTC (+bat), µSDC slot, µUSB otg, ethernet.
 - 1mm pitch JST for I2C6, ethernet, USB1, debug/console
