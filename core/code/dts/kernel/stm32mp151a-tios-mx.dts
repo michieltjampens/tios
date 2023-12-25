@@ -506,11 +506,16 @@
 };
 
 &usbotg_hs{
-	status = "okay";
-
 	phys = <&usbphyc_port1 0>;
 	phy-names = "usb2-phy";
 	usb-role-switch;
+	status = "okay";
+	
+	port {
+		usbotg_hs_ep: endpoint {
+			remote-endpoint = <&con_usbotg_hs_ep>;
+		};
+	};
 };
 
 &usbphyc{
@@ -518,13 +523,6 @@
 };
 
 &usbphyc_port0{
-	status = "okay";
-	phy-supply = <&vdd_usb>;
-};
-
-&usbphyc_port1{
-	status = "okay";
-
 	phy-supply = <&vdd_usb>;
 	st,tune-hs-dc-level = <2>;
 	st,enable-fs-rftime-tuning;
@@ -534,6 +532,22 @@
 	st,tune-squelch-level = <3>;
 	st,tune-hs-rx-offset = <2>;
 	st,no-lsfs-sc;
+
+	status = "okay";
+};
+
+&usbphyc_port1{
+	phy-supply = <&vdd_usb>;
+	st,tune-hs-dc-level = <2>;
+	st,enable-fs-rftime-tuning;
+	st,enable-hs-rftime-reduction;
+	st,trim-hs-current = <15>;
+	st,trim-hs-impedance = <1>;
+	st,tune-squelch-level = <3>;
+	st,tune-hs-rx-offset = <2>;
+	st,no-lsfs-sc;
+	
+	status = "okay";
 };
 
 &pwr_regulators {
