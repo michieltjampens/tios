@@ -397,4 +397,8 @@ Add/edit the &cpu node (in addons section)
 ### Issue 10, etzpc i2c?
 
 `stm32_etzpc etzpc@5c007000: i2c@5c009000 not allowed on bus (-13)`
-`stm32-sys-bus 5c007000.etzpc: Failed to create device link (0x180) with soc:pinctrl@54004000` 
+`stm32-sys-bus 5c007000.etzpc: Failed to create device link (0x180) with soc:pinctrl@54004000`
+
+[    3.781517] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
+[    3.787978] stm32f7-i2c 5c009000.i2c: error -ENOENT: Failed to get controller clock
+[    3.801135] stm32f7-i2c: probe of 5c009000.i2c failed with error -2
