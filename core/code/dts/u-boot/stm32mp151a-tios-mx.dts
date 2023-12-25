@@ -346,7 +346,7 @@
 		   compatible = "snps,dwmac-mdio";
 		   phy0: ethernet-phy@0 {
 				compatible = "ethernet-phy-ieee802.3-c22"; // Specific for the LAN8720A
-				reset-gpios = <&gpiog 8 GPIO_ACTIVE_LOW | GPIO_PULL_UP>  
+				reset-gpios = <&gpiog 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 				reset-assert-us = <1000>;
 				reset-deassert-us = <1000>;
 				reg = <0>;
@@ -572,12 +572,6 @@
 	phy-names = "usb2-phy";
 	usb-role-switch;
 	status = "okay";
-	
-	port {
-		usbotg_hs_ep: endpoint {
-			remote-endpoint = <&con_usbotg_hs_ep>;
-		};
-	};
 };
 
 &usbphyc{
