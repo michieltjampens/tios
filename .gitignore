@@ -7,7 +7,6 @@
 *.u
 .idea/
 /core/code/build/
-/core/code/cubemx/CA7
 /core/code/cubemx/CM4
 /core/code/cubemx/Common
 /core/code/cubemx/Drivers
