@@ -12,3 +12,10 @@
 * Trace to the input of the dcdc wasn't altered...
 * Extra EMI/ESD filtering
 * Moved via's further away from pads to have a minimum distance (if possible), to decrease chance of bad connection due to inaccurate drill
+
+## Rev 2
+
+* Added led to 3V3.
+* Added silk to show the + on the input power connector.
+* Cleaned up refdes positions.
+* Rotated S2 so text isn't upside down anymore and added silk to know how to mount.
