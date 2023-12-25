@@ -5,6 +5,7 @@
 *.o
 *.cmd
 *.u
+*.bak
 .idea/
 /core/code/build/
 /core/code/cubemx/CM4
