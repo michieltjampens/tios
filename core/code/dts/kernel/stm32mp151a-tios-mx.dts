@@ -44,6 +44,16 @@
 		ranges;
 	};
 
+	led {
+		compatible = "gpio-leds";
+		led-blue {
+			label = "heartbeat";
+			gpios = <&gpiod 13 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "heartbeat";
+			default-state = "off";
+		};
+	};
+
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
