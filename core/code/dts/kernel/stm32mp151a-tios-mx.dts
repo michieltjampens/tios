@@ -221,7 +221,7 @@
 };
 
 &pinctrl_z {
-
+	/* I2C4 -> PMIC, EEPROM */
 	i2c4_pins_z_mx: i2c4_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('Z', 4, AF6)>, /* I2C4_SCL */
@@ -231,13 +231,13 @@
 			slew-rate = <0>;
 		};
 	};
-
 	i2c4_sleep_pins_z_mx: i2c4_sleep_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('Z', 4, ANALOG)>, /* I2C4_SCL */
 					 <STM32_PINMUX('Z', 5, ANALOG)>; /* I2C4_SDA */
 		};
 	};
+	/* I2C6 -> RTC*/
 	i2c6_pins_z_mx: i2c6_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('Z', 0, AF2)>, /* I2C6_SCL */
@@ -422,7 +422,7 @@
 		};
 	};
 };
-&i2c6{	
+&i2c6{
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&i2c6_pins_z_mx>;
 	pinctrl-1 = <&i2c6_sleep_pins_z_mx>;
@@ -433,7 +433,7 @@
 	pcf85263: pcf85263@51 {
 		compatible = "nxp,pcf85263";
 		reg = <0x51>;
-/*		
+/*
 		interrupt-parent = <&gpio1>;
 		interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
 
