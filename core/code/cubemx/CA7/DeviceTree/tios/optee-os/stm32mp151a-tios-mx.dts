@@ -98,6 +98,7 @@
 	/*"Non Secured" peripherals*/
 	DECPROT(STM32MP1_ETZPC_DMA1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_DMAMUX_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
+	DECPROT(STM32MP1_ETZPC_ETH_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_I2C4_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_I2C6_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_SDMMC3_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
@@ -139,6 +140,7 @@
 
 	st,clksrc = <
 		CLK_CKPER_DISABLED
+		CLK_ETH_PLL4P
 		CLK_SDMMC12_PLL3R
 		CLK_STGEN_HSI
 		CLK_I2C46_HSI
@@ -180,6 +182,11 @@
 		pll3_vco_600Mhz: pll3-vco-600Mhz {
 			src = < CLK_PLL3_HSE >;
 			divmn = < 1 49 >;
+		};
+		pll4_vco_400Mhz: pll4-vco-400Mhz {
+			src = < CLK_PLL4_HSE >;
+			divmn = < 1 32 >;
+			frac = < 0xaab >;
 		};
 		/* USER CODE BEGIN rcc_st-pll_vco */
 		/* USER CODE END rcc_st-pll_vco */
@@ -225,6 +232,20 @@
 		};
 		/* USER CODE BEGIN pll3 */
 		/* USER CODE END pll3 */
+	};
+
+	pll4:st,pll@3 {
+		compatible = "st,stm32mp1-pll";
+		reg = <3>;
+
+		st,pll = < &pll4_cfg1 >;
+
+		pll4_cfg1: pll4_cfg1 {
+			st,pll_vco = < &pll4_vco_400Mhz >;
+			st,pll_div_pqr = < 3 5 9 >;
+		};
+		/* USER CODE BEGIN pll4 */
+		/* USER CODE END pll4 */
 	};
 
 };
