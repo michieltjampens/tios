@@ -1,6 +1,6 @@
 # Scripts
 
-This folder contains bash scripts that automate the whole build process.  
+This folder contains bash scripts that automate the whole build process.
 Do note that you'll probably have to chmod +x them to use.
 
 * build_bootstages.sh
@@ -12,7 +12,7 @@ Do note that you'll probably have to chmod +x them to use.
   * Create a 'build' folder and various subfolders inside 'code' 
   * Get the compiler
 * build_tfa.sh
-  * Run build_prep.sh  
+  * Run build_prep.sh
   * Get the repo or pull
   * Copy the dts and replace stm32mp15_clksrc.h
   * Build usb, emmc boot (emmc both optee and sp_min)
@@ -34,3 +34,8 @@ Do note that you'll probably have to chmod +x them to use.
   * Get the debian bookworm sources
   * Alter sources.list, fstab and hostname
   * Mount as chroot
+  
+  
+  
+* Required tools
+sudo apt install python3-pyelftools build-essential swig -y

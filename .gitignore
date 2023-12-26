@@ -5,7 +5,10 @@
 *.o
 *.cmd
 *.u
+*.bak
 .idea/
 /core/code/build/
-/tools/powerlogger/firmware/Debug/
-/tools/powerlogger/firmware/Release/
+/core/code/cubemx/CM4
+/core/code/cubemx/Common
+/core/code/cubemx/Drivers
+/core/code/cubemx/EWARM

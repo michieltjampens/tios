@@ -30,12 +30,11 @@ then
 	# Remove the tar
 	rm x86_64-gcc-11.3.0-nolibc-arm-linux-gnueabi.tar.xz
 	echo CC=`pwd`/gcc-11.3.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi- > compiler.sh
+	echo ARCH=arm >> compiler.sh
 else
 	echo -e "${GREEN}Compiler found!${NC}"
+	source compiler.sh 
 fi
-# Create the var (pwd refers to the current folder)
-export CC=`pwd`/gcc-11.3.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-
-# Create a file to source that cc thing
 
 # Create a deploy folder, if it doensn't exist
 if [ ! -d "deploy" ]
@@ -57,7 +56,7 @@ fi
 if [ ! -d "linux-stable" ]
 then
 	echo -e "${ORANGE}Retrieving the Mainline linux-os git repo${NC}"
-	git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git -b linux-6.5.y --depth 1
+	git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git -b linux-6.1.y --depth 1
 	cd linux-stable
 	echo -e "${ORANGE}Updating the makefile to add the dts${NC}"
 	git apply ${SCRIPT_DIR}/../dts/kernel/makemain.patch
@@ -65,7 +64,7 @@ then
     	echo -e "${RED}Failed to apply patch${NC}"
     exit
     echo -e "${GREEN}Apply config${NC}"
-	make ARCH=arm multi_v7_defconfig fragment*.config
+	make ARCH=arm multi_v7_defconfig fragment*.config # Note that this file is the same as stm32_defconfig...
 fi
 else
 	echo -e "${GREEN}ST Linux repo present, doing a pull${NC}"
