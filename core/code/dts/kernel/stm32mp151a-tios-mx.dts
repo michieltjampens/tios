@@ -28,7 +28,10 @@
 	compatible = "st,stm32mp151a-tios-mx", "st,stm32mp151";
 
 	aliases {
+		ethernet0 = &ethernet0;
 		serial0 = &uart4;
+		i2c0	= &i2c4; // PMIC, EEPROM
+		i2c1	= &i2c6; // RTC, header
 	};
 	chosen {
 		stdout-path = "serial0:115200n8";
@@ -305,7 +308,7 @@
 		};
 	};
 };
-
+/* ************************************ M 4 ********************************************** */
 &m4_rproc{
 	status = "okay";
 
@@ -319,29 +322,10 @@
 		status = "okay";
 	};
 };
-
-&bsec{
+&m4_dma2{
 	status = "okay";
 };
-
-&dma1{
-	status = "okay";
-};
-
-&dma2{
-	status = "disabled";
-};
-
-&dmamux1{
-	status = "okay";
-
-	dma-masters = <&dma1>;
-	dma-channels = <8>;
-};
-
-&hsem{
-	status = "okay";
-};
+/* ************************************ E T H E R N E T ************************************ */
 &ethernet0{
 	/* Source https://wiki.st.com/stm32mpu/wiki/Ethernet_device_tree_configuration */
 	pinctrl-names = "default", "sleep";
@@ -367,6 +351,7 @@
 	};
 	/* USER CODE END ethernet0 */
 };
+/* ************************************ I 2 C *********************************************** */
 &i2c4{
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&i2c4_pins_z_mx>;
@@ -520,22 +505,8 @@
 		status = "okay";
 	};
 };
-&m4_dma2{
-	status = "okay";
-};
 
-&mdma1{
-	status = "okay";
-};
-
-&rcc{
-	status = "okay";
-};
-
-&rtc{
-	status = "okay";
-};
-
+/* ************************************ E M M C *********************************************** */
 // https://wiki.st.com/stm32mpu/wiki/SDMMC_device_tree_configuration
 &sdmmc2{
 	pinctrl-names = "default", "opendrain", "sleep";
@@ -567,10 +538,7 @@
 	bus-width = <4>;
 	vmmc-supply = <&v3v3>;
 };
-&tamp{
-	status = "okay";
-};
-
+/* ************************************ U A R T ********************************************* */
 &uart4{
 	pinctrl-names = "default", "idle", "sleep";
 	pinctrl-0 = <&uart4_pins_mx>;
@@ -578,11 +546,22 @@
 	pinctrl-2 = <&uart4_sleep_pins_mx>;
 	status = "okay";
 };
-
+/* ************************************ U S B *********************************************** */
+/*
+ Sources 
+ https://wiki.st.com/stm32mpu/wiki/OTG_device_tree_configuration
+*/
 &usbotg_hs{
+	compatible = "st,stm32mp15-fsotg", "snps,dwc2";
 	phys = <&usbphyc_port1 0>;
 	phy-names = "usb2-phy";
-	usb-role-switch;
+	usb-role-switch; // the device is capable of assigning the USB data role (aka host or device)
+
+	// Fifo tuned for RNDIS
+	g-rx-fifo-size = <512>;
+	g-np-tx-fifo-size = <32>;
+	g-tx-fifo-size = <256 16 16 16 16 16 16 16>;
+
 	status = "okay";
 };
 
@@ -617,7 +596,7 @@
 	
 	status = "okay";
 };
-
+/* ************************************ O T H E R *********************************************** */
 &pwr_regulators {
 	vdd-supply = <&vdd>;
 	vdd_3v3_usbfs-supply = <&vdd_usb>;
@@ -628,4 +607,42 @@
 &cpu0 {
  	clock-frequency = <650000000>;
 	cpu-supply = <&vddcore>;
+};
+&tamp{
+	status = "okay";
+};
+
+
+&mdma1{
+	status = "okay";
+};
+
+&rcc{
+	status = "okay";
+};
+
+&rtc{
+	status = "okay";
+};
+&bsec{
+	status = "okay";
+};
+
+&dma1{
+	status = "okay";
+};
+
+&dma2{
+	status = "disabled";
+};
+
+&dmamux1{
+	status = "okay";
+
+	dma-masters = <&dma1>;
+	dma-channels = <8>;
+};
+
+&hsem{
+	status = "okay";
 };
