@@ -27,9 +27,3 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
 - 55x52mm
 - Board contains: 24V DC-DC with filtering etc, RTC (+bat), µSDC slot, µUSB otg, ethernet.
 - 1mm pitch JST for I2C6, ethernet, USB1, debug/console
-
-### Core_v2_tiny
-- Work in progress
-- Just a smaller version of v2, restricting size to 50x50
-- Board contains: 24V DC-DC with filtering etc, RTC (+bat), µSDC slot, µUSB client, ethernet, 
-- Limited amount of GPIO made available on 2mm pitch pinheaders, about 55 of 90 (but will increase)
