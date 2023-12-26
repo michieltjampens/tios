@@ -16,11 +16,11 @@ The main part of the tower.
 
 #### Software
 - Standard STM32MP1 bootstage of TF-A, OPTEE and U-Boot
-- Recent kernel based on ST ECO 5.0.0
+- Kernel (6.1.28) based on ST ECO 5.0.0
 - [Debian 12.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
 - My other project to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
 #### Hardware
-- Two layer PCB with SoM on one side and nearly everything else on the other.
+- Four layer PCB with SoM on one side and nearly everything else on the other.
 - [STM32MP151 SOM by Myir](https://www.myirtech.com/list.asp?id=658)
   - 8 uarts (one used for debug port)
   - One ethernet port up to Gbit speeds
@@ -32,8 +32,8 @@ The main part of the tower.
 - **On-board Connectivity**
   - Microsd slot
   - USB Client for usb-gadget and updating
-  - Connector for RJ45 adapter, LAN870A
-  - Recovery mode short pads
+  - Connector for RJ45 adapter, LAN8720A
+  - Dipswitch to choose between DFU and eMMC boot
   - Power & Reset switch
 - **Other logic**
   - RTC with connected wake up pin and battery
