@@ -50,11 +50,17 @@
 
 	led {
 		compatible = "gpio-leds";
-		led-blue {
+		cpu { //green led
 			label = "heartbeat";
 			gpios = <&gpiod 13 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "heartbeat";
 			default-state = "off";
+		};
+		error {			
+			label = "error";
+			gpios = <&gpiog 5 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "error";
+			default-state = "on";
 		};
 	};
 
