@@ -20,5 +20,6 @@
 * Cleaned up refdes positions.
 * Rotated S2 so text isn't upside down anymore and added silk to know how to mount.
 * Replaced D5 with same diode as D3/D4
-* Connected the ID pin on USB 2 to PA10
+* Connected the ID pin on USB 2 to PA10 through series resistor and a pull down
 * Changed C9 to 10nF
+* Added the resistors for the rj45 leds
