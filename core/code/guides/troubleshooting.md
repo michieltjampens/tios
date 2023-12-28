@@ -402,3 +402,27 @@ Add/edit the &cpu node (in addons section)
 [    3.781517] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
 [    3.787978] stm32f7-i2c 5c009000.i2c: error -ENOENT: Failed to get controller clock
 [    3.801135] stm32f7-i2c: probe of 5c009000.i2c failed with error -2
+
+### Issue 11, dwmac dma?
+[    3.539538] stm32-dwmac 5800a000.ethernet: IRQ eth_lpi not found
+[    3.554585] stm32-dwmac 5800a000.ethernet: User ID: 0x40, Synopsys ID: 0x42
+[    3.560201] stm32-dwmac 5800a000.ethernet:   DWMAC4/5
+[    3.573404] stm32-dwmac 5800a000.ethernet: DMA HW capability register supported
+[    3.579297] stm32-dwmac 5800a000.ethernet: RX Checksum Offload Engine supported
+[    3.603569] stm32-dwmac 5800a000.ethernet: TX Checksum insertion supported
+[    3.609057] stm32-dwmac 5800a000.ethernet: Wake-Up On Lan supported
+[    3.633555] stm32-dwmac 5800a000.ethernet: TSO supported
+[    3.637425] stm32-dwmac 5800a000.ethernet: Enable RX Mitigation via HW Watchdog Timer
+[    3.653404] stm32-dwmac 5800a000.ethernet: device MAC address 0a:3d:84:ed:76:12
+[    3.659300] stm32-dwmac 5800a000.ethernet: Enabled L3L4 Flow TC (entries=2)
+[    3.673413] stm32-dwmac 5800a000.ethernet: Enabled RFS Flow TC (entries=10)
+[    3.678999] stm32-dwmac 5800a000.ethernet: TSO feature enabled
+[    3.703389] stm32-dwmac 5800a000.ethernet: Using 32/32 bits DMA host/device width
+
+[    6.549180] stm32-dwmac 5800a000.ethernet end0: renamed from eth0
+
+[   27.980199] stm32-dwmac 5800a000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0
+[   28.116452] stm32-dwmac 5800a000.ethernet end0: PHY [stmmac-0:01] driver [SMSC LAN8710/LAN8720] (irq=POLL)
+[   29.173563] stm32-dwmac 5800a000.ethernet: Failed to reset the dma
+[   29.178376] stm32-dwmac 5800a000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
+[   29.222245] stm32-dwmac 5800a000.ethernet end0: __stmmac_open: Hw setup failed
