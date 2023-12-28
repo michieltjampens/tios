@@ -558,23 +558,26 @@
  https://wiki.st.com/stm32mpu/wiki/OTG_device_tree_configuration
 */
 &usbotg_hs{
-	compatible = "st,stm32mp15-hsotg", "snps,dwc2";
 	phys = <&usbphyc_port1 0>;
 	phy-names = "usb2-phy";
+	dr_mode = "otg";
 	usb-role-switch; // the device is capable of assigning the USB data role (aka host or device)
-
-	// Fifo tuned for RNDIS
-	g-rx-fifo-size = <512>;
-	g-np-tx-fifo-size = <32>;
-	g-tx-fifo-size = <256 16 16 16 16 16 16 16>;
-
 	status = "okay";
 };
 
 &usbphyc{
 	status = "okay";
 };
-
+&usbh_ohci{
+    phys = <&usbphyc_port0>;           
+    phy-names = "usb";
+    status = "okay";
+};
+&usbh_ehci{
+    phys = <&usbphyc_port0>;           
+    phy-names = "usb";
+    status = "okay";
+};
 &usbphyc_port0{
 	phy-supply = <&vdd_usb>;
 	st,tune-hs-dc-level = <2>;
