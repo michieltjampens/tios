@@ -404,6 +404,15 @@ Add/edit the &cpu node (in addons section)
 [    3.801135] stm32f7-i2c: probe of 5c009000.i2c failed with error -2
 
 ### Issue 11, dwmac dma?
+```
+[   27.980199] stm32-dwmac 5800a000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0
+[   28.116452] stm32-dwmac 5800a000.ethernet end0: PHY [stmmac-0:01] driver [SMSC LAN8710/LAN8720] (irq=POLL)
+[   29.173563] stm32-dwmac 5800a000.ethernet: Failed to reset the dma
+[   29.178376] stm32-dwmac 5800a000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
+[   29.222245] stm32-dwmac 5800a000.ethernet end0: __stmmac_open: Hw setup failed
+```
+Related log.
+```
 [    3.539538] stm32-dwmac 5800a000.ethernet: IRQ eth_lpi not found
 [    3.554585] stm32-dwmac 5800a000.ethernet: User ID: 0x40, Synopsys ID: 0x42
 [    3.560201] stm32-dwmac 5800a000.ethernet:   DWMAC4/5
@@ -418,11 +427,6 @@ Add/edit the &cpu node (in addons section)
 [    3.673413] stm32-dwmac 5800a000.ethernet: Enabled RFS Flow TC (entries=10)
 [    3.678999] stm32-dwmac 5800a000.ethernet: TSO feature enabled
 [    3.703389] stm32-dwmac 5800a000.ethernet: Using 32/32 bits DMA host/device width
+```
 
-[    6.549180] stm32-dwmac 5800a000.ethernet end0: renamed from eth0
-
-[   27.980199] stm32-dwmac 5800a000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0
-[   28.116452] stm32-dwmac 5800a000.ethernet end0: PHY [stmmac-0:01] driver [SMSC LAN8710/LAN8720] (irq=POLL)
-[   29.173563] stm32-dwmac 5800a000.ethernet: Failed to reset the dma
-[   29.178376] stm32-dwmac 5800a000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
-[   29.222245] stm32-dwmac 5800a000.ethernet end0: __stmmac_open: Hw setup failed
+According to https://wiki.st.com/stm32mpu/wiki/Ethernet_overview#How_to_debug it's a clock issue not a memory one.
