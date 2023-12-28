@@ -23,3 +23,4 @@
 * Connected the ID pin on USB 2 to PA10 through series resistor and a pull down
 * Changed C9 to 10nF
 * Added the resistors for the rj45 leds
+* Changed R22 to 12k1 to match appnote (was 12k)
