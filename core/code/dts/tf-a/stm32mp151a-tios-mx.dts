@@ -338,6 +338,8 @@
 	mmc-ddr-3_3v;
 	/* USER CODE END sdmmc2 */
 };
+/*
+//For some reason this doesn't exist in stm32mp151.dtsi
 &sdmmc3{
 	pinctrl-names = "default";
 	pinctrl-0 = <&sdmmc3_pins_mx>;
@@ -348,7 +350,7 @@
 	bus-width = <4>;
 	vmmc-supply = <&v3v3>;
 };
-
+*/
 &uart4{
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart4_pins_mx>;
