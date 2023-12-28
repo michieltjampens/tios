@@ -23,6 +23,7 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
     - RTC (i2c6, clock issue)
     - Power button 
     - USB Gadget
+	- USB1 host (pcb in prod)
     - Ethernet (no mdio com's)
 - 55x52mm
 - Board contains: 24V DC-DC with filtering etc, RTC (+bat), µSDC slot, µUSB otg, ethernet.
