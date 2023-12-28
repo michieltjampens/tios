@@ -552,7 +552,7 @@
  https://wiki.st.com/stm32mpu/wiki/OTG_device_tree_configuration
 */
 &usbotg_hs{
-	compatible = "st,stm32mp15-fsotg", "snps,dwc2";
+	compatible = "st,stm32mp15-hsotg", "snps,dwc2";
 	phys = <&usbphyc_port1 0>;
 	phy-names = "usb2-phy";
 	usb-role-switch; // the device is capable of assigning the USB data role (aka host or device)
