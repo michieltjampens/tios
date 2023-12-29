@@ -418,6 +418,12 @@ So Checked the clocks...
 - 50MHz clock out of PHY => ok
 - 50MHz clock in SoM => Not ok 
 
+**Partial solution**
 The pad on the SoM was shorted to ground, removing the short solved the issue IF the cable isn't in before power on...
+
+
 Maybe related? https://community.st.com/t5/stm32-mpus-products/ethernet-fails-if-cable-plugged-in-during-boot-if-plugged-in/td-p/83641 ?
 But that's a gbit phy...
+
+Next option was a hardware issue, because not enough bulk capacitance near the eth chip. (was 2x1uF replaced one with 10uF)
+This seemed to fix it at first but for some reason only worked twice and then back to how it was.
