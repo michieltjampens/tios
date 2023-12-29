@@ -430,3 +430,10 @@ Related log.
 ```
 
 According to https://wiki.st.com/stm32mpu/wiki/Ethernet_overview#How_to_debug it's a clock issue not a memory one.
+So Checked the clocks...
+- 25MHz clock to PHY => ok
+- 50 MHz clock out of PHY => ok
+- 50 MHz clock in SoM => Not ok 
+
+**Solution**
+The pad on the SoM was shorted to ground, removing the short solved the issue.

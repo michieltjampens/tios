@@ -19,12 +19,12 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
     - Reset button and boot selection
     - SD card (sdmmc1 -> sdmmc3), not for booting yet
 	- Heartbeat led
+	- Ethernet
   - TODO
     - RTC (i2c6, clock issue)
     - Power button 
     - USB Gadget
 	- USB1 host (pcb in prod)
-    - Ethernet (no mdio com's)
 - 55x52mm
 - Board contains: 24V DC-DC with filtering etc, RTC (+bat), µSDC slot, µUSB otg, ethernet.
 - 1mm pitch JST for I2C6, ethernet, USB1, debug/console
