@@ -24,3 +24,4 @@
 * Changed C9 to 10nF
 * Added the resistors for the rj45 leds
 * Changed R22 to 12k1 to match appnote (was 12k)
+* Added 10uF bulkcaps to ethernet power inputs
