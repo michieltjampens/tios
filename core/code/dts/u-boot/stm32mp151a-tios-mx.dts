@@ -345,6 +345,7 @@
 	/* USER CODE END ethernet0 */
 };
 &i2c4{
+	/* https://wiki.st.com/stm32mpu/wiki/I2C_device_tree_configuration */
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&i2c4_pins_z_mx>;
 	pinctrl-1 = <&i2c4_sleep_pins_z_mx>;
@@ -473,10 +474,16 @@
 		};
 	};
 };
-&i2c6{	
+&i2c6{
+	/* https://wiki.st.com/stm32mpu/wiki/I2C_device_tree_configuration */
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&i2c6_pins_z_mx>;
 	pinctrl-1 = <&i2c6_sleep_pins_z_mx>;
+	
+	/* spare dmas for other usage */
+	/delete-property/dmas;
+	/delete-property/dma-names;
+	
 	status = "okay";
 
 	/* USER CODE BEGIN i2c6 */

@@ -411,29 +411,13 @@ Add/edit the &cpu node (in addons section)
 [   29.178376] stm32-dwmac 5800a000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
 [   29.222245] stm32-dwmac 5800a000.ethernet end0: __stmmac_open: Hw setup failed
 ```
-Related log.
-```
-[    3.539538] stm32-dwmac 5800a000.ethernet: IRQ eth_lpi not found
-[    3.554585] stm32-dwmac 5800a000.ethernet: User ID: 0x40, Synopsys ID: 0x42
-[    3.560201] stm32-dwmac 5800a000.ethernet:   DWMAC4/5
-[    3.573404] stm32-dwmac 5800a000.ethernet: DMA HW capability register supported
-[    3.579297] stm32-dwmac 5800a000.ethernet: RX Checksum Offload Engine supported
-[    3.603569] stm32-dwmac 5800a000.ethernet: TX Checksum insertion supported
-[    3.609057] stm32-dwmac 5800a000.ethernet: Wake-Up On Lan supported
-[    3.633555] stm32-dwmac 5800a000.ethernet: TSO supported
-[    3.637425] stm32-dwmac 5800a000.ethernet: Enable RX Mitigation via HW Watchdog Timer
-[    3.653404] stm32-dwmac 5800a000.ethernet: device MAC address 0a:3d:84:ed:76:12
-[    3.659300] stm32-dwmac 5800a000.ethernet: Enabled L3L4 Flow TC (entries=2)
-[    3.673413] stm32-dwmac 5800a000.ethernet: Enabled RFS Flow TC (entries=10)
-[    3.678999] stm32-dwmac 5800a000.ethernet: TSO feature enabled
-[    3.703389] stm32-dwmac 5800a000.ethernet: Using 32/32 bits DMA host/device width
-```
 
 According to https://wiki.st.com/stm32mpu/wiki/Ethernet_overview#How_to_debug it's a clock issue not a memory one.
 So Checked the clocks...
 - 25MHz clock to PHY => ok
-- 50 MHz clock out of PHY => ok
-- 50 MHz clock in SoM => Not ok 
+- 50MHz clock out of PHY => ok
+- 50MHz clock in SoM => Not ok 
 
-**Solution**
-The pad on the SoM was shorted to ground, removing the short solved the issue.
+The pad on the SoM was shorted to ground, removing the short solved the issue IF the cable isn't in before power on...
+Maybe related? https://community.st.com/t5/stm32-mpus-products/ethernet-fails-if-cable-plugged-in-during-boot-if-plugged-in/td-p/83641 ?
+But that's a gbit phy...
