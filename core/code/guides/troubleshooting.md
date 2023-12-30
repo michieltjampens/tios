@@ -399,11 +399,19 @@ Add/edit the &cpu node (in addons section)
 `stm32_etzpc etzpc@5c007000: i2c@5c009000 not allowed on bus (-13)`
 `stm32-sys-bus 5c007000.etzpc: Failed to create device link (0x180) with soc:pinctrl@54004000`
 
+**Solution**
+Wasn't mentioned in the etzpc section in optee dts.
+`DECPROT(STM32MP1_ETZPC_I2C6_ID, DECPROT_NS_RW, DECPROT_UNLOCK)`
+
+### Issue 11, i2c clock?
+
 [    3.781517] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
 [    3.787978] stm32f7-i2c 5c009000.i2c: error -ENOENT: Failed to get controller clock
 [    3.801135] stm32f7-i2c: probe of 5c009000.i2c failed with error -2
 
-### Issue 11, dwmac dma?
+i2c0 is fine, but i2c6 not.
+
+### Issue 12, dwmac dma?
 ```
 [   27.980199] stm32-dwmac 5800a000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0
 [   28.116452] stm32-dwmac 5800a000.ethernet end0: PHY [stmmac-0:01] driver [SMSC LAN8710/LAN8720] (irq=POLL)
@@ -426,4 +434,4 @@ Maybe related? https://community.st.com/t5/stm32-mpus-products/ethernet-fails-if
 But that's a gbit phy...
 
 Next option was a hardware issue, because not enough bulk capacitance near the eth chip. (was 2x1uF replaced one with 10uF)
-This seemed to fix it at first but for some reason only worked twice and then back to how it was.
+This seemed to fix it at first but for some reason only worked three times and then back to how it was.
