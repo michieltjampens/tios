@@ -426,6 +426,11 @@ i2c_dev->clk = devm_clk_get_enabled(&pdev->dev, NULL);
 [   29.178376] stm32-dwmac 5800a000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
 [   29.222245] stm32-dwmac 5800a000.ethernet end0: __stmmac_open: Hw setup failed
 ```
+This goes wrong before the kernel has booted. When stopping at u-boot only the green led or none are on.
+U-Boot complains of mac not set in OTP (one time programmable fuse).
+Manual reset after failed start doesn't work. PHY seems powered down completely (1W total instead of 1,15W)
+Before you can enter uboot the ref out is already disabled and high?
+The clock output of the PHY is disabled and becomes high??
 
 According to https://wiki.st.com/stm32mpu/wiki/Ethernet_overview#How_to_debug it's a clock issue not a memory one.
 So Checked the clocks...
@@ -442,3 +447,10 @@ But that's a gbit phy...
 
 Next option was a hardware issue, because not enough bulk capacitance near the eth chip. (was 2x1uF replaced one with 10uF)
 This seemed to fix it at first but for some reason only worked three times and then back to how it was.
+
+What was peculiar is that the current draw was lower when things went wrong... and that the ref out clock went high instead of
+putting out 25MHz. But seemed to indicate that the phy was stopped, which isn't that odd if startup fails...?
+
+**Solution**
+Turns out that the breakout for the rj45 had the leds set up to be draining to the phy instead of sourced from which caused the
+state of the regoff to be 0 instead of 1 which means the internal regulator was turned off, which causes both symptoms.
