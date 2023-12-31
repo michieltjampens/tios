@@ -411,6 +411,13 @@ Wasn't mentioned in the etzpc section in optee dts.
 
 i2c0 is fine, but i2c6 not.
 
+i2c-stm32f7.c
+```c
+i2c_dev->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+	if (IS_ERR(i2c_dev->clk))
+		return dev_err_probe(&pdev->dev, PTR_ERR(i2c_dev->clk),"Failed to enable controller clock\n");
+```
+
 ### Issue 12, dwmac dma?
 ```
 [   27.980199] stm32-dwmac 5800a000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0
