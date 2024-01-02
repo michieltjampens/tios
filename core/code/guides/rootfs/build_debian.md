@@ -95,21 +95,21 @@ apt install locales
 dpkg-reconfigure locales
 ```
 #### Install commonly used tools
- `apt install sudo wget screen socat ssh htop telnet i2c-tools systemd-timesyncd gpiod curl git`
->  **sudo** - give a user admin priveleges
-   **git** - interact with git repo's
-   **wget** - download via weblinks
-   **screen** - connect to serial ports
-   **socat** - connect to tcp ports and link them
-   **ssh** - enable remote acces via ssh
-   **htop** - system resources overview
-   **telnet** - connect to telnet servers
-   **i2c-tools** - tools to interact with i2c busses
-   **systemd-timesyncd** - lightweight alternative to ntpd for clock sync
-   **gpiod** command-line tools to interact with gpio-pins
-   **curl**
-   **git** versioning control software
-{.is-info}
+ `apt install sudo wget screen socat ssh htop telnet i2c-tools systemd-timesyncd gpiod curl git bat`
+   - **sudo** - give a user admin priveleges  
+   - **git** - interact with git repo's  
+   - **wget** - download via weblinks  
+   - **screen** - connect to serial ports
+   - **socat** - connect to tcp ports and link them
+   - **ssh** - enable remote acces via ssh
+   - **htop** - system resources overview
+   - **telnet** - connect to telnet servers
+   - **i2c-tools** - tools to interact with i2c busses
+   - **systemd-timesyncd** - lightweight alternative to ntpd for clock sync
+   - **gpiod** - command-line tools to interact with gpio-pins
+   - **curl**
+   - **git** - versioning control software
+   - **bat** - Alternative version of cat, with syntax highlighting etc
 
 #### Configute users
 - Set root user password: `passwd root`
@@ -119,8 +119,8 @@ dpkg-reconfigure locales
   
 #### Set up ethernet
 **Allow hotplugging**
-`echo "allow-hotplug eth0" > /etc/network/interfaces.d/eth0`
-`echo "iface eth0 inet dhcp" >> /etc/network/interfaces.d/eth0`
+`echo "allow-hotplug end0" > /etc/network/interfaces.d/end0`
+`echo "iface end0 inet dhcp" >> /etc/network/interfaces.d/end0`
 
 **Hostname**
 `echo "pickahostname" > /etc/hostname`
@@ -136,9 +136,9 @@ devpts               /dev/pts             devpts     mode=0620,gid=5       0  0
 tmpfs                /run                 tmpfs      mode=0755,nodev,nosuid,strictatime 0  0
 tmpfs                /var/volatile        tmpfs      defaults              0  0
 
-#/dev/mmcblk0p4      /boot                 ext4       defaults,sync         0  1
-#/dev/mmcblk0p5      /vendor               ext4       defaults,sync         0  1
-#/dev/mmcblk0p7      /usr/local            ext4       defaults,sync         0  1
+/dev/mmcblk1p1       /media/sd            auto       rw,user,exec,umask=000 0 2
+/dev/mmcblk0p6       /boot                ext4       defaults,sync         0  1
+/dev/mmcblk0p7       /vendor              ext4       defaults,sync         0  1
 ```
 ### Finish up
 - Sign out with `exit`
