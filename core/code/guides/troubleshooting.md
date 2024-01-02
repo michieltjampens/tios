@@ -409,15 +409,17 @@ Wasn't mentioned in the etzpc section in optee dts.
 [    3.787978] stm32f7-i2c 5c009000.i2c: error -ENOENT: Failed to get controller clock
 [    3.801135] stm32f7-i2c: probe of 5c009000.i2c failed with error -2
 
-i2c0 is fine, but i2c6 not.
+i2c4 is fine, but i2c6 not.
 
-i2c-stm32f7.c
+**Solution**
+The following node was missing from the scmi file. Not sure why this is required.
+i2c5 seems to work fine without...
 ```c
-i2c_dev->clk = devm_clk_get_enabled(&pdev->dev, NULL);
-	if (IS_ERR(i2c_dev->clk))
-		return dev_err_probe(&pdev->dev, PTR_ERR(i2c_dev->clk),"Failed to enable controller clock\n");
+&i2c6 {
+	clocks = <&scmi_clk CK_SCMI_I2C6>;
+	resets = <&scmi_reset RST_SCMI_I2C6>;
+};
 ```
-
 ### Issue 12, dwmac dma?
 ```
 [   27.980199] stm32-dwmac 5800a000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0
