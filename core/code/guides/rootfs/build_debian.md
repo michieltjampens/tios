@@ -9,7 +9,7 @@
 2. Navigate to, or create a, workdir
 3. Get the base rootfs: `sudo debootstrap --arch=armhf --foreign bookworm rootfs http://ftp.debian.org/debian/`
 
-> - **armhf** processor architecture for imx6/7
+> - **armhf** processor architecture for imx6/7/MP15
 > - **--foreign** because not compiled on the target platform
 > - **bookworm** is codename for the latest debian release (at time of writing)
 > - **rootfs** name of the folder to create it in
@@ -26,7 +26,7 @@
 - Backup `sudo cp ./rootfs/etc/apt/sources.list ./rootfs/etc/apt/sources.list.bak`
 - Open it with `sudo nano ./rootfs/etc/apt/sources.list` and replace the content with the following lines
 ```
-sudo 'deb http://deb.debian.org/debian/ bookworm contrib main non-free non-free-firmware
+deb http://deb.debian.org/debian/ bookworm contrib main non-free non-free-firmware
 # deb-src http://deb.debian.org/debian/ bookworm contrib main non-free non-free-firmware
 
 deb http://deb.debian.org/debian/ bookworm-updates contrib main non-free non-free-firmware
@@ -95,12 +95,12 @@ apt install locales
 dpkg-reconfigure locales
 ```
 #### Install commonly used tools
- `apt install sudo wget screen socat ssh htop telnet i2c-tools systemd-timesyncd gpiod curl`
+ `apt install sudo wget screen socat ssh htop telnet i2c-tools systemd-timesyncd gpiod curl git`
 >  **sudo** - give a user admin priveleges
    **git** - interact with git repo's
    **wget** - download via weblinks
    **screen** - connect to serial ports
-   **socat** - connect to tcp ports
+   **socat** - connect to tcp ports and link them
    **ssh** - enable remote acces via ssh
    **htop** - system resources overview
    **telnet** - connect to telnet servers
@@ -108,6 +108,7 @@ dpkg-reconfigure locales
    **systemd-timesyncd** - lightweight alternative to ntpd for clock sync
    **gpiod** command-line tools to interact with gpio-pins
    **curl**
+   **git** versioning control software
 {.is-info}
 
 #### Configute users
