@@ -220,6 +220,7 @@
 	uart4_pins_mx: uart4_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
+			bias-pull-up; // Decrease potential noise?
 			bias-disable;
 		};
 		pins2 {
@@ -233,6 +234,7 @@
 	uart4_idle_pins_mx: uart4_idle_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
+			bias-pull-up; // Decrease potential noise? (add resistor in rev2)
 			bias-disable;
 		};
 		pins2 {
@@ -355,7 +357,7 @@
 		   phy0: ethernet-phy@1 { // PHYAD0 = High => 1
 				compatible = "ethernet-phy-ieee802.3-c22"; // Specific for the LAN8720A
 				reset-gpios = <&gpiog 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-				smsc,disable-energy-detect; /* Make plugin detection reliable */
+				//smsc,disable-energy-detect; /* Make plugin detection reliable */
 				reg = <1>; // PHYAD0 = High => 1
 		   };
 	};

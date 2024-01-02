@@ -22,7 +22,7 @@
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 
 / {
-	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
+	model = "Tios core V1";
 	compatible = "st,stm32mp151a-tios-mx", "st,stm32mp151";
 
         aliases {
@@ -92,6 +92,7 @@
 	uart4_pins_mx: uart4_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
+			bias-pull-up; // Decrease potential noise? (add resistor in rev2)
 			bias-disable;
 		};
 		pins2 {
