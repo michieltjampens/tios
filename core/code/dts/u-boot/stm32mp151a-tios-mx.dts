@@ -496,6 +496,11 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&i2c5_pins_mx>;
 	pinctrl-1 = <&i2c5_sleep_pins_mx>;
+	
+	/* spare dmas for other usage */
+	/delete-property/dmas;
+	/delete-property/dma-names;
+	
 	status = "okay";
 };
 &i2c6{
