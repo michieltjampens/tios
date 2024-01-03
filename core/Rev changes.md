@@ -26,3 +26,4 @@
 * Changed R22 to 12k1 to match appnote (was 12k)
 * Added 10uF bulkcaps to ethernet power inputs
 * Added pull up to uart4 rx (debug/console port) for noise prevention
+* Added 22 Ohm resistors to scl and sda near rtc
