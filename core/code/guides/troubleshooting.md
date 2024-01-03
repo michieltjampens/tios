@@ -420,6 +420,10 @@ i2c5 seems to work fine without...
 	resets = <&scmi_reset RST_SCMI_I2C6>;
 };
 ```
+
+### Issue 12, i2cdetect really slow for certain ports
+
+
 ### Issue 12, dwmac dma?
 ```
 [   27.980199] stm32-dwmac 5800a000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0

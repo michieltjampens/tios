@@ -21,7 +21,7 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
 	- Heartbeat led
 	- Ethernet
   - TODO
-    - RTC (i2c6, clock issue)
+    - RTC (i2c6, i2cdetevt really slow))
     - Power button 
     - USB Gadget
 	- USB1 host (pcb in prod)
