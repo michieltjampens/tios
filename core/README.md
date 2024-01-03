@@ -18,7 +18,7 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
     - Console port (pinout changed from rev0)
     - Reset button and boot selection
     - SD card (sdmmc1 -> sdmmc3), not for booting yet
-	- Heartbeat led
+	- Heartbeat,fault led
 	- Ethernet
   - TODO
     - RTC (i2c6, i2cdetevt really slow))
