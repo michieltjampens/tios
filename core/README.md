@@ -20,8 +20,9 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
     - SD card (sdmmc1 -> sdmmc3), not for booting yet
 	- Heartbeat,fault led
 	- Ethernet
+	- I2C6
   - TODO
-    - RTC (i2c6, i2cdetevt really slow))
+    - RTC (chip bad, can't desolder it)
     - Power button 
     - USB Gadget
 	- USB1 host (pcb in prod)

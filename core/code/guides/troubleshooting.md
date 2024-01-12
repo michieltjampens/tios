@@ -223,7 +223,7 @@ Add this to the optee dts
 DECPROT(STM32MP1_ETZPC_RNG1_ID, DECPROT_S_RW, DECPROT_UNLOCK) // Added rng
 ```
 
-### Issue 3 [SOLVED]
+### Issue 3, bus_type 'tee' not initialized [SOLVED]
 ```
 [    0.402919] Driver 'scmi-optee' was unable to register with bus_type 'tee' because the bus was not initialized.
 ```
@@ -381,7 +381,7 @@ But still got.
 [    2.603873] kobject_add_internal failed for cpufreq-dt with -EEXIST, don't try to register things with the same name in the same directory.
 ```
 
-### Issue 9, missing cpufreq propert
+### Issue 9, missing cpufreq property [SOLVED]
 ```
 [ 0.003188] /cpus/cpu@0 missing clock-frequency property
 ```
@@ -394,7 +394,7 @@ Add/edit the &cpu node (in addons section)
 };
 ```
 
-### Issue 10, etzpc i2c?
+### Issue 10, etzpc i2c? [SOLVED]
 
 `stm32_etzpc etzpc@5c007000: i2c@5c009000 not allowed on bus (-13)`
 `stm32-sys-bus 5c007000.etzpc: Failed to create device link (0x180) with soc:pinctrl@54004000`
@@ -403,7 +403,7 @@ Add/edit the &cpu node (in addons section)
 Wasn't mentioned in the etzpc section in optee dts.
 `DECPROT(STM32MP1_ETZPC_I2C6_ID, DECPROT_NS_RW, DECPROT_UNLOCK)`
 
-### Issue 11, i2c clock?
+### Issue 11, i2c clock? [SOLVED]
 
 [    3.781517] stm32f7-i2c 5c002000.i2c: STM32F7 I2C-0 bus adapter
 [    3.787978] stm32f7-i2c 5c009000.i2c: error -ENOENT: Failed to get controller clock
@@ -413,7 +413,7 @@ i2c4 is fine, but i2c6 not.
 
 **Solution**
 The following node was missing from the scmi file. Not sure why this is required.
-i2c5 seems to work fine without...
+i2c5 seems to work fine without... might be because i2c4 and i2c6 can be used in ROM/tf-a etc, the other ones can't.
 ```c
 &i2c6 {
 	clocks = <&scmi_clk CK_SCMI_I2C6>;
@@ -421,10 +421,61 @@ i2c5 seems to work fine without...
 };
 ```
 
-### Issue 12, i2cdetect really slow for certain ports
+### Issue 12, i2cdetect really slow for certain ports [Solved]
 
+- SCL and SDA idle high
+- No error messages in logs
 
-### Issue 12, dwmac dma?
+**Cause & Solution**
+Something wrong with one of the slaves on the bus, removed it.
+
+### Issue 13, pcf85363, error -6 
+
+```bash
+[   19.306485] pcf85363 1-0051: pcf85363_rtc_read_time: error -6
+[   19.360313] pcf85363 1-0051: registered as rtc1
+```
+This method can be found at https://github.com/torvalds/linux/blob/master/drivers/rtc/rtc-pcf85363.c
+```c
+static int pcf85363_rtc_read_time(struct device *dev, struct rtc_time *tm)
+{
+	struct pcf85363 *pcf85363 = dev_get_drvdata(dev);
+	unsigned char buf[DT_YEARS + 1];
+	int ret, len = sizeof(buf);
+
+	/* read the RTC date and time registers all at once */
+	ret = regmap_bulk_read(pcf85363->regmap, DT_100THS, buf, len);
+	if (ret) {
+		dev_err(dev, "%s: error %d\n", __func__, ret);
+		return ret;
+	}
+
+	tm->tm_year = bcd2bin(buf[DT_YEARS]);
+	/* adjust for 1900 base of rtc_time */
+	tm->tm_year += 100;
+
+	tm->tm_wday = buf[DT_WEEKDAYS] & 7;
+	buf[DT_SECS] &= 0x7F;
+	tm->tm_sec = bcd2bin(buf[DT_SECS]);
+	buf[DT_MINUTES] &= 0x7F;
+	tm->tm_min = bcd2bin(buf[DT_MINUTES]);
+	tm->tm_hour = bcd2bin(buf[DT_HOURS]);
+	tm->tm_mday = bcd2bin(buf[DT_DAYS]);
+	tm->tm_mon = bcd2bin(buf[DT_MONTHS]) - 1;
+
+	return 0;
+}
+```
+regmap_bulk_read can be found in https://elixir.bootlin.com/linux/latest/source/drivers/base/regmap/regmap.c#L3076
+The return value of 6 seems to be used for multiple issues...
+According to this https://kernel.googlesource.com/pub/scm/linux/kernel/git/nico/archive/+/v0.97/include/linux/errno.h
+The 6 refers to "No such device or address", note the fact that `sudo i2cdetect -y 1` shows UU at that address, just
+means the driver is looking at it, doesn't mean anything is responding.
+
+**Cause**
+RTC broken, needs to be replaced.
+
+### Issue 14, dwmac dma? [Solved]
 ```
 [   27.980199] stm32-dwmac 5800a000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0
 [   28.116452] stm32-dwmac 5800a000.ethernet end0: PHY [stmmac-0:01] driver [SMSC LAN8710/LAN8720] (irq=POLL)
