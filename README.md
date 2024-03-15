@@ -10,9 +10,27 @@ Why would you design this thing?
 
 The hardware will be in different layers/floors/segments...  
 
-### Core 
+## Core 
 
-The main part of the tower.  
+The main part of the tower. I'm at the third iteration/attempt of this but still not happy...
+Latest/Last one will probably be based around the RK3308, which means:
+- Learning yet another environment (iMX->STM32MP1->rockchip)
+- Much lower idle power consumption 250mW instead of 500mW
+- Move from armhf to aarch64 because newer java jre aren't released for armhf
+- Unsure about the SoM versus custom design
+
+## Previous attempts
+
+### First attempt
+This was with a IMX6ULL SoM made by Myir, but that had odd power rail issues and at some point I gave up.
+Design files are still on here, but that's about it.
+
+### Second attempt
+
+With a STM32MP151 SoM, again by Myir (because those are easy to obtain). The Hardware works, but
+getting to a working linux was a pain. The support from ST (nor Myir) is plainly bad for custom designs.
+The board in the end uses way to much power and felt way to slow (compared to others) and it uses an already old
+ARM Cortex-A7, so not much future proofing there.
 
 #### Software
 - Standard STM32MP1 bootstage of TF-A, OPTEE and U-Boot
@@ -23,9 +41,9 @@ The main part of the tower.
 - Four layer PCB with SoM on one side and nearly everything else on the other.
 - [STM32MP151 SOM by Myir](https://www.myirtech.com/list.asp?id=658)
   - 8 uarts (one used for debug port)
-  - One ethernet port up to Gbit speeds
+  - One ethernet port (using 10/100 instead of Gbit)
   - 4GB eMMC, 512MB ram
-  - Two available SDMMC's (third one has the eMMC)
+  - Two available SDIO's (third one has the eMMC)
   - Pretty much all pins brought out
 - **Power:**
   - [36V to 5V(0.6A max) regulator](https://www.monolithicpower.com/en/mpm3506a.html)
