@@ -32,7 +32,7 @@ can be found on the official site.
 ## Status
 
 Started the design, currently on a four layer PCB. 
-- All basics are in the schematic (ram,emmc,phy,buck)
+- All basics are in the schematic (ram,emmc,phy,buck,lan,usd)
 - Layout of most is done (ddr was fun)
 
 ## Decisions
