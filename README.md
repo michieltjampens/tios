@@ -12,12 +12,13 @@ The hardware will be in different layers/floors/segments... That will add certai
 
 At the moment, I'm designing the main part of the tower. Which will be based around the [Rockchip RK3308B](https://www.rock-chips.com/a/en/products/RK33_Series/2018/0614/907.html).
 Before this, I've tried working with SoM's of imx5ull and stm32mp153. Although I managed to get to a working system, I just wasn't happy with the result.
-The choice for the RK3308B has some up- and downsides:
+The choice for the RK3308B has some up- and downsides:  
 **Ups**
 - Low idle power consumption 260mW (based of long term measurement of Raxda Rock S0 running kernel 6.1 debian bookworm, wifi listening)
 - Move from armhf to aarch64, mainly because I use java for [my other project](https://github.com/michieltjampens/dcafs) and new jre's aren't build anymore for armhf.
 - 'Entry level' SoC, so messing things up doesn't hurt as much as with a SoM.
 - Two ethernet MAC's so dual ethernet is possible, but second one shares pins with the SDIO... (wifi)
+
 **Downs**
 - Learning yet another environment (iMX->STM32MP1->Rockchip)
 - Not starting from a SoM means the design is a lot harder, will be my first time working with BGA, DDR Ram etc.
@@ -31,7 +32,7 @@ can be found on the official site.
 ## Status
 
 Started the design, currently on a four layer PCB. 
-- All basics are in the schematic (ram,emmc,phy,buck)
+- All basics are in the schematic (ram,emmc,phy,buck,lan,usd)
 - Layout of most is done (ddr was fun)
 
 ## Decisions
@@ -44,4 +45,3 @@ With starting from scratch come a lot more choices with regards to components us
 - Discrete power supplies: Buck [TPS62A0x](https://www.ti.com/product/TPS62A02v) and LDO [TLV755](https://www.ti.com/lit/ds/symlink/tlv755p.pdf)
   - Probably try a PMIC for rev 1, but keeping things 'simple' for now.
 - 10/100Mbps Ethernet PHY [LAN8720A](https://www.microchip.com/en-us/product/lan8720a)
-
