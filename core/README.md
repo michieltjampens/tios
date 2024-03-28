@@ -1,11 +1,14 @@
 # Content
 ## Folders
+* **old** Anything related to the previous designs, that isn't relevant to the current one
 * **code** Anything related to the core that can be considered code/scripts etc
 * **datasheets** contains the relevant datasheets
-* **corev2_rev0** Files for rev0 of core v2, including pdf of the schematic and png of the layout
+
   
 ## Files
 All the files are [Diptrace](https://diptrace.com/) schematics or layout.
+
+## Old 
 
 ### Core_v1.*
 - No longer worked on, but also not 'production ready'. Might pick this back up at some time.
@@ -22,7 +25,7 @@ All the files are [Diptrace](https://diptrace.com/) schematics or layout.
 	- Ethernet
 	- I2C6
   - TODO
-    - RTC (chip bad, can't desolder it)
+    - RTC (chip bad, but can't desolder it)
     - Power button 
     - USB Gadget
 	- USB1 host (pcb in prod)
