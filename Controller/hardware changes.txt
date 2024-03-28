@@ -1,3 +1,0 @@
-- U5 altered footprint to show pin 1 better
-- Connection missing between R14 and R15
-- Gave U15 some more distance from J7

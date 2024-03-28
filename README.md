@@ -8,56 +8,40 @@ Why would you design this thing?
 
 ## What?
 
-The hardware will be in different layers/floors/segments...  
+The hardware will be in different layers/floors/segments... That will add certain functionality.
 
-## Core 
+At the moment, I'm designing the main part of the tower. Which will be based around the [Rockchip RK3308B](https://www.rock-chips.com/a/en/products/RK33_Series/2018/0614/907.html).
+Before this, I've tried working with SoM's of imx5ull and stm32mp153. Although I managed to get to a working system, I just wasn't happy with the result.
+The choice for the RK3308B has some up- and downsides:
+**Ups**
+- Low idle power consumption 260mW (based of long term measurement of Raxda Rock S0 running kernel 6.1 debian bookworm, wifi listening)
+- Move from armhf to aarch64, mainly because I use java for [my other project](https://github.com/michieltjampens/dcafs) and new jre's aren't build anymore for armhf.
+- 'Entry level' SoC, so messing things up doesn't hurt as much as with a SoM.
+- Two ethernet MAC's so dual ethernet is possible, but second one shares pins with the SDIO... (wifi)
+**Downs**
+- Learning yet another environment (iMX->STM32MP1->Rockchip)
+- Not starting from a SoM means the design is a lot harder, will be my first time working with BGA, DDR Ram etc.
+- Documentation isn't easy to come by. Won't share them in the repo because some had 'confidantial' stamped over them.
+  - Took me some time to find the datasheet for the RK3308B and that's for version 1.2 eventhough 1.3 is out. The [RK3308](https://www.rockchip.fr/RK3308%20datasheet%20V1.5.pdf) 
+can be found on the official site.
+  - Found the [TRM for the RK3308](https://dl.radxa.com/rockpis/docs/hw/datasheets/) but unsure if 1.1 is latest version.
+  - Haven't found an official reference design/guides, so based it off the the earlier mentioned Raxda rock s0.  
+- 0.65mm pitch BGA
 
-The main part of the tower. I'm at the third iteration/attempt of this but still not happy...
-Latest/Last one will probably be based around the RK3308B, which means:
-- Learning yet another environment (iMX->STM32MP1->rockchip)
-- Much lower idle power consumption 250mW instead of 500mW
-- Move from armhf to aarch64 because newer java jre aren't released for armhf
-- Unsure about the SoM versus custom design. Biggest difference being the 'hard to route' things like DDR ram.
+## Status
 
-### Stuff decided so far
+Started the design, currently on a four layer PCB. 
+- All basics are in the schematic (ram,emmc,phy,buck)
+- Layout of most is done (ddr was fun)
+
+## Decisions
+
+With starting from scratch come a lot more choices with regards to components used. 
+
+### Picked Components
 - [512MB DDR3L Ram](https://media.kingston.com/pdfs/emmc/MKF_942_iTemp-DRAM_us.pdf)
-- [16GB eMMC HS200](https://www.kingston.com/en/embedded/emmc-embedded-flash), 8GB or lower isn't worth the price difference
+- [16GB eMMC HS200](https://www.kingston.com/en/embedded/emmc-embedded-flash), 8GB or lower isn't worth the price difference (1€ difference at the moment)
 - Discrete power supplies: Buck [TPS62A0x](https://www.ti.com/product/TPS62A02v) and LDO [TLV755](https://www.ti.com/lit/ds/symlink/tlv755p.pdf)
   - Probably try a PMIC for rev 1, but keeping things 'simple' for now.
- 
-## Previous attempts
+- 10/100Mbps Ethernet PHY [LAN8720A](https://www.microchip.com/en-us/product/lan8720a)
 
-### First attempt
-This was with a IMX6ULL SoM made by Myir, but that had odd power rail issues and at some point I gave up.
-Design files are still on here, but that's about it.
-
-### Second attempt
-
-With a STM32MP151 SoM, again by Myir (because those are easy to obtain). The Hardware works, but
-getting to a working linux was a pain. The support from ST (nor Myir) is plainly bad for custom designs (by hobbyists).
-The board in the end uses way to much power and felt way to slow (compared to others) and it uses an already old
-ARM Cortex-A7, so not much future proofing there.
-
-#### Software
-- Standard STM32MP1 bootstage of TF-A, OPTEE and U-Boot
-- Kernel (6.1.28) based on ST ECO 5.0.0
-- [Debian 12.x]([https://www.debian.org/](https://www.debian.org/releases/stable/amd64/release-notes/index.en.html)) rootfs
-- My other project to interface with sensors etc [dcafs](https://github.com/vlizBE/dcafs)
-#### Hardware
-- Four layer PCB with SoM on one side and nearly everything else on the other.
-- [STM32MP151 SOM by Myir](https://www.myirtech.com/list.asp?id=658)
-  - 8 uarts (one used for debug port)
-  - One ethernet port (using 10/100 instead of Gbit)
-  - 4GB eMMC, 512MB ram
-  - Two available SDIO's (third one has the eMMC)
-  - Pretty much all pins brought out
-- **Power:**
-  - [36V to 5V(0.6A max) regulator](https://www.monolithicpower.com/en/mpm3506a.html)
-- **On-board Connectivity**
-  - Microsd slot
-  - USB Client for usb-gadget and updating
-  - Connector for RJ45 adapter, LAN8720A
-  - Dipswitch to choose between DFU and eMMC boot
-  - Power & Reset switch
-- **Other logic**
-  - RTC with connected wake up pin and battery
