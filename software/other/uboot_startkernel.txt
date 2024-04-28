@@ -1,0 +1,120 @@
+arch=arm
+autoload=0
+baudrate=115200
+board=stm32mp1
+board_name=stm32mp151a-tios-mx
+boot_a_script=load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${prefix}${script}; source ${scriptaddr}
+
+boot_efi_binary=load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} efi/boot/bootarm.efi; if fdt addr -q ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r};else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi
+boot_efi_bootmgr=if fdt addr -q ${fdt_addr_r}; then bootefi bootmgr ${fdt_addr_r};else bootefi bootmgr;fi
+
+
+boot_net_usb_start=true
+boot_prefixes=/ /boot/
+boot_script_dhcp=boot.scr.uimg
+boot_scripts=boot.scr.uimg boot.scr
+
+boot_targets=mmc1 ubifs0 mmc0 mmc2 usb0 pxe 
+
+bootcmd_mmc0=devnum=0; run mmc_boot
+
+bootcmd_mmc2=devnum=2; run mmc_boot
+bootcmd_pxe=run boot_net_usb_start; dhcp; if pxe get; then pxe boot; fi
+
+bootcmd_ubifs0=bootubipart=UBI; bootubivol=boot; bootubioff=; run ubifs_boot
+bootcmd_usb0=devnum=0; run usb_boot
+bootdelay=1
+console=ttySTM0
+cpu=armv7
+
+efi_dtb_prefixes=/ /dtb/ /dtb/current/
+env_check=if env info -p -d -q; then env save; fi
+fdt_addr_r=0xc4000000
+fdtcontroladdr=dbef5980
+fdtfile=stm32mp151a-tios-mx.dtb
+fdtoverlay_addr_r=0xc4300000
+kernel_addr_r=0xc2000000
+load_efi_dtb=load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${prefix}${efi_fdtfile}
+loadaddr=0xc2000000
+
+partitions=name=ssbl,size=2M;name=bootfs,size=64MB,bootable;name=vendorfs,size=16M;name=rootfs,size=746M;name=userfs,size=-
+pxefile_addr_r=0xc4200000
+ramdisk_addr_r=0xc4400000
+
+
+scan_dev_for_efi=setenv efi_fdtfile ${fdtfile}; if test -z "${fdtfile}" -a -n "${soc}"; then setenv efi_fdtfile ${soc}-${board}${boardver}.dtb; fi; for prefix in ${efi_dtb_prefixes}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${efi_fdtfile}; then run load_efi_dtb; fi;done;run boot_efi_bootmgr;if test -e ${devtype} ${devnum}:${distro_bootpart} efi/boot/bootarm.efi; then echo Found EFI removable media binary efi/boot/bootarm.efi; run boot_efi_binary; echo EFI LOAD FAILED: continuing...; fi; setenv efi_fdtfile
+
+scan_dev_for_scripts=for script in ${boot_scripts}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${script}; then echo Found U-Boot script ${prefix}${script}; run boot_a_script; echo SCRIPT FAILED: continuing...; fi; done
+scriptaddr=0xc4100000
+serial#=002A001A3430510231363431
+serverip=192.168.1.1
+soc=stm32mp
+soc_pkg=AC
+soc_rev=Z
+soc_type=151A
+ubifs_boot=if ubi part ${bootubipart} ${bootubioff} && ubifsmount ubi0:${bootubivol}; then devtype=ubi; devnum=ubi0; bootfstype=ubifs; distro_bootpart=${bootubivol}; run scan_dev_for_boot; ubifsumount; fi
+usb_boot=usb start; if usb dev ${devnum}; then devtype=usb; run scan_dev_for_boot_part; fi
+usb_pgood_delay=2000
+vendor=st
+
+Environment size: 4258/8187 bytes
+
+boot_device=mmc
+boot_instance=1
+bootcmd=run bootcmd_stm32mp
+-----------------------------------------------------------------------------------------
+bootcmd_stm32mp=
+echo "Boot over ${boot_device}${boot_instance}!";
+if test ${boot_device} = serial || test ${boot_device} = usb;
+	then stm32prog ${boot_device} ${boot_instance}; 
+	else run env_check;
+	
+	if test ${boot_device} = mmc;
+		then env set boot_targets "mmc${boot_instance}"; 
+	fi;
+	if test ${boot_device} = nand || test ${boot_device} = spi-nand ;
+		then env set boot_targets ubifs0; 
+	fi;
+	if test ${boot_device} = nor;
+		then env set boot_targets mmc0; 
+	fi;
+	run distro_bootcmd;
+fi;
+distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+bootcmd_mmc1=devnum=1; run mmc_boot
+-----------------------------------------------------------------------------------------
+mmc_boot=if mmc dev ${devnum}; then devtype=mmc; run scan_dev_for_boot_part; fi
+-----------------------------------------------------------------------------------------
+scan_dev_for_boot_part=
+part list ${devtype} ${devnum} -bootable devplist; 
+env exists devplist || setenv devplist 1;
+for distro_bootpart in ${devplist}; 
+	do if fstype ${devtype} ${devnum}:${distro_bootpart} bootfstype; 
+		then run scan_dev_for_boot; 
+	fi; 
+	done; 
+	setenv devplist
+-----------------------------------------------------------------------------------------	
+scan_dev_for_boot=
+echo Scanning ${devtype} ${devnum}:${distro_bootpart}...; 
+for prefix in ${boot_prefixes}; 
+	do run scan_dev_for_extlinux; 
+	run scan_dev_for_scripts; 
+done;
+run scan_dev_for_efi;
+-----------------------------------------------------------------------------------------
+boot_syslinux_conf=extlinux/extlinux.conf
+-----------------------------------------------------------------------------------------
+scan_dev_for_extlinux=
+if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${boot_syslinux_conf}; 
+	then echo Found ${prefix}${boot_syslinux_conf}; 
+		run boot_extlinux; 
+	echo SCRIPT FAILED: continuing...; 
+fi
+-----------------------------------------------------------------------------------------
+boot_extlinux=
+sysboot ${devtype} ${devnum}:${distro_bootpart} any ${scriptaddr} ${prefix}${boot_syslinux_conf}
+-----------------------------------------------------------------------------------------
+RESULT???
+bootcmd=sysboot mmc 1:6 any 0xc4100000 /extlinux/extlinux.conf
+-----------------------------------------------------------------------------------------
