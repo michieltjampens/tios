@@ -1,14 +1,14 @@
 # Tower of IO stuff aka TIOS
 
 ## Why?
-I'm building a hexapod and want to make my own controller for it.  
+I'm building a base for future projects.
 Why would you design this thing?
 - Learning experience
 - Fun?
 
 ## What?
 
-The hardware will be in different layers/floors/segments... That will add certain functionality.
+The hardware will be in different layers/floors/segments... That will add certain functionality depending on the project.
 
 At the moment, I'm designing the main part of the tower. Which will be based around the [Rockchip RK3308B](https://www.rock-chips.com/a/en/products/RK33_Series/2018/0614/907.html).
 Before this, I've tried working with a SoM of imx6ull and stm32mp153. Although I managed to get to a working system, I just wasn't happy with the result.
@@ -16,8 +16,7 @@ The move to RK3308B has some pros and cons:
 **Pros**
 - Low idle power consumption 260mW (based of long term measurement of Raxda Rock S0 running kernel 6.1 debian bookworm, wifi listening)
 - Move from armhf to aarch64, mainly because I use java for [my other project](https://github.com/michieltjampens/dcafs) and new jre's aren't build anymore for armhf.
-- 'Entry level' SoC, so messing things up doesn't hurt as much as with a SoM.
-- Two ethernet MAC's so dual ethernet is possible, but second one shares pins with the SDIO... (wifi)
+- 'Entry level' SoC, so messing things up doesn't hurt as much (€) as with a SoM.
 - Used by Raxda Rock pi S(0), Banana Pi BPI P2 ... so working kernel/rootfs etc should be easy to obtain
   
 **Cons**
