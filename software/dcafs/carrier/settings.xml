@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dcafs>
+  <settings>
+    <!-- Settings related to the telnet server -->
+    <telnet port="2323" title="DCAFS">
+      <textcolor>lightgray</textcolor>
+    </telnet>
+  </settings>
+  <rtvals>
+    <unit base="s">
+      <step cnt="60">m</step>
+      <step cnt="60">h</step>
+    </unit>
+    <unit base="A" div="1000">
+      <level max="1000">uA</level>
+      <level max="1500">mA</level>
+      <level>A</level>
+    </unit>
+    <unit base="V" div="1000">
+      <level max="1000">uV</level>
+      <level max="1500">mV</level>
+      <level>V</level>
+    </unit>
+    <unit base="W" div="1000">
+      <level max="1500">mW</level>
+      <level max="1500">W</level>
+      <level>kW</level>
+    </unit>
+    <unit base="Wh" div="1000">
+      <level max="100" scale="2">mWh</level>
+      <level max="1000" scale="1">mWh</level>
+      <level max="1500" scale="2">Wh</level>
+      <level scale="3">kWh</level>
+    </unit>
+    <unit base="Ohm" div="1000">
+      <level max="1000" scale="3">mOhm</level>
+      <level max="1500" scale="4">Ohm</level>
+      <level scale="1">kOhm</level>
+    </unit>
+    <group id="pt100">
+      <real def="0" unit="°C">calc2</real>
+      <real def="0" unit="m°C">calcref</real>
+    </group>
+  </rtvals>
+  <streams/>
+  <databases>
+    <sqlite id="pt100" path="db\pt100.sqlite">
+      <flush age="30s" batchsize="30"/>
+      <idleclose>-1</idleclose>
+      <table name="same2_out">
+        <utcnow>timestamp</utcnow>
+        <int rtval="pt100_raw1">raw1</int>
+        <real rtval="pt100_calc1">calc1</real>
+        <int rtval="pt100_raw2">raw2</int>
+        <real rtval="pt100_calc2">calc2</real>
+        <int rtval="pt100_rawref">rawref</int>
+        <real rtval="pt100_calcref">calcref</real>
+        <real rtval="pt100_change2">change2</real>
+        <real rtval="pt100_changeref">changeref</real>
+        <real rtval="pt100_driftref">driftref</real>
+      </table>
+    </sqlite>
+  </databases>
+  <i2c>
+    <bus controller="1">
+      <device id="dac">
+        <address>0x49</address>
+        <script>dac63202</script>
+      </device>
+	  <!--<device id="stm">
+        <address>0x64</address>
+        <script>stm</script>
+      </device>-->
+    </bus>
+	<bus controller="3">
+      <device id="ioexp">
+        <address>0x38</address>
+        <script>pca9554a</script>
+      </device>
+	  <device id="aht20">
+        <address>0x77</address>
+        <script>aht20</script>
+      </device>
+    </bus>
+  </i2c>
+</dcafs>

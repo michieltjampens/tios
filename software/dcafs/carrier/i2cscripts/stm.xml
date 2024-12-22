@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<i2cscript id="stm">
+  <!-- Get the I2C protocol version, works -->
+  <i2cop bits="8" id="version" info="Get I2C version">
+	<write>0x01 0xFE</write>
+	<read return="1"/> 
+	<read return="1"/> 
+	<read return="1"/> 
+  </i2cop>
+  <!-- Get product/Chip id, works -->
+  <i2cop bits="8" id="id" info="Get id command">
+	<write>0x02 0xFD</write>	
+	<read return="1"/> 
+	<read bitsplit="8,16"/> <!-- First byte is amount to receive next -1, followed by 16bit id -->
+	<read return="1"/>
+  </i2cop>
+</i2cscript>

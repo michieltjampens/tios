@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<i2cscript id="dac63202">
+	<!-- Enable and disable VOUT -->
+	<i2cop id="enable_v0" info="Enable Vout0, internal Ref">
+		<alter reg="0x1F" bits="16"> <!-- Common config -->
+			<and>1111 000 111111111</and>
+			 <or>0000 001 000000000</or> <!-- enable vout0,disable iout0 -->
+		</alter>
+	</i2cop>
+	<i2cop id="enable_v1" info="Enable Vout1, internal Ref">
+		<alter reg="0x1F" bits="16"> <!-- Common config -->
+			<and>1111111111111 000</and>
+			 <or>0000000000000 001</or> <!-- enable vout0,disable iout0 -->
+		</alter>
+	</i2cop>
+	<i2cop id="disable_v0" info="Enable Vout0, internal Ref">
+		<alter reg="0x1F" bits="16"> <!-- Common config -->
+			<and>1111 00 1111111111</and>
+			 <or>0000 10 0000000000</or> <!-- vout0 100k PD,disable iout0 -->
+		</alter>
+	</i2cop>
+	<i2cop id="disable_v1" info="Enable Vout1, internal Ref">
+		<alter reg="0x1F" bits="16"> <!-- Common config -->
+			<and>1111111111111 00 1</and>
+			 <or>0000000000000 10 0</or> <!-- vout1 100k PD -->
+		</alter>
+	</i2cop>
+	
+	<!-- Vout voltage setting -->
+	<i2cop id="vout0" info="Output 0 to 0-3300mV (iRef), give millivolts as param">
+		<math>
+			<op scale="0">i0=i0*(4095/3636)-4</op><!-- minus 4 because of offset -->
+			<!-- Previous had scale = 0 so result is integer -->
+			<op>i0=i0*16</op> <!-- Need to fill 12bit from MSB -->
+		</math>
+		<write reg="0x1C" bits="16">i0</write> <!-- DAC-0-DATA, i0 needs to know it's 2bytes -->
+		<write reg="0x1F">0x12 0x01</write> <!-- Common config -->
+			<!--
+				0001 0010 0000 0001
+				 -  0	Non-latching window-comparator output
+				 -  0	Device not locked
+				 -  0	Fault-dump read enable at address 0x00
+				 -  1 	Enable internal reference	
+				 
+				 - 00 	Power-up VOUT-0
+				 -  1	Power-down IOUT-0
+				[8:3] don't care
+				 - 00 	Power-up VOUT-1
+				 -  1	Power-down IOUT-1
+						
+			-->
+		<write reg="0x15">0x10 0x00</write> <!-- DAC-0-VOUT-CMP-CONFIG -->
+			<!--
+				000   [15:13]	Don't care
+				010   [12:10]	Vout-Gain-0	1.5x, internal reference	
+				00000 [9:5]		Don't care
+				0	  [4]		CMP-0-OD-EN  	 = Set OUT1 pin as push-pull
+				0	  [3]		CMP-0-OUT-EN 	 = Generate comparator output but consume internally
+				0	  [2]		CMP-0-HIZ-IN-DIS = FB0 input has high-impedance. Input voltage range is limited
+				0	  [1]		CMP-0-INV-EN	 = Invert the comparator output	
+				0 	  [0]		CMP-0-EN		 = Disable comparator mode
+			-->
+	</i2cop>
+	<i2cop id="vout1" info="Output 1 to 0-3300mV (iRef), give millivolts as param">
+		<math>
+			<op scale="0">i0=i0*(4095/3636)-4</op><!-- minus 4 because of offset -->
+			<!-- Previous had scale = 0 so result is integer -->
+			<op>i0=i0*16</op> <!-- Need to fill 12bit from MSB -->
+		</math>
+		<write reg="0x1C" bits="16">i0</write> <!-- DAC-0-DATA, i0 needs to know it's 2bytes -->
+		<write reg="0x1F">0x12 0x01</write> <!-- Common config -->
+		<write reg="0x15">0x10 0x00</write> <!-- DAC-0-VOUT-CMP-CONFIG -->
+	</i2cop>	
+	<i2cop id="fs" info="Output 0 to 250mV, internal Ref">
+		<write reg="0x1C">0xFF 0xF0</write> <!-- DAC-0-DATA -->
+		<write reg="0x1F">0x12 0x01</write> <!-- Common config -->
+		<write reg="0x15">0x10 0x00</write>
+	</i2cop>
+
+	
+	<i2cop id="disable" info="Turn off outputs?">
+		<write reg="0x1C">0x0F 0xFF</write>
+	</i2cop>
+	<i2cop id="store" info="Store settings">
+		<write reg="0x20">0x00 0x02</write>
+	</i2cop>
+</i2cscript>
+
+<!--
+Registers 
+	00h		NOP
+	01h		DAC-1-MARGIN-HIGH
+	02h		DAC-1-MARGIN-LOW
+	03h		DAC-1-VOUT-CMP-CONFIG
+	04h		DAC-1-IOUT-MISC-CONFIG
+	05h		DAC-1-CMP-MODE-CONFIG
+	06h		DAC-1-FUNC-CONFIG
+	13h		DAC-0-MARGIN-HIGH
+	14h		DAC-0-MARGIN-LOW
+	15h		DAC-0-VOUT-CMP-CONFIG
+				[15:13]		Don't care
+				[12:10]		VOUT-GAIN-1
+				
+	16h		DAC-0-IOUT-MISC-CONFIG
+	17h		DAC-0-CMP-MODE-CONFIG
+	18h		DAC-0-FUNC-CONFIG
+	19h		DAC-1-DATA
+				[15:4] = DAC-1-DATA[11:0]
+				[3:0]  = Don't Care	
+	1Ch		DAC-0-DATA
+				[15:4] = DAC-0-DATA[11:0]
+				[3:0]  = Don't Care	
+	1Fh		COMMON-CONFIG
+				[15] 	WIN-LATCH-EN
+				[14] 	DEV-LOCK
+				[13] 	EE-READ-ADDR
+				[12] 	EN-INT-REF			Enable internal reference
+				[11:10] VOUT-PDN-0			0=Power-down VOUT0
+				[9]		IOUT-PDN-0			0=Power-up IOUT0
+				[8:3]	Don't Care	
+				[2:1]	VOUT-PDN-1			0=Power-down VOUT1
+				[0]		IOUT-PDN-1			0=Power-up IOUT1
+				
+	20h		COMMON-TRIGGER
+	21h		COMMON-DAC-TRIG
+	22h		GENERAL-STATUS
+	23h		CMP-STATUS
+	24h		GPIO-CONFIG
+	25h		DEVICE-MODE-CONFIG
+	26h		INTERFACE-CONFIG
+	2Bh		SRAM-CONFIG
+	2Ch		SRAM-DATA
+	50h		BRDCAST-DATA
+	
+	
+-->

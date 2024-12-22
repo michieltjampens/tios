@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<i2cscript id="pca9554a">
+	<!-- Input Register -->
+	<i2cop bits="8" id="read_input" info="Read the input register">	
+		<read reg="0x00" return="2"/> 	
+	</i2cop>
+	<!-- Output Register -->
+	<i2cop bits="8" id="read_output" info="Read the output register">	
+		<read reg="0x01" return="1"/> 	
+	</i2cop>
+	<i2cop bits="8" id="write_output" info="Write to the output register">	
+		<write reg="0x01" >i0</write>
+	</i2cop>
+	<i2cop bits="8" id="reset_stm1" info="Reset first stm">	
+		<alter reg="0x03" operand="and">0xFC</alter>  <!-- Change to output -->					
+		<alter reg="0x01" operand="or">0x02</alter> <!-- reset high -->	
+		<wait>1ms</wait>		
+		<alter reg="0x01" operand="and">0xFD</alter> <!-- reset low -->
+		<wait>1ms</wait>
+		<alter reg="0x01" operand="or">0x02</alter> <!-- reset high -->	
+		<alter reg="0x03" operand="or">0x03</alter><!-- Change to input -->
+	</i2cop>
+	<i2cop bits="8" id="reset_stm2" info="Reset first stm">	
+		<alter reg="0x03" operand="and">0x5F</alter>  <!-- Change to output -->					
+		<write reg="0x01">0x20</write> <!-- reset high -->		
+		<write reg="0x01">0x00</write> <!-- reset low again -->
+		<alter reg="0x03" operand="or">0xA0</alter><!-- Change to input -->
+	</i2cop>
+	<i2cop bits="8" id="prog_stm1b" info="Switch first stm to programming mode">	
+		<alter reg="0x03" operand="and">0xFC</alter>  <!-- Change to output -->			
+		<alter reg="0x01" operand="or">0x03</alter> <!-- boot0 & reset pin to 1 -->				
+		<wait>1ms</wait>
+		<alter reg="0x01" operand="and">0xFD</alter> <!-- reset low -->
+		<wait>1ms</wait>
+		<alter reg="0x01" operand="or">0x02</alter> <!-- reset high again (pin to 1) -->
+		<alter reg="0x01" operand="and">0xFE</alter> <!-- reset boot0 to low -->
+		<alter reg="0x03" operand="or">0x03</alter><!-- Change to input -->
+	</i2cop>	
+	<i2cop bits="8" id="prog_stm2" info="Switch first stm to programming mode">	<!-- Not tested -->
+		<write reg="0x01">0x80</write> <!-- boot0 pin to 1 -->		
+		<write reg="0x01">0xA0</write> <!-- toggle reset -->
+		<write reg="0x01">0x80</write> <!-- reset low again -->
+		<write reg="0x01">0x00</write> <!-- boot0/reset low again -->
+	</i2cop>	
+	<!-- polarity Inverse Register -->
+	<i2cop bits="8" id="read_polinv" info="Read the polarity inversion register">	
+		<read reg="0x02" return="1"/> 	
+	</i2cop>
+	<i2cop bits="8" id="write_config" info="Write i0 to the polarity inv register">	
+		<write reg="0x02">i0</write>
+	</i2cop>
+	<!-- Configuration Register -->
+	<i2cop bits="8" id="read_config" info="Read the configuration register">	
+		<read reg="0x03" return="1"/> 	
+	</i2cop>
+	<i2cop bits="8" id="all_output" info="Set all pins to output">	
+		<write reg="0x03" >0x00</write>
+	</i2cop>
+	<i2cop bits="8" id="write_config" info="Write i0 to the config register">	
+		<write reg="0x03">i0</write>
+	</i2cop>
+</i2cscript>
