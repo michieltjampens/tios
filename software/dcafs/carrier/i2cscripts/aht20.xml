@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<i2cscript id="aht20">
+	<i2cop id="status" info="Read the status register" bits="8">
+		<read reg="0x71" return="1"/> <!-- If it returns 0x18 then device is ready -->
+	</i2cop>
+	<i2cop id="sample" info="Get a temp/hum measurement">
+		<write reg="0xAC">0x33 0x00</write> <!-- Trigger a conversion -->
+		<read delay="100ms" reg="0x71" bitsplit="8,20,20,8"/> 
+		<store group="aht20">
+			<!-- 8bits  -> i0 -> status (ignoring) -->
+			<int i="0" name="status"/>
+			<!-- 20bits -> i1 -> raw humidity -->
+			<int i="1" name="rawhum"/>
+			<!-- 20bits -> i2 -> raw temperature -->
+			<int i="2" name="rawtemp"/>
+			<!-- 8bits  -> i3 -> crc (ignored) -->
+			<int i="3" name="crc"/>
+		</store>
+		<math>
+			<op>i1=(i1/2^20)*100</op> <!-- Raw humidity to percentage -->
+			<op>i2=(i2/2^20)*200-50</op> <!-- Raw temperature to °C -->
+		</math>
+		<store group="aht20" db="data:aht20">
+			<real i="1" name="humidity" scale="1" unit="%"/>
+			<real i="2" name="temperature" scale="2" unit="°C"/>
+		</store>
+	</i2cop>
+</i2cscript>

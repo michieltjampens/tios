@@ -1,0 +1,102 @@
+<i2cscript id="bmp280">
+	<!-- Need to start with reading the coefficients, those are needed in other i2cops -->
+	<i2cop id="coeff" info="Read the trimming values from the ic" msbfirst="false" bits="16">
+		<!-- Temperature -->
+		<read reg="0x88"  return="2"/> <!-- T1: unsigned 16bit -->
+		<read reg="0x8A"  signed="true" return="4"/> <!-- T2 to T3: signed 16bit -->
+		<!-- Pressure -->
+		<read reg="0x8E" signed="false" return="2"/> <!-- P1: signed 16bit-->
+		<read reg="0x90" signed="true" return="18"/> <!-- P2 to P9: unsigned 16bit -->
+		<math>
+			<op>i0=i0/1024</op> <!-- T1 is always divided by atleast 1024 -->
+			<op>i6=i6*65535</op>   <!-- P4*65535 -->
+			<op>i7=i7*2</op>	   <!-- P5*2     -->
+			<op>i8=i8/32768</op>   <!-- P6/32768 -->
+			<op>i10=i10/32768</op> <!-- P8/32768 -->
+		</math>
+		<store group="bmp280">
+			<!-- Temperature -->
+			<real i="0"  name="T1"/>
+			<real i="1"  name="T2"/>
+			<real i="2"  name="T3"/>
+			<!-- Pressure -->
+			<real i="3"  name="P1"/>
+			<real i="4"  name="P2"/>
+			<real i="5"  name="P3"/>
+			<real i="6"  name="P4"/>
+			<real i="7"  name="P5"/>
+			<real i="8"  name="P6"/>
+			<real i="9"  name="P7"/>
+			<real i="10" name="P8"/>
+			<real i="11" name="P9"/>
+		</store>
+	</i2cop>
+	<!-- Read all the data/cal registers from the device -->
+	<i2cop id="temperature" info="Read raw temperature and calculate" bits="20">
+		<read reg="0xFA" return="3"/>
+		<math>
+			<op>t0=(i0/16384-{r:bmp280_T1})*{r:bmp280_T2}</op>
+			<op>i0=i0/131072</op> <!-- Seperate op to make the next one a bit more readable -->
+			<op>t1=(i0-({r:bmp280_T1}/8))*(i0-({r:bmp280_T1}/8))*{r:bmp280_T3}</op>
+			<op>i0=(t0+t1)/2</op>
+		</math>
+		<store group="bmp280">
+			<real i="0">tfine</real>
+			<real o="bmp280_tfine/2560" scale="2" unit="°C">temperature</real>
+		</store>
+	</i2cop>
+	<i2cop id="pressure" info="Read raw pressure and calculate" bits="20">
+		<read reg="0xF7" return="3"/>
+		<math>
+			<op>t0={r:bmp280_tfine}-64000</op>  				<!-- tfine/2 was done in read step -->
+			<op>t1=t0*(t0*{r:bmp280_P6}+{r:bmp280_P5})</op>		<!-- P6/32768 and P5*2 was done in coeff -->
+			<op>t1=(t1/4)+{r:bmp280_P4}</op>					<!-- P4*65535 was done in coeff -->
+			<op>t0={r:bmp280_P3}*t0*t0/524288+({r:bmp280_P2}*t0)/524288</op>
+			<op>t0=(1+t0/32768)*{r:bmp280_P1}</op>
+			<op>i0=(1048576-i0-(t1/4096))*6250/t0</op>
+			<op>t0={r:bmp280_P9}*i0*i0/2147483648</op>
+			<op>i0=(i0+(t0+i0*{r:bmp280_P8}+{r:bmp280_P7})/16)/100</op><!-- P8/32768 was done in coeff -->
+		</math>
+		<store group="bmp280" db="data:bmp280">
+			<real i="0" scale="3" unit="hPa">pressure</real>
+		</store>
+	</i2cop> 
+	<i2cop id="status" info="Read the status registers." bits="8">
+		<read reg="0xF3" return="1"/>
+	</i2cop>
+	
+	<!-- General mode setting -->
+	<i2cop id="ctrl" info="Read ctrl register">
+		<read reg="0xF4" return="1"/>
+	</i2cop>	
+	<i2cop id="start" info="Start the sensors acc. at x2 t and x16 p oversampling" >
+		<write reg="0xF4" >0xFF</write>
+	</i2cop>	
+	<i2cop id="sleepmode" info="Go to sleep mode">
+		<alter reg="0xF4" operand="and">0xFC</alter> <!-- Default:0x00 xxxx xxxx AND 0xFD = xxxx xx 00 -->
+	</i2cop>
+	<i2cop id="reset" info="Reset the ic" >
+		<write reg="0xE0" >0xB6</write> <!-- -->
+	</i2cop>	
+</i2cscript>
+<!--
+0xF4 - ctrl meas
+		osrs_t[2:0]					osrs_p[2:0]					mode[1:0]
+		temperaure oversampling		pressure oversampling		00 = sleep mode
+		000 = skipped				000 = skipped				01 = forced mode
+		001 = oversampling x1		001 = oversampling x1		10 = forced mode
+		010 = oversampling x2		010 = oversampling x2		11 = normal mode
+		011 = oversampling x4		011 = oversampling x4
+		100 = oversampling x8		100 = oversampling x8
+		101 = oversampling x16		101 = oversampling x16
+0xF5 - config
+	   t_sb[2:0] 			filter[2:0]				spi3w_en[0]
+	-> 000 = 0,5ms			000 = filter off		0 = spi 3wire disabled
+	-> 001 = 62.5ms			001 = 2					1 = spi 3wire enabled
+	-> 010 = 125ms			010 = 4
+	-> 011 = 250ms			011 = 8
+	-> 100 = 500ms			1xx = 16
+	-> 101 = 1000ms
+	-> 110 = 10ms
+	-> 111 = 20ms
+-->
