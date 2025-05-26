@@ -1,0 +1,16 @@
+/dts-v1/;
+/plugin/;
+// dtc -@ -I dts -O dtb -o rk3308-ds3232x.dtbo rk3308-ds3232x.dts
+
+/ {
+    fragment@0 {
+        target = <&i2c1>;
+        __overlay__ {
+            rtc@68 {
+                compatible = "dallas,ds3231";
+                reg = <0x68>;
+                status = "okay";               
+            };
+        };
+    };
+};

@@ -1,0 +1,26 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    fragment@0 {
+        target = <&uart1>;
+		__overlay__ {
+			pinctrl-0 = <&uart1_xfer>;		// Remove dts,cts
+			status = "okay";				// enable it
+		};
+	};
+    fragment@1 {
+        target = <&uart3>;
+		__overlay__ {
+			pinctrl-0 = <&uart3m1_xfer>;	// Switch to m1
+			status = "okay";				// Enable it
+		};
+	};	
+    fragment@2 {
+        target = <&i2c3>;
+		__overlay__ {
+			pinctrl-0 = <&i2c3m0_xfer>;		// Make sure it's M0
+			status = "okay";				// Enable it
+		};
+	};	
+};

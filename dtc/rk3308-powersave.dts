@@ -1,0 +1,39 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    fragment@0 {
+        target-path = "/codec@ff560000";  // if this node exists, else omit
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+    fragment@1 {
+        target-path = "/i2s@ff320000";
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+    fragment@2 {
+        target-path = "/sound";
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+    fragment@3 {
+        target-path = "/acodec-sound";
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+    fragment@4 {
+        target-path = "/pcm5102a";
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+};
